@@ -29,7 +29,7 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/bootstrap/bootstrap.min.css"
+              "src/bootstrap/bootstrap.scss"
             ],
             "scripts": [
               "src/jquery/jquery.js",
@@ -99,7 +99,7 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/bootstrap/bootstrap.min.css"
+              "src/bootstrap/bootstrap.scss"
             ],
             "scripts": [
               "src/jquery/jquery.js",

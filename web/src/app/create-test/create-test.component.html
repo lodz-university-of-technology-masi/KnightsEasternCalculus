@@ -1,0 +1,154 @@
+<!-- TITLE -->
+<h2>Tworzenie nowego testu</h2>
+
+<!-- TOP -->
+<div class="card">
+    <!-- buttons to choose between question TYPES -->
+    <div 
+    class="btn-group btn-group-toggle" checked>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-secondary" disabled>
+                Dodaj pytanie
+            </button>
+            <button type="button" class="btn btn-secondary btn-lg" (click)="selectOpenType()">
+                Otwarte
+            </button>
+            <button type="button" class="btn btn-secondary btn-lg" (click)="selectCloseType()">
+                Zamknięte
+            </button>
+        </div>
+    </div>
+    
+    <!-- card which is displayed when OPEN question is selected -->
+    <div class="card-body" *ngIf="getIfClose()">
+        <div>
+            Treść pytania:
+            <div class="input-group">
+                <input (input)="inputCloseQuestion=$event.target.value" type="text" name="question" class="form-control">
+            </div>
+        </div>
+        <div>
+            Poprawne odpowiedzi:
+            <div class="input-group">
+                <input (input)="inputCorrectCloseAnswer=$event.target.value" type="text" class="form-control" name="correctAnswer" #filterCorrectCloseAnswer>
+                <div 
+                class="input-group-append">
+                    <button class="btn btn-success" type="button" (click)="addCorrectCloseAnswer()" (click)="filterCorrectCloseAnswer.value=''">
+                        Dodaj
+                    </button>
+                </div>
+            </div>
+            <table class="table table-hover">
+                <tbody>
+                    <tr *ngFor="let correctAnswer of correctCloseAnswers">
+                        <td>{{ correctAnswer }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            Niepoprawne odpowiedzi:
+            <div class="input-group">
+                <input (input)="inputIncorrectCloseAnswer=$event.target.value" type="text" class="form-control" name="incorrectAnswer" #filterIncorrectCloseAnswer>
+                <div class="input-group-append">
+                    <button class="btn btn-success" type="button" (click)="addIncorrectCloseAnswer()" (click)="filterIncorrectCloseAnswer.value=''">
+                        Dodaj
+                    </button>
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover">
+            <tbody>
+                <tr *ngFor="let incorrectAnswer of incorrectCloseAnswers">
+                    <td>{{ incorrectAnswer }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            Maksymalna ilość punktów:
+            <div class="input-group">
+                <input (input)="inputMaxScoreClose=$event.target.value" type="text" name="maxScore" class="form-control" #filterMaxScore>
+            </div>
+        </div>
+        <button type="button" class="btn btn-success" (click)="addCloseQuestion()">
+            Dodaj pytanie do testu
+        </button>
+    </div>
+
+    <!-- card which is displayed when CLOSE question is selected -->
+    <div class="card-body" *ngIf="getIfOpen()">
+        <div>
+            Treść pytania:
+            <div class="input-group">
+                <input (input)="inputOpenQuestion=$event.target.value" type="text" name="OpenQuestion" class="form-control">
+            </div>
+        </div>
+        <div>
+            Poprawna odpowiedź:
+            <div class="input-group">
+                <input (input)="inputCorrectOpenAnswer=$event.target.value" type="text" name="CorrectAnswer" class="form-control">
+            </div>
+        </div>
+        <div>
+            Maksymalna ilość punktów:
+            <div class="input-group">
+                <input (input)="inputMaxScoreOpen=$event.target.value" type="text" name="maxScore" class="form-control" #filterMaxScore>
+            </div>
+        </div>
+        <button type="button" class="btn btn-success" (click)="addOpenQuestion()">
+            Dodaj pytanie do testu
+        </button>
+    </div>
+</div>
+
+<!-- MIDDLE -->
+<div>
+    <!-- created OPEN questions -->
+    <div class="card-body" *ngIf="openQuestions.length != 0">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Pytanie otwarte</th>
+                    <th>Odpowiedź</th>
+                    <th>Max pkt.</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let openQuestion of openQuestions" (click)="onSelectOpenQuestion(openQuestion)" [class.selected]="openQuestion === selectedOpenQuestion">
+                    <td>{{ openQuestion.question }}</td>
+                    <td>{{ openQuestion.correctAnswer }}</td>
+                    <td>{{ openQuestion.maxScore }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- created CLOSE questions -->
+    <div class="card-body" *ngIf="closeQuestions.length != 0">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Pytanie zamknięte</th>
+                    <th>Poprawne odpowiedzi</th>
+                    <th>Niepoprawne odpowiedzi</th>
+                    <th>Max pkt.</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let closeQuestion of closeQuestions" (click)="onSelectCloseQuestion(closeQuestion)" [class.selected]="closeQuestion === selectedCloseQuestion">
+                    <td>{{ closeQuestion.question }}</td>
+                    <td>{{ closeQuestion.correctAnswers }}</td>
+                    <td>{{ closeQuestion.incorrectAnswers }}</td>
+                    <td>{{ closeQuestion.maxScore }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- BOTTOM -->
+<div>
+    <!-- button to end create test -->
+    <button class="btn btn-success" (click)="createTest()">
+        Utwórz test
+    </button>
+</div>

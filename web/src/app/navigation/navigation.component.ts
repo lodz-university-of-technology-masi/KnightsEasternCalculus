@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
+  nickname:String = "cos";
+  openFirstDropDown:Boolean = false;
+  openSecondDropDown:Boolean = false;
+
   constructor() { }
 
   ngOnInit() {
   }
-
 }

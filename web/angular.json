@@ -29,12 +29,12 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/bootstrap/bootstrap.scss"
+              "src/bootstrap/scss/bootstrap.scss"
             ],
             "scripts": [
               "src/jquery/jquery.js",
               "src/popper/popper.js",
-              "src/bootstrap/bootstrap.min.js"
+              "src/bootstrap/js/bootstrap.js"
             ]
           },
           "configurations": {
@@ -99,12 +99,12 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/bootstrap/bootstrap.scss"
+              "src/bootstrap/scss/bootstrap.scss"
             ],
             "scripts": [
               "src/jquery/jquery.js",
               "src/popper/popper.js",
-              "src/bootstrap/bootstrap.min.js"
+              "src/bootstrap/js/bootstrap.js"
             ]
           }
         },

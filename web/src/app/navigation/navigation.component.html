@@ -42,7 +42,7 @@
             </div>
           </div>
       </ul>
-      <button type="button" routerLink="/login" *ngIf="!logging" (click)="logging = true">Login</button>
+      <button type="button" routerLink="/login" *ngIf="!this.loginService.getLogging()" (click)="this.loginService.setLogging(true)">Login</button>
     </div>
   </nav>
 </div>

@@ -30,18 +30,19 @@
           </div>
         </li>
       </ul>
-        <span class="navbar-text">Zalogowany jako</span>
-        <ul class="navbar-nav mr-0">
+        <span class="navbar-text" *ngIf="loginService.getLogged()">Zalogowany jako</span>
+        <ul class="navbar-nav mr-0" *ngIf="loginService.getLogged()">
           <div class="nav-item dropdown">
             <div class="btn-group">
-              <a routerLink="" class="btn btn-link nav-link pl-1">{{nickname}}</a>
+              <a routerLink="#" class="btn btn-link nav-link pl-1">{{username}}</a>
               <button type="button" class="btn btn-link nav-link dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" routerLink="#">Wyloguj</a>
+                <a class="dropdown-item" routerLink="" (click)="logout()" >Wyloguj</a>
               </div>
             </div>
           </div>
       </ul>
+      <button type="button" routerLink="/login" *ngIf="!logging" (click)="logging = true">Login</button>
     </div>
   </nav>
 </div>

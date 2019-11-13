@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {LoginService} from '../login.service';
 
 @Component({
   selector: 'app-navigation',
@@ -7,12 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  nickname:String = "cos";
-  openFirstDropDown:Boolean = false;
-  openSecondDropDown:Boolean = false;
+  username = '';
+  openFirstDropDown = false;
+  openSecondDropDown = false;
+  logging = false;
 
-  constructor() { }
+  constructor(private loginService: LoginService) { }
 
   ngOnInit() {
+    this.loginService.currUsername.subscribe(username => this.username = username);
+  }
+
+  logout(): void {
+    this.logging = false;
+    this.loginService.setLogged(false);
+    this.loginService.setUsername('');
   }
 }

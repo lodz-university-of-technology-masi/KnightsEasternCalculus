@@ -8,7 +8,7 @@
         <li class="nav-item active">
           <a class="nav-link" routerLink="#">Strona główna</a>
         </li>
-        <li class="nav-item dropdown" (mouseover)="openFirstDropDown=true" (mouseout)="openFirstDropDown=false" [ngClass]="{'open': openFirstDropDown, 'show': openFirstDropDown}">
+        <li *ngIf="loginService.getLogged()"class="nav-item dropdown" (mouseover)="openFirstDropDown=true" (mouseout)="openFirstDropDown=false" [ngClass]="{'open': openFirstDropDown, 'show': openFirstDropDown}">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLink1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Testy
           </a>
@@ -19,7 +19,7 @@
             <a class="dropdown-item" routerLink="#">Sprawdź testy</a>
           </div>
         </li>
-        <li class="nav-item dropdown" (mouseover)="openSecondDropDown=true" (mouseout)="openSecondDropDown=false" [ngClass]="{'open': openSecondDropDown, 'show': openSecondDropDown}">
+        <li *ngIf="loginService.getLogged()" class="nav-item dropdown" (mouseover)="openSecondDropDown=true" (mouseout)="openSecondDropDown=false" [ngClass]="{'open': openSecondDropDown, 'show': openSecondDropDown}">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLink2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Kandydaci
           </a>

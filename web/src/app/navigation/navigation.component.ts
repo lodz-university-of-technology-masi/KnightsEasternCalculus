@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {LoginService} from '../login.service';
-import {SharingService} from '../sharing.service';
+import {LoginService} from '../services/login.service';
+import {SharingService} from '../services/sharing.service';
 
 @Component({
   selector: 'app-navigation',

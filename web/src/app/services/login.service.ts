@@ -1,43 +1,47 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, of} from 'rxjs';
-import {SharingService} from './sharing.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
+  private USERNAME = 'username';
+  private LOGGED = 'logged';
+  private LOGGING = 'logging';
   private username = new BehaviorSubject('');
   public currUsername = this.username.asObservable();
-  private logged: boolean;
-  private logging: boolean;
+  private logged = false;
+  private logging = false;
 
-  constructor(private sharingService: SharingService) {
-    this.logged = this.sharingService.getLogged();
-    this.username.next(this.sharingService.getUsername());
-    this.logging = this.sharingService.getLogging();
-  }
+  constructor() {
 
-  getLogged(): boolean {
-    return this.logged;
   }
 
   setLogged(b: boolean) {
-    this.sharingService.setLogged(b);
+    localStorage.setItem(this.LOGGED, JSON.stringify(b));
     this.logged = b;
   }
 
+  getLogged(): boolean {
+    return JSON.parse(localStorage.getItem(this.LOGGED));
+  }
+
   setUsername(username: string) {
-    this.sharingService.setUsername(username);
+    localStorage.setItem(this.USERNAME, JSON.stringify(username));
     this.username.next(username);
   }
 
+  getUsername() {
+    return JSON.parse(localStorage.getItem(this.USERNAME));
+  }
+
   getLogging() {
-    return this.logging;
+    return JSON.parse(localStorage.getItem(this.LOGGING));
   }
 
   setLogging(l: boolean) {
-    this.sharingService.setLogging(l);
+    localStorage.setItem(this.LOGGING, JSON.stringify(this.logging));
     this.logging = l;
   }
 }

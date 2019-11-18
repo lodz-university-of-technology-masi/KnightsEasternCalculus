@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LoginService} from '../services/login.service';
-import {SharingService} from '../services/sharing.service';
 
 @Component({
   selector: 'app-navigation',
@@ -14,12 +13,12 @@ export class NavigationComponent implements OnInit {
   openSecondDropDown = false;
   logging = false;
 
-  constructor(private loginService: LoginService, private sharingService: SharingService) {
+  constructor(private loginService: LoginService) {
   }
 
   ngOnInit() {
     this.loginService.currUsername.subscribe(username => this.username = username);
-    this.logging = this.sharingService.getLogging();
+    this.logging = this.loginService.getLogging();
   }
 
   logout(): void {

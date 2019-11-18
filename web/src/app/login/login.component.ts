@@ -15,13 +15,11 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router, private loginService: LoginService) { }
 
   ngOnInit() {
-    this.username = this.loginService.getUsername();
   }
 
   login(): void {
     this.loginService.setUsername(this.username);
     this.loginService.setLogged(true);
-    this.loginService.setLogging(true);
     this.router.navigate(['/']);
   }
 

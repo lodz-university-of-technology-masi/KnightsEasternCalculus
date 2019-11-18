@@ -44,7 +44,7 @@
       </ul>
       <ul class="navbar-nav mr-0">
         <li class="nav-item active">
-          <a class="nav-link" routerLink="/login" *ngIf="!this.loginService.getLogged()" (click)="this.loginService.setLogging(true)">Zaloguj się</a>
+          <a class="nav-link" routerLink="/login" *ngIf="!this.loginService.getLogged()">Zaloguj się</a>
         </li>
       </ul>
     </div>

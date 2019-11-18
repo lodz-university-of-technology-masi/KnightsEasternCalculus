@@ -8,14 +8,12 @@ export class LoginService {
 
   private USERNAME = 'username';
   private LOGGED = 'logged';
-  private LOGGING = 'logging';
   private username = new BehaviorSubject('');
   public currUsername = this.username.asObservable();
   private logged = false;
-  private logging = false;
 
   constructor() {
-
+    this.username.next(this.getUsername());
   }
 
   setLogged(b: boolean) {
@@ -34,14 +32,5 @@ export class LoginService {
 
   getUsername() {
     return JSON.parse(localStorage.getItem(this.USERNAME));
-  }
-
-  getLogging() {
-    return JSON.parse(localStorage.getItem(this.LOGGING));
-  }
-
-  setLogging(l: boolean) {
-    localStorage.setItem(this.LOGGING, JSON.stringify(this.logging));
-    this.logging = l;
   }
 }

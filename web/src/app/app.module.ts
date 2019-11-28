@@ -10,6 +10,8 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { LoginComponent } from './login/login.component';
 import {FormsModule} from '@angular/forms';
 import { ApplicantListComponent } from './applicant-list/applicant-list.component';
+import { SignupComponent } from './signup/signup.component';
+import { ConfirmCodeComponent } from './confirm-code/confirm-code.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { ApplicantListComponent } from './applicant-list/applicant-list.componen
     NavigationComponent,
     HomePageComponent,
     LoginComponent,
-    ApplicantListComponent
+    ApplicantListComponent,
+    SignupComponent,
+    ConfirmCodeComponent
   ],
   imports: [
     BrowserModule,

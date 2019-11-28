@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomePageComponent } from '../home-page/home-page.component';
 import { LoginComponent } from '../login/login.component';
 import { ApplicantListComponent } from '../applicant-list/applicant-list.component';
+import { SignupComponent } from '../signup/signup.component';
+import {ConfirmCodeComponent} from '../confirm-code/confirm-code.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,14 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'signup',
+    component: SignupComponent
+  },
+  {
+    path: 'confirm',
+    component: ConfirmCodeComponent
   }
 ];
 

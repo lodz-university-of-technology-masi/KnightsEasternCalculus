@@ -3,8 +3,8 @@ import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cogn
 import {Observable, Observer} from 'rxjs';
 
 const poolData = {
-  UserPoolId: 'us-east-1_maoLGJo3a',
-  ClientId: '1p7skigilekib35sropv0qt3mq'
+  UserPoolId: 'us-east-1_xwOcmFhVK',
+  ClientId: '345dlcjkahnlvige9i2f29m8p8'
 };
 
 const userPool = new CognitoUserPool(poolData);
@@ -16,15 +16,17 @@ const userPool = new CognitoUserPool(poolData);
 export class AuthenticationService {
   cognitoUser: any;
 
-  constructor() { }
+  constructor() {}
 
-  signup(email, password) {
+  signUp(email, password) {
+    console.log(email);
     const attributeList = [];
     return new Observable((observer) => {
       userPool.signUp(email, password, attributeList, null, (err, result) => {
         if (err) {
           console.log('signup error', err);
           observer.error(err);
+          return;
         }
         this.cognitoUser = result.user;
         console.log('signup succsesful', result);
@@ -54,7 +56,7 @@ export class AuthenticationService {
     });
   }
 
-  signUp(email, password) {
+  signIn(email, password) {
     const authenticationData = {
       Username: email,
       Password: password

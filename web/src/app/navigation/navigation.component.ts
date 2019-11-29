@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {LoginService} from '../services/login.service';
-import {AuthenticationService} from "../services/authentication.service";
+import {AuthenticationRecruiterService} from '../services/authentication-recruiter.service';
 
 @Component({
   selector: 'app-navigation',
@@ -13,16 +12,20 @@ export class NavigationComponent implements OnInit {
   openFirstDropDown = false;
   openSecondDropDown = false;
 
-  constructor(private loginService: LoginService, private authService: AuthenticationService) {
+  constructor(private authService: AuthenticationRecruiterService) {
   }
 
   ngOnInit() {
-    this.loginService.currUsername.subscribe(username => this.username = username);
+    if (this.authService.isLogged()) {
+      this.username = this.authService.getUser().getUsername();
+    }
   }
 
   logout(): void {
-    this.loginService.setLogged(false);
-    this.loginService.setUsername('');
     this.authService.logOut();
+  }
+
+  generateLink() {
+
   }
 }

@@ -8,7 +8,7 @@
         <li class="nav-item active">
           <a class="nav-link" routerLink="/">Strona główna</a>
         </li>
-        <li *ngIf="loginService.getLogged()"class="nav-item dropdown" (mouseover)="openFirstDropDown=true" (mouseout)="openFirstDropDown=false" [ngClass]="{'open': openFirstDropDown, 'show': openFirstDropDown}">
+        <li *ngIf="authService.isLogged()"class="nav-item dropdown" (mouseover)="openFirstDropDown=true" (mouseout)="openFirstDropDown=false" [ngClass]="{'open': openFirstDropDown, 'show': openFirstDropDown}">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLink1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Testy
           </a>
@@ -19,7 +19,7 @@
             <a class="dropdown-item" routerLink="#">Sprawdź testy</a>
           </div>
         </li>
-        <li *ngIf="loginService.getLogged()" class="nav-item dropdown" (mouseover)="openSecondDropDown=true" (mouseout)="openSecondDropDown=false" [ngClass]="{'open': openSecondDropDown, 'show': openSecondDropDown}">
+        <li *ngIf="authService.isLogged()" class="nav-item dropdown" (mouseover)="openSecondDropDown=true" (mouseout)="openSecondDropDown=false" [ngClass]="{'open': openSecondDropDown, 'show': openSecondDropDown}">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLink2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Kandydaci
           </a>
@@ -30,13 +30,14 @@
           </div>
         </li>
       </ul>
-        <span class="navbar-text" *ngIf="loginService.getLogged()">Zalogowany jako</span>
-        <ul class="navbar-nav mr-0" *ngIf="loginService.getLogged()">
+        <span class="navbar-text" *ngIf="authService.isLogged()">Zalogowany jako</span>
+        <ul class="navbar-nav mr-0" *ngIf="authService.isLogged()">
           <div class="nav-item dropdown">
             <div class="btn-group">
-              <a routerLink="#" class="btn btn-link nav-link pl-1">{{username}}</a>
+              <a routerLink="" class="btn btn-link nav-link pl-1">{{username}}</a>
               <button type="button" class="btn btn-link nav-link dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
               <div class="dropdown-menu">
+                <a class="dropdown-item" routerLink="" (click)="generateLink()" >Wygeneruj link</a>
                 <a class="dropdown-item" routerLink="" (click)="logout()" >Wyloguj</a>
               </div>
             </div>
@@ -44,7 +45,7 @@
       </ul>
       <ul class="navbar-nav mr-0">
         <li class="nav-item active">
-          <a class="nav-link" routerLink="/login" *ngIf="!this.loginService.getLogged()">Zaloguj się</a>
+          <a class="nav-link" routerLink="/login" *ngIf="!this.authService.isLogged()">Zaloguj się</a>
         </li>
       </ul>
     </div>

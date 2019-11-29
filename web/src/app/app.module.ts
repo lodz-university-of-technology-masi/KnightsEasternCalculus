@@ -12,6 +12,7 @@ import {FormsModule} from '@angular/forms';
 import { ApplicantListComponent } from './applicant-list/applicant-list.component';
 import { SignupComponent } from './signup/signup.component';
 import { ConfirmCodeComponent } from './confirm-code/confirm-code.component';
+import { LinkGeneratorComponent } from './link-generator/link-generator.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ConfirmCodeComponent } from './confirm-code/confirm-code.component';
     LoginComponent,
     ApplicantListComponent,
     SignupComponent,
-    ConfirmCodeComponent
+    ConfirmCodeComponent,
+    LinkGeneratorComponent
   ],
   imports: [
     BrowserModule,

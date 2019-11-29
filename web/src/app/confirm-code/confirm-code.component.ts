@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthenticationService} from '../services/authentication.service';
+import {AuthenticationRecruiterService} from '../services/authentication-recruiter.service';
 import {Router} from '@angular/router';
-import {LoginService} from '../services/login.service';
 
 @Component({
   selector: 'app-confirm-code',
@@ -12,7 +11,7 @@ export class ConfirmCodeComponent implements OnInit {
 
   private code: string;
 
-  constructor(private router: Router, private authService: AuthenticationService, private loginService: LoginService) { }
+  constructor(private router: Router, private authService: AuthenticationRecruiterService) { }
 
   ngOnInit() {
   }
@@ -20,7 +19,6 @@ export class ConfirmCodeComponent implements OnInit {
   confirmCode(){
     console.log(this.code);
     this.authService.confirmAuth(this.code).subscribe(() => {
-      this.loginService.setLogged(true);
       this.router.navigateByUrl('/');
     }, (err) => {
       console.log('wrong code. err: ' + err);

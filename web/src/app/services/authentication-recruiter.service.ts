@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
-import {Observable, Observer} from 'rxjs';
+import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserAttribute } from 'amazon-cognito-identity-js';
+import {BehaviorSubject, Observable, Observer} from 'rxjs';
+import {BoundEventAst} from '@angular/compiler';
 
 const poolData = {
   UserPoolId: 'us-east-1_xwOcmFhVK',
@@ -13,14 +14,21 @@ const userPool = new CognitoUserPool(poolData);
   providedIn: 'root'
 })
 
-export class AuthenticationService {
+export class AuthenticationRecruiterService {
   cognitoUser: any;
+  private username = new BehaviorSubject('');
+  public currUsername = this.username.asObservable();
 
   constructor() {}
 
   signUp(email, password) {
     console.log(email);
-    const attributeList = [];
+    const mail = {
+      Name: 'email',
+      Value: email
+    };
+    const mailAttr = new CognitoUserAttribute(mail);
+    const attributeList = [mailAttr];
     return new Observable((observer) => {
       userPool.signUp(email, password, attributeList, null, (err, result) => {
         if (err) {
@@ -67,10 +75,9 @@ export class AuthenticationService {
       Username: email,
       Pool: userPool
     };
-    const cognitoUser = new CognitoUser(userData);
-
+    this.cognitoUser = new CognitoUser(userData);
     return new Observable(observer => {
-      cognitoUser.authenticateUser(authenticationDetails, {
+      this.cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: result => {
           observer.next(result);
           observer.complete();
@@ -85,6 +92,7 @@ export class AuthenticationService {
   isLogged(): boolean {
     return userPool.getCurrentUser() != null;
   }
+
 
   getUser() {
     return userPool.getCurrentUser();

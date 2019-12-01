@@ -13,6 +13,7 @@ import { ApplicantListComponent } from './applicant-list/applicant-list.componen
 import { SignupComponent } from './signup/signup.component';
 import { ConfirmCodeComponent } from './confirm-code/confirm-code.component';
 import { LinkGeneratorComponent } from './link-generator/link-generator.component';
+import { ApplicantProfileComponent } from './applicant-profile/applicant-profile.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { LinkGeneratorComponent } from './link-generator/link-generator.componen
     HomePageComponent,
     LoginComponent,
     ApplicantListComponent,
+    ApplicantProfileComponent,
     SignupComponent,
     ConfirmCodeComponent,
     LinkGeneratorComponent

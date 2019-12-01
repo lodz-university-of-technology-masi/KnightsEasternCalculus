@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Applicant} from '../model/applicant';
+import {ApplicantService} from '../services/applicant.service';
 
 @Component({
   selector: 'app-applicant-list',
@@ -6,10 +8,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./applicant-list.component.scss']
 })
 export class ApplicantListComponent implements OnInit {
+  applicants: Applicant[];
+  searchFirstName: string;
+  searchLastName: string;
+  searchCity: string;
 
-  constructor() { }
+  constructor(private applicantService: ApplicantService) { }
 
   ngOnInit() {
+    this.getInitialApplicants();
+  }
+
+  getInitialApplicants(): void {
+    this.applicantService.getLatestApplicants().subscribe(applicants => this.applicants = applicants);
+  }
+
+  searchApplicants(): void {
+    this.applicantService.getApplicants(this.searchFirstName, this.searchLastName, this.searchCity)
+      .subscribe(applicants => this.applicants = applicants);
   }
 
 }

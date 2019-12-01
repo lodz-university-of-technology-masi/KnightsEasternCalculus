@@ -2,13 +2,18 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
 import { ApplicantListComponent } from '../applicant-list/applicant-list.component';
+import { ApplicantProfileComponent } from '../applicant-profile/applicant-profile.component';
 import { SignupComponent } from '../signup/signup.component';
 import {ConfirmCodeComponent} from '../confirm-code/confirm-code.component';
 import {LinkGeneratorComponent} from '../link-generator/link-generator.component';
-
+import { HomePageComponent } from '../home-page/home-page.component';
 const routes: Routes = [
   {
     path: '',
+    component: HomePageComponent
+  },
+  {
+    path: 'applicants',
     component: ApplicantListComponent
   },
   {
@@ -26,6 +31,10 @@ const routes: Routes = [
   {
     path: 'generate-link',
     component: LinkGeneratorComponent
+  },
+  {
+    path: 'applicant/:id',
+    component: ApplicantProfileComponent
   }
 ];
 

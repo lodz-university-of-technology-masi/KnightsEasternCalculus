@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing/app-routing.module'
 import { AppComponent } from './app.component';
@@ -14,6 +15,7 @@ import { SignupComponent } from './signup/signup.component';
 import { ConfirmCodeComponent } from './confirm-code/confirm-code.component';
 import { LinkGeneratorComponent } from './link-generator/link-generator.component';
 import { ApplicantProfileComponent } from './applicant-profile/applicant-profile.component';
+import { CreateTestComponent } from './create-test/create-test.component';
 
 @NgModule({
   declarations: [
@@ -27,12 +29,14 @@ import { ApplicantProfileComponent } from './applicant-profile/applicant-profile
     ApplicantProfileComponent,
     SignupComponent,
     ConfirmCodeComponent,
-    LinkGeneratorComponent
+    LinkGeneratorComponent,
+    CreateTestComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -7,6 +7,8 @@ import { SignupComponent } from '../signup/signup.component';
 import {ConfirmCodeComponent} from '../confirm-code/confirm-code.component';
 import {LinkGeneratorComponent} from '../link-generator/link-generator.component';
 import { HomePageComponent } from '../home-page/home-page.component';
+import { CreateTestComponent } from '../create-test/create-test.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -31,6 +33,10 @@ const routes: Routes = [
   {
     path: 'generate-link',
     component: LinkGeneratorComponent
+  },
+  {
+    path: 'create-test',
+    component: CreateTestComponent
   },
   {
     path: 'applicant/:id',

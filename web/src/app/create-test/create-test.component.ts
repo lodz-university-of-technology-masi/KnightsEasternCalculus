@@ -1,17 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { CloseQuestion } from '../close-question';
 import { OpenQuestion } from '../open-question';
 import { CreateTestService } from '../create-test.service';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Test } from '../test';
+import { throwError, Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/json'
+  })
+};
 
 @Component({
   selector: 'app-create-test',
   templateUrl: './create-test.component.html',
   styleUrls: ['./create-test.component.scss']
 })
+
+@Injectable()
 export class CreateTestComponent implements OnInit {
 
   constructor(
-    private createTestService: CreateTestService
+    private createTestService: CreateTestService,
+    private httpClient : HttpClient
   ) { }
 
 
@@ -90,11 +103,14 @@ export class CreateTestComponent implements OnInit {
   //#endregion
 
   //#region "Create Test"
-    createTest(): void {
-      // this.createTestService.
-      
-      //   this.createTestService.getCloseQuestions().subscribe(closeQuestions => this.closeQuestions = closeQuestions);
-      //   this.createTestService.getOpenQuestions().subscribe(openQuestions => this.openQuestions = openQuestions);
-    }
+  addTestUrl: string = "https://luznpx1mg3.execute-api.us-east-1.amazonaws.com/Test/tests";
+  test: Test;
+  public createTest(): void {
+    this.test = new Test(this.openQuestions, this.closeQuestions);
+    this.httpClient.post<Test>(this.addTestUrl, this.test, httpOptions).subscribe({
+        error: error => ({}),
+        complete: () => {}
+    });
+  }
   //#endregion
 }

@@ -1,9 +1,9 @@
 import { Component, OnInit, Injectable } from '@angular/core';
-import { CloseQuestion } from '../close-question';
-import { OpenQuestion } from '../open-question';
-import { CreateTestService } from '../create-test.service';
+import { CloseQuestion } from '../model/close-question';
+import { OpenQuestion } from '../model/open-question';
+import { CreateTestService } from '../services/create-test.service';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Test } from '../test';
+import { Test } from '../model/test';
 import { throwError, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 

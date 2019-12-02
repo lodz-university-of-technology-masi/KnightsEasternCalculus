@@ -4,8 +4,8 @@
     <hr/>
     <div class="container">
       <div class="row justify-content-md-center my-auto">
-        <div class="col">
-          <img src="{{applicant.photoUrl}}" class="img-thumbnail mw-100 mx-auto d-block "  alt="Zdjęcie kandydata"/>
+        <div class="col col-5">
+          <img src="{{applicant.photoUrl}}" class="mx-auto d-block applicant-picture" alt="Zdjęcie kandydata" #applicantPicture [style.height.px]="applicantPicture.width"/>
         </div>
         <div class="col col-7">
           <div class="row border-bottom mt-5">
@@ -71,10 +71,12 @@
         </tbody>
       </table>
     </ng-container>
-    <h5 class="mt-4 d-inline">Testy</h5>
-    <button type="button" class="btn btn-outline-primary btn-sm ml-2 mb-2">Przypisz</button>
-    <div class="clearfix"></div>
-    <ng-container *ngIf="applicant.universities.length > 0; else noEntries">
+    <div class="mt-4">
+      <h5 class="d-inline">Testy</h5>
+      <button type="button" class="btn btn-outline-primary btn-sm ml-2 mb-2">Przypisz</button>
+      <div class="clearfix"></div>
+    </div>
+    <ng-container *ngIf="true; else noEntries">
       <ul class="list-group">
         <a class="list-group-item d-flex justify-content-between align-items-center list-group-item-action text-dark" [routerLink]="test">
           Jakiś test

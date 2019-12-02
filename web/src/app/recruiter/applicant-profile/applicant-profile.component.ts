@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Applicant } from '../model/applicant';
-import {ApplicantService} from '../services/applicant.service';
+import { Applicant } from '../../model/applicant';
+import {ApplicantService} from '../../services/applicant.service';
 import { formatDate } from '@angular/common';
 
 @Component({

@@ -1,7 +1,11 @@
-<h1>Login</h1>
-<span>
-  <input type="text" name="username" placeholder="Username/e-mail" [(ngModel)]="username"><br>
-  <input type="password" name="password" placeholder="password" [(ngModel)]="password"><br>
-</span>
-<span><button type="button" (click)="login()">Login</button></span>
-<span><button type="button" routerLink="/signup">SignUp</button></span>
+<main class="container">
+  <div class="shadow bg-white rounded p-4 my-3">
+    <h1>Login</h1>
+    <span>
+      <input type="text" name="username" placeholder="Username/e-mail" [(ngModel)]="username"><br>
+      <input type="password" name="password" placeholder="password" [(ngModel)]="password"><br>
+    </span>
+    <span><button type="button" (click)="login()">Login</button></span>
+    <span><button type="button" routerLink="/signup">SignUp</button></span>
+  </div>
+</main>

@@ -5,6 +5,7 @@ import { ApplicantListComponent } from '../applicant-list/applicant-list.compone
 import { SignupComponent } from '../signup/signup.component';
 import {ConfirmCodeComponent} from '../confirm-code/confirm-code.component';
 import {LinkGeneratorComponent} from '../link-generator/link-generator.component';
+import {ChangePasswordComponent} from '../change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'generate-link',
     component: LinkGeneratorComponent
+  },
+  {
+    path: 'change-password',
+    component: ChangePasswordComponent
   }
 ];
 

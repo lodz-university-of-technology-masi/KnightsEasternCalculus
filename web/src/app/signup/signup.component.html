@@ -1,7 +1,10 @@
 <h1>Sign Up</h1>
 
 <span>
-  <input type="text" name="username" placeholder="e-mail" [(ngModel)]="username">
-  <input type="password" name="password" placeholder="password" [(ngModel)]="password">
+  <div><input type="text" name="username" placeholder="username" [(ngModel)]="username"></div>
+  <div><input type="text" name="email" placeholder="e-mail" [(ngModel)]="email"></div>
+  <div><input type="text" name="name" placeholder="name" [(ngModel)]="name"></div>
+  <div><input type="text" name="surname" placeholder="surname" [(ngModel)]="surname"></div>
+  <div><input type="password" name="password" placeholder="password" [(ngModel)]="password"></div>
 </span>
 <span><button type="button" (click)="signUp()" >Sign up</button></span>

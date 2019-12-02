@@ -4,8 +4,8 @@ import {BehaviorSubject, Observable, Observer} from 'rxjs';
 import {BoundEventAst} from '@angular/compiler';
 
 const poolData = {
-  UserPoolId: 'us-east-1_xwOcmFhVK',
-  ClientId: '345dlcjkahnlvige9i2f29m8p8'
+  UserPoolId: 'us-east-1_NUJRkt4zb',
+  ClientId: '7aohbrhv5cb8q74gf4ns5r2bdr'
 };
 
 const userPool = new CognitoUserPool(poolData);
@@ -18,19 +18,32 @@ export class AuthenticationRecruiterService {
   cognitoUser: any;
   private username = new BehaviorSubject('');
   public currUsername = this.username.asObservable();
+  private sessionUserAttributes;
 
   constructor() {}
 
-  signUp(email, password) {
+  signUp(username, password, name, surname, email) {
     console.log(email);
-    const mail = {
+    const attrs = [
+      {
       Name: 'email',
       Value: email
-    };
-    const mailAttr = new CognitoUserAttribute(mail);
-    const attributeList = [mailAttr];
+      },
+      {
+        Name: 'name',
+        Value: surname
+      },
+      {
+        Name: 'given_name',
+        Value: name
+      }
+      ];
+    const attributeList = [];
+    attrs.forEach(attr => {
+      attributeList.push(new CognitoUserAttribute(attr));
+    });
     return new Observable((observer) => {
-      userPool.signUp(email, password, attributeList, null, (err, result) => {
+      userPool.signUp(username, password, attributeList, null, (err, result) => {
         if (err) {
           console.log('signup error', err);
           observer.error(err);
@@ -64,30 +77,53 @@ export class AuthenticationRecruiterService {
     });
   }
 
-  signIn(email, password) {
+  signIn(username, password) {
     const authenticationData = {
-      Username: email,
+      Username: username,
       Password: password
     };
     const authenticationDetails = new AuthenticationDetails(authenticationData);
 
     const userData = {
-      Username: email,
+      Username: username,
       Pool: userPool
     };
     this.cognitoUser = new CognitoUser(userData);
     return new Observable(observer => {
       this.cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: result => {
+          this.username.next(username);
           observer.next(result);
           observer.complete();
         }, onFailure: err => {
           console.log(err);
           observer.error(err);
+        }, newPasswordRequired: ((userAttributes, requiredAttributes) => {
+          delete userAttributes.email_verified;
+          this.sessionUserAttributes = userAttributes;
+          observer.next('newPass');
+          observer.complete();
+        })
+      });
+    });
+  }
+
+  setNewPassword(newPassword, name, surname) {
+    this.sessionUserAttributes.name = name;
+    this.sessionUserAttributes.given_name = surname;
+    return new Observable( observer => {
+      this.cognitoUser.completeNewPasswordChallenge(newPassword, this.sessionUserAttributes, {
+        onSuccess: result => {
+          console.log(result);
+          observer.complete();
+        }, onFailure: err => {
+          console.log('setNewPassword: ' + err.toString());
+          observer.error(err);
         }
       });
     });
   }
+
 
   isLogged(): boolean {
     return userPool.getCurrentUser() != null;

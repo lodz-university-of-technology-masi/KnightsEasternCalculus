@@ -9,17 +9,21 @@ import {AuthenticationRecruiterService} from '../services/authentication-recruit
 })
 export class LoginComponent implements OnInit {
 
-  username = '';
-  password = '';
+  username = 'horseburger';
+  password = 'dupsko';
 
   constructor(private router: Router, private authService: AuthenticationRecruiterService) { }
 
   ngOnInit() {}
 
   login(): void {
-    this.authService.signIn(this.username, this.password).subscribe(() => {
-      console.log(this.authService.getUser());
-      this.router.navigateByUrl('/');
+    this.authService.signIn(this.username, this.password).subscribe(result => {
+      console.log(result.toString());
+      if (result === 'newPass') {
+        this.router.navigateByUrl('/change-password');
+      } else {
+        this.router.navigateByUrl('/');
+      }
     }, (err) => {
       console.log('err' + err.toString());
     });

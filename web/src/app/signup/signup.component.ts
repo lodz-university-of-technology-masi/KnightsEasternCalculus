@@ -13,12 +13,15 @@ export class SignupComponent implements OnInit {
 
   private username: string;
   private password: string;
+  private email: string;
+  private name: string;
+  private surname: string;
 
   ngOnInit() {
   }
 
   signUp() {
-    this.authService.signUp(this.username, this.password).subscribe( () => {
+    this.authService.signUp(this.username, this.password, this.name, this.surname, this.email).subscribe( () => {
       this.router.navigateByUrl('/confirm');
     }, (err) => {
       console.log('signup err' + err.toString());

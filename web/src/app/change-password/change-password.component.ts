@@ -9,9 +9,9 @@ import {AuthenticationRecruiterService} from '../services/authentication-recruit
   styleUrls: ['./change-password.component.scss']
 })
 export class ChangePasswordComponent implements OnInit {
-  private password = 'chujoza';
-  private name = 'adam';
-  private surname = 'krzanowski';
+  private password; string;
+  private name: string;
+  private surname: string;
 
   constructor(private router: Router, private authService: AuthenticationRecruiterService) { }
 

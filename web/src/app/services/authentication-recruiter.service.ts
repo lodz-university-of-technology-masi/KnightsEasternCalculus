@@ -92,7 +92,7 @@ export class AuthenticationRecruiterService {
     return new Observable(observer => {
       this.cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: result => {
-          this.username.next(username);
+          this.username.next(userPool.getCurrentUser().getUsername());
           observer.next(result);
           observer.complete();
         }, onFailure: err => {
@@ -129,6 +129,9 @@ export class AuthenticationRecruiterService {
     return userPool.getCurrentUser() != null;
   }
 
+  getUsername() {
+    return userPool.getCurrentUser().getUsername();
+  }
 
   getUser() {
     return userPool.getCurrentUser();

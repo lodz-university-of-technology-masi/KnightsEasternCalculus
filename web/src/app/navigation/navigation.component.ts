@@ -16,9 +16,7 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.authService.isLogged()) {
-      this.username = this.authService.getUser().getUsername();
-    }
+    this.authService.currUsername.subscribe(username => this.username = username);
   }
 
   logout(): void {

@@ -9,8 +9,8 @@ import {AuthenticationRecruiterService} from '../services/authentication-recruit
 })
 export class LoginComponent implements OnInit {
 
-  username = 'horseburger';
-  password = 'dupsko';
+  username = '';
+  password = '';
 
   constructor(private router: Router, private authService: AuthenticationRecruiterService) { }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthenticatorComponent} from 'aws-amplify-angular/dist/src/components/authenticator/authenticator/authenticator.factory';
-import {AuthenticationUserService} from '../services/authentication-user.service';
+import {AuthenticationUserService} from '../../services/authentication-user.service';
 
 @Component({
   selector: 'app-link-generator',

@@ -8,6 +8,7 @@ import {ConfirmCodeComponent} from '../confirm-code/confirm-code.component';
 import {LinkGeneratorComponent} from '../recruiter/link-generator/link-generator.component';
 import { HomePageComponent } from '../recruiter/home-page/home-page.component';
 import { CreateTestComponent } from '../recruiter/create-test/create-test.component';
+import {ChangePasswordComponent} from '../change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
   {
     path: 'recruiter',
     loadChildren: () => import('../recruiter/recruiter.module').then(m => m.RecruiterModule)
+  },
+  {
+    path: 'change-password',
+    component: ChangePasswordComponent
   }
 ];
 

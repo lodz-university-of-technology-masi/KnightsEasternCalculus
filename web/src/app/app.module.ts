@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import {FormsModule} from '@angular/forms';
 import { SignupComponent } from './signup/signup.component';
 import { ConfirmCodeComponent } from './confirm-code/confirm-code.component';
+import {ChangePasswordComponent} from './change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ConfirmCodeComponent } from './confirm-code/confirm-code.component';
     HeaderComponent,
     LoginComponent,
     SignupComponent,
-    ConfirmCodeComponent
+    ConfirmCodeComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

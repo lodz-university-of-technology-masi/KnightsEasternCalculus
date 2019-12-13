@@ -1,10 +1,10 @@
-package lambda;
+package lambda.test;
 
 import CommunicationWithApiGateway.LambdaHelper;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import model.tests.Test;
+import model.test.Test;
 
 public class AddTest extends LambdaHelper {
 

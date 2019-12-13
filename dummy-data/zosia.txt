@@ -1,0 +1,1 @@
+{"firstName":"Zosia","lastName":"Samosia","dateOfBirth":"1988-12-29T23:00:00.000Z","address":"Grzybowa 8A/12","city":"Warszawa","postalCode":"00-001","email":"zoska@onet.com","phoneNumber":"38192645","experiences":[],"universities":[],"aboutMe":"Może nie mam doświadczenia, ale potrafię polizać swój łokieć.","photoUrl":"https://applicant-photos.s3.amazonaws.com/zosia.jpg"}

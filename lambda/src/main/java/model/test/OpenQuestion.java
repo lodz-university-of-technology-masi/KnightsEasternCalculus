@@ -1,6 +1,5 @@
-package model.tests;
+package model.test;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 
 import java.io.Serializable;

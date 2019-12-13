@@ -3,6 +3,7 @@ import { Applicant} from '../model/applicant';
 import {Experience} from '../model/experience';
 import {University} from '../model/university';
 import { Observable, of } from 'rxjs';
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,9 @@ import { Observable, of } from 'rxjs';
 export class ApplicantService {
 
   mockdata: Applicant[];
+  private apiUrl = 'https://duw9x3fu5a.execute-api.us-east-1.amazonaws.com/test/applicant';
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.mockdata = new Array(new Applicant('1', 'Marian', 'Kowal', new Date(1998, 2, 20), 'Betonowa 10', 'Łódź', '90-116', 'marek@lowcaSzparek.com', '999666333',
       new Array(new Experience('Kinopol', 'Manadżer', '2018-2019'), new Experience('Biedronka', 'Magazynier', '2016-2018')),
       new Array(new University('Uniwersytet Łódzki', 'Informatyka', '2017-2020', 'lic')),
@@ -24,16 +26,17 @@ export class ApplicantService {
   }
 
   // supposed to return 10 of the latest added applicants
-  getLatestApplicants(): Observable<Applicant[]> {
-    return of(this.mockdata);
+  getAllApplicants(): Observable<Applicant[]> {
+    return this.http.get<Applicant[]>(this.apiUrl);
   }
 
-  getApplicants(firstName: string, lastName: string, city: string): Observable<Applicant[]> {
-    return of(new Array());
+  getApplicants(lastName: string): Observable<Applicant[]> {
+    const params = new HttpParams().set('lastName', lastName);
+    return this.http.get<Applicant[]>(this.apiUrl, {params});
   }
 
   getApplicant(id: string): Observable<Applicant> {
-    return of(this.mockdata.find(value => value.id === id));
+    return this.http.get<Applicant>(this.apiUrl + `/${id}`);
   }
 
 }

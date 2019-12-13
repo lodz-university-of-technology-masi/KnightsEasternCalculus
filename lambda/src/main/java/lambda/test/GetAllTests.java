@@ -1,4 +1,4 @@
-package lambda;
+package lambda.test;
 
 import CommunicationWithApiGateway.LambdaHelper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
@@ -6,7 +6,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import model.tests.Test;
+import model.test.Test;
 
 import java.util.List;
 

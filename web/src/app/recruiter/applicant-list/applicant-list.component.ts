@@ -9,9 +9,7 @@ import {ApplicantService} from '../../services/applicant.service';
 })
 export class ApplicantListComponent implements OnInit {
   applicants: Applicant[];
-  searchFirstName: string;
   searchLastName: string;
-  searchCity: string;
 
   constructor(private applicantService: ApplicantService) { }
 
@@ -20,11 +18,11 @@ export class ApplicantListComponent implements OnInit {
   }
 
   getInitialApplicants(): void {
-    this.applicantService.getLatestApplicants().subscribe(applicants => this.applicants = applicants);
+    this.applicantService.getAllApplicants().subscribe(applicants => {this.applicants = applicants; console.log(JSON.stringify(applicants)); });
   }
 
   searchApplicants(): void {
-    this.applicantService.getApplicants(this.searchFirstName, this.searchLastName, this.searchCity)
+    this.applicantService.getApplicants(this.searchLastName)
       .subscribe(applicants => this.applicants = applicants);
   }
 

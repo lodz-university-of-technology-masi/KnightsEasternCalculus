@@ -1,5 +1,5 @@
 <div class="shadow bg-white rounded p-4 my-3">
-  <ng-container >
+  <ng-container *ngIf="applicant; else loading">
     <h2 class="mt-4">{{applicant.firstName + " " + applicant.lastName}}</h2>
     <hr/>
     <div class="container">
@@ -94,4 +94,5 @@
     </ng-container>
     <ng-template #noEntries><span>(brak)</span></ng-template>
   </ng-container>
+  <ng-template #loading><span>Ładowanie...</span></ng-template>
 </div>

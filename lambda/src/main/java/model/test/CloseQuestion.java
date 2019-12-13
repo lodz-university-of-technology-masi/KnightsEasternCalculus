@@ -1,11 +1,9 @@
-package model.tests;
+package model.test;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 @DynamoDBDocument
 public class CloseQuestion implements Serializable {

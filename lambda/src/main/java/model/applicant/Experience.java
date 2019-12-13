@@ -1,14 +1,12 @@
-package model;
+package model.applicant;
 
 public class Experience {
     private String name;
     private String position;
     private String years;
 
-    public Experience(String name, String position, String years) {
-        this.name = name;
-        this.position = position;
-        this.years = years;
+    public Experience() {
+
     }
 
     public String getName() {

@@ -20,7 +20,6 @@ export class ChangePasswordComponent implements OnInit {
 
   changePassword() {
     this.authService.setNewPassword(this.password, this.name, this.surname).subscribe( result => {
-      console.log(result);
       this.router.navigateByUrl('/');
     }, error => {
       alert('Error: ' + error.toString());

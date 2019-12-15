@@ -19,6 +19,7 @@ export class AuthenticationRecruiterService {
   private username = new BehaviorSubject('');
   public currUsername = this.username.asObservable();
   private sessionUserAttributes;
+  private accessToken: any;
 
   constructor() {}
 
@@ -92,6 +93,7 @@ export class AuthenticationRecruiterService {
     return new Observable(observer => {
       this.cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: result => {
+          this.accessToken = result.getAccessToken().getJwtToken();
           this.username.next(userPool.getCurrentUser().getUsername());
           observer.next(result);
           observer.complete();
@@ -114,7 +116,9 @@ export class AuthenticationRecruiterService {
     return new Observable( observer => {
       this.cognitoUser.completeNewPasswordChallenge(newPassword, this.sessionUserAttributes, {
         onSuccess: result => {
+          console.log('inside');
           console.log(result);
+          observer.next(result);
           observer.complete();
         }, onFailure: err => {
           console.log('setNewPassword: ' + err.toString());
@@ -126,7 +130,7 @@ export class AuthenticationRecruiterService {
 
 
   isLogged(): boolean {
-    return true;//userPool.getCurrentUser() != null;
+    return userPool.getCurrentUser() != null;
   }
 
   getUsername() {
@@ -135,6 +139,10 @@ export class AuthenticationRecruiterService {
 
   getUser() {
     return userPool.getCurrentUser();
+  }
+
+  getAccessToken() {
+    return this.accessToken;
   }
 
   logOut() {

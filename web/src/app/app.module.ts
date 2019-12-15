@@ -8,7 +8,6 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import {FormsModule} from '@angular/forms';
-import { SignupComponent } from './signup/signup.component';
 import { ConfirmCodeComponent } from './confirm-code/confirm-code.component';
 import {ChangePasswordComponent} from './change-password/change-password.component';
 
@@ -18,7 +17,6 @@ import {ChangePasswordComponent} from './change-password/change-password.compone
     FooterComponent,
     HeaderComponent,
     LoginComponent,
-    SignupComponent,
     ConfirmCodeComponent,
     ChangePasswordComponent
   ],

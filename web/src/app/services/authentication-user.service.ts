@@ -3,9 +3,9 @@ import {AuthenticationDetails, CognitoUser, CognitoUserPool} from 'amazon-cognit
 import {Observable} from 'rxjs';
 
 const poolData = {
-  UserPoolId: 'us-east-1_yrT3VReQk',
-  ClientId: 'kddn8vdbbi1r5mnfqjmu47vhm'
-}
+  UserPoolId: 'us-east-1_O71Y6W7F7',
+  ClientId: '7p1gd7qu0klpa8kkt7oiqjjnv8'
+};
 
 const userPool = new CognitoUserPool(poolData);
 
@@ -18,19 +18,9 @@ export class AuthenticationUserService {
   constructor() { }
 
   signUp(email, password) {
-    console.log(email);
-    const attributeList = [];
-    return new Observable( (observer) => {
-      userPool.signUp(email, password, attributeList, null, (err, result) => {
-        if (err) {
-          observer.error(err);
-          return;
-        }
-        this.cognitoUser = result.user;
-        observer.next(result);
-        observer.complete();
-      });
-    });
+    const attr = [
+      {}
+    ]
   }
 
   signIn(email, password) {

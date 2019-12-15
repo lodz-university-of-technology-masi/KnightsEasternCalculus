@@ -58,25 +58,6 @@ export class AuthenticationRecruiterService {
     });
   }
 
-  confirmAuth(code) {
-    const user = {
-      Username: this.cognitoUser.username,
-      Pool: userPool
-    };
-
-    return new Observable(observer => {
-      const cognitoUser = new CognitoUser(user);
-      cognitoUser.confirmRegistration(code, true, (err, result) => {
-        if (err) {
-          console.log('code confirmation error', err);
-          observer.error(err);
-        }
-        console.log('code confirmation success', result);
-        observer.next(result);
-        observer.complete();
-      });
-    });
-  }
 
   signIn(username, password) {
     const authenticationData = {
@@ -95,6 +76,7 @@ export class AuthenticationRecruiterService {
         onSuccess: result => {
           this.accessToken = result.getAccessToken().getJwtToken();
           this.username.next(userPool.getCurrentUser().getUsername());
+
           observer.next(result);
           observer.complete();
         }, onFailure: err => {

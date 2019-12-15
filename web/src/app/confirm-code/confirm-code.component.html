@@ -1,3 +1,24 @@
-<h1>Code confirmation</h1>
-<span><input type="text" placeholder="xxxxxx" [(ngModel)]="code"></span>
-<span><button type="button" (click)="confirmCode()">Confirm</button></span>
+<div class="container">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark rounded shadow hover-dropdown">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto hover-dropdown">
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="/login">Logowanie</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<main class="container">
+  <div class="shadow bg-white rounded p-4 my-3 d-flex flex-column text-center">
+    <h1 class="mb-5">Weryfikacja</h1>
+    <div class="col-5 align-self-center d-flex flex-column">
+      <input class="form-control form-control-lg" type="text" name="username" placeholder="Nazwa użytkownika" [(ngModel)]="username"><br>
+      <input class="form-control form-control-lg" type="text" name="code" placeholder="xxxxxxx" [(ngModel)]="code"><br>
+      <input class="form-control form-control-lg" type="password" name="password" placeholder="Hasło" [(ngModel)]="password"><br>
+      <input class="form-control form-control-lg" type="text" name="text" placeholder="Imię" [(ngModel)]="name"><br>
+      <input class="form-control form-control-lg" type="text" name="text" placeholder="Nazwisko" [(ngModel)]="surname"><br>
+      <button class="btn btn-primary align-self-end btn-lg" type="button" (click)="confirmCode()">Potwierdź</button>
+    </div>
+  </div>
+</main>

@@ -6,6 +6,8 @@ print("Fetching account info...")
 accountID = json.loads(subprocess.check_output("aws sts get-caller-identity", shell=True).decode("utf-8"))["Account"]
 print("The account id is {}".format(accountID))
 
+role = "arn:aws:iam::{}:role/lambda-cli-role".format(accountID)
+
 print("Creating dynamodb table...")
 subprocess.call("aws dynamodb create-table --table-name Applicant --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
 
@@ -13,13 +15,13 @@ print("Creating lambdas...")
 lambdaZip = os.path.join("lambda", "build", "distributions", "lambda-0.1.zip")
 
 #get get-applicant lambda
-subprocess.call("aws lambda create-function --function-name get-applicant --zip-file fileb://{} --handler lambda.applicant.GetApplicant::handleRequest --runtime java8 --role arn:aws:iam::716447952913:role/lambda-cli-role --memory-size 512 --timeout 10".format(lambdaZip), shell=True)
+subprocess.call("aws lambda create-function --function-name get-applicant --zip-file fileb://{} --handler lambda.applicant.GetApplicant::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
 
 #get get-applicants lambda
-subprocess.call("aws lambda create-function --function-name get-applicants --zip-file fileb://{} --handler lambda.applicant.GetApplicants::handleRequest --runtime java8 --role arn:aws:iam::716447952913:role/lambda-cli-role --memory-size 512 --timeout 10".format(lambdaZip), shell=True)
+subprocess.call("aws lambda create-function --function-name get-applicants --zip-file fileb://{} --handler lambda.applicant.GetApplicants::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
 
 #add add-applicant lambda
-subprocess.call("aws lambda create-function --function-name add-applicant --zip-file fileb://{} --handler lambda.applicant.AddApplicant::handleRequest --runtime java8 --role arn:aws:iam::716447952913:role/lambda-cli-role --memory-size 512 --timeout 10".format(lambdaZip), shell=True)
+subprocess.call("aws lambda create-function --function-name add-applicant --zip-file fileb://{} --handler lambda.applicant.AddApplicant::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
 
 
 print("Creating gateways...")

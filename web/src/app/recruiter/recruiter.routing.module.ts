@@ -5,6 +5,7 @@ import { ApplicantProfileComponent } from './applicant-profile/applicant-profile
 import { LinkGeneratorComponent } from './link-generator/link-generator.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { CreateTestComponent } from './create-test/create-test.component';
+import { ShowAllTestsComponent } from './show-all-tests/show-all-tests.component';
 import {AppRecruiterComponent} from './app-recruiter/app-recruiter.component';
 
 const routes: Routes = [
@@ -25,6 +26,10 @@ const routes: Routes = [
       {
         path: 'create-test',
         component: CreateTestComponent
+      },
+      {
+        path: 'show-all-tests',
+        component: ShowAllTestsComponent
       },
       {
         path: 'applicant/:id',

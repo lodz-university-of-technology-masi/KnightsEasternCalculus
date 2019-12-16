@@ -9,6 +9,7 @@ import {FormsModule} from '@angular/forms';
 import {RecruiterRoutingModule} from './recruiter.routing.module';
 import {RecruiterNavigationComponent} from './recruiter-navigation/recruiter-navigation.component';
 import {AppRecruiterComponent} from './app-recruiter/app-recruiter.component';
+import { ShowAllTestsComponent } from './show-all-tests/show-all-tests.component';
 
 
 
@@ -19,6 +20,7 @@ import {AppRecruiterComponent} from './app-recruiter/app-recruiter.component';
     ApplicantProfileComponent,
     LinkGeneratorComponent,
     CreateTestComponent,
+    ShowAllTestsComponent,
     RecruiterNavigationComponent,
     AppRecruiterComponent
   ],

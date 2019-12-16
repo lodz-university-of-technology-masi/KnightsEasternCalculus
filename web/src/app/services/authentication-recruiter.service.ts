@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import {BehaviorSubject, Observable, Observer} from 'rxjs';
 import {BoundEventAst} from '@angular/compiler';
+// import { CognitoIdentityServiceProvider, config} from 'aws-sdk';
+
 
 const poolData = {
   UserPoolId: 'us-east-1_NUJRkt4zb',
@@ -90,6 +92,30 @@ export class AuthenticationRecruiterService {
         })
       });
     });
+  }
+
+  addToGroup(username, group) {
+    // const params = {
+    //   GroupName: group,
+    //   UserPoolId: poolData.UserPoolId,
+    //   Username: username
+    // };
+    //
+    // if (!config.region) {
+    //   config.update({
+    //     region: 'us-east-1'
+    //   });
+    // }
+    //
+    // const idProvider = new CognitoIdentityServiceProvider();
+    // idProvider.adminAddUserToGroup(params, (err, data) => {
+    //   if (err) {
+    //     console.log('addToGroupErr: ', err);
+    //   } else {
+    //     console.log(data);
+    //   }
+    // });
+
   }
 
   setNewPassword(newPassword, name, surname) {

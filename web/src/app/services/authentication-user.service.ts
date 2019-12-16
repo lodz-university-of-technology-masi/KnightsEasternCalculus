@@ -3,8 +3,8 @@ import {AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserPoo
 import {Observable} from 'rxjs';
 
 const poolData = {
-  UserPoolId: 'us-east-1_O71Y6W7F7',
-  ClientId: '7p1gd7qu0klpa8kkt7oiqjjnv8'
+  UserPoolId: 'us-east-1_ZfAACokkR',
+  ClientId: '3qvj2ap1l40t7tr5j35i472u6n'
 };
 
 const userPool = new CognitoUserPool(poolData);
@@ -18,28 +18,13 @@ export class AuthenticationUserService {
   constructor() { }
 
   sendMail(email: string) {
-    const username = email.split('@')[0];
-    console.log('username: ' + username);
-    const attrs = [
-      {
-        Name: 'email',
-        Value: email
-      },
-      {
-        Name: 'given_name',
-        Value: ''
-      },
-      {
-        Name: 'name',
-        Value: ''
-      }
-    ];
-    const attributeList = [];
-    attrs.forEach(attr => {
-      attributeList.push(new CognitoUserAttribute(attr));
-    });
+    const mail = {
+      Name: 'email',
+      Value: email
+    }
+    const attributeList = [new CognitoUserAttribute(mail)];
     return new Observable(observer => {
-      userPool.signUp(username, 'password', attributeList, null, (err, result) => {
+      userPool.signUp(email, 'password', attributeList, null, (err, result) => {
         if (err) {
           console.log('signup error: ', err);
           observer.error(err);
@@ -53,7 +38,7 @@ export class AuthenticationUserService {
     });
   }
 
-  confirmCode(username, code, password, name, givenName) {
+  confirmCode(username, code, password) {
     this.signIn(username, 'password');
 
     const user = {
@@ -62,20 +47,6 @@ export class AuthenticationUserService {
     };
 
     const attrs = [];
-    this.cognitoUser.getUserAttributes((err, result) => {
-      if (err) {
-        console.log('userattr err: ', err);
-        return;
-      }
-      result.forEach(attr => {
-        if (attr.getName() == 'name') {
-          attr.setValue(name);
-      } else if (attr.getName() == 'given_name') {
-          attr.setValue(givenName);
-        }
-        attrs.push(attr);
-      });
-    });
 
     return new Observable(observer => {
       const cUser = new CognitoUser(user);

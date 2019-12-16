@@ -1,8 +1,9 @@
 import { Component, OnInit, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { ShowAllTestService } from 'src/app/services/show-all-test.service';
 import { Test } from '../../model/test';
 import { map } from 'rxjs/internal/operators/map';
+import { observable } from 'rxjs';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -37,23 +38,31 @@ export class ShowAllTestsComponent implements OnInit {
 
     testUrl: string = "https://luznpx1mg3.execute-api.us-east-1.amazonaws.com/Test/tests";
     test: Test;
+
     public getAllTests(): void{
-        this.httpClient.get<Test[]>(this.testUrl, httpOptions)
-        .pipe(
-            map(response => { 
-                this.tests = <Test[]> response;
-            })
-        )
-        .subscribe(data => {console.log(data)});
+
+        this.httpClient.get(this.testUrl, httpOptions)
+        .subscribe((res: Response) => {
+            console.log(res.body);
+            this.tests = <Test[]> JSON.parse(JSON.stringify(res.body));
+        });
+
+        // this.httpClient.get<Test[]>(this.testUrl, httpOptions)
+        // .pipe(
+        //     map(response => { 
+        //         this.tests = <Test[]> response;
+        //     })
+        // )
+        // .subscribe(data => {console.log(data)});
         // .subscribe((res : Response) => this.tests = <Test[]> JSON.parse(res.body.));
     }
 
-    public deleteTest(): void{
-        // this.httpClient.get(this.deleteTestUrl, httpOptions)
-        // .map((res : Response) => res.json);
-        // .subscribe((res : Response)=>{
-        //     console.log(res);
-        //     this.tests = JSON.parse(res.json., Test[].class);
-        // });
+    public deleteTest(test : Test): void{
+        var httpOptions2  = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }), 
+            body: test};
+        this.httpClient.delete(this.testUrl, httpOptions2)
+        .subscribe((res: Response) => 
+            console.log(res.body));
     }
 }

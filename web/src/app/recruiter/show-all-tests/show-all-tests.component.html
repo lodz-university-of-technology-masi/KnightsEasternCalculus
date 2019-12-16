@@ -1,32 +1,30 @@
 <!-- TITLE -->
 <h2>Tworzenie nowego testu</h2>
 
-<!-- TOP -->
 <div class="card">
-
-<!-- MIDDLE -->
 <div>
-    <!-- created OPEN questions -->
-    <div class="card-body" *ngIf="tests.length != 0">
+    <div class="card-body">
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th>Id</th>
+                    <th>Name</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let test of tests" (click)="onSelectTest(test)" [class.selected]="test === selectedTest">
+                <tr *ngFor="let test of tests" (click)="onSelectTest(test)">
                     <td>{{ test.id }}</td>
+                    <td>Name</td>
+                    <td>
+                        <button class="btn btn-success">Zmień</button>
+                    </td>
+                    <th>
+                        <button class="btn btn-danger" (click)="deleteTest(test)">Usuń</button>
+                    </th>
                 </tr>
             </tbody>
         </table>
     </div>
-</div>
-
-<!-- BOTTOM -->
-<div>
-    <!-- button to end create test -->
-    <button class="btn btn-success" (click)="deleteTest()">
-        Usuń test
-    </button>
 </div>

@@ -22,12 +22,10 @@ export class ConfirmCodeComponent implements OnInit {
   }
 
   confirmCode() {
-    // this.authService.signIn(this.email, 'password');
-    // this.authService.confirmCode(this.email, this.code, this.password).subscribe(result => {
-    //   console.log('confirmation success', result);
-    // }, err => {
-    //   console.log('conf err', err);
-    // });
-    this.authService.addToGroup('test', 'recruiters');
+    this.authService.confirmCode(this.email, this.code, this.password).subscribe( result => {
+      this.authService.signIn(this.email, this.password).subscribe( res => {
+        this.authService.addToGroup(this.email, 'recruiter');
+      });
+    });
   }
 }

@@ -17,60 +17,8 @@ export class AuthenticationUserService {
 
   constructor() { }
 
-  sendMail(email: string) {
-    const mail = {
-      Name: 'email',
-      Value: email
-    }
-    const attributeList = [new CognitoUserAttribute(mail)];
-    return new Observable(observer => {
-      userPool.signUp(email, 'password', attributeList, null, (err, result) => {
-        if (err) {
-          console.log('signup error: ', err);
-          observer.error(err);
-          return;
-        }
-        console.log('signup correct');
-        this.cognitoUser = result.user;
-        observer.next(result);
-        observer.complete();
-      });
-    });
-  }
 
-  confirmCode(username, code, password) {
-    this.signIn(username, 'password');
 
-    const user = {
-      Username: this.cognitoUser.getUsername(),
-      Pool: userPool
-    };
-
-    const attrs = [];
-
-    return new Observable(observer => {
-      const cUser = new CognitoUser(user);
-      cUser.confirmRegistration(code, true, (err, result) => {
-        if (err) {
-          console.log('code confirmation error', err);
-          observer.error(err);
-          return;
-        }
-
-        this.cognitoUser.completeNewPasswordChallenge(password, attrs, {
-          onSuccess: r => {
-           console.log('newpass success');
-           console.log('result: ', r);
-           observer.next(r);
-           observer.complete();
-          }, onFailure: e => {
-            console.log('newpass err', e);
-            observer.error(e);
-          }
-        });
-      });
-    });
-  }
 
   signIn(email, password) {
     const authenticationData = {

@@ -22,15 +22,4 @@ public class UpdateTest extends Handler<Test> {
         }
         return new Response(404, "Such test does not exist");
     }
-
-//    @Override
-//    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
-//        Test test = this.getTestFormBody(input);
-//        if(test.getId() != null){
-//            if (dynamoDBMapper.load(Test.class, test.getId()) != null) {
-//                dynamoDBMapper.save(test, dynamoDBMapperConfig);
-//                return getResponse(200, "Succesfully edited");
-//            }
-//        } return getResponse(500, "Such test does not exist");
-//    }
 }

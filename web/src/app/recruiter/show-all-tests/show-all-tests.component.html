@@ -1,22 +1,20 @@
-<!-- TITLE -->
-<h2>Tworzenie nowego testu</h2>
 
-<div class="card">
-<div>
-    <div class="card-body">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
+<div class="shadow bg-white rounded p-4 my-3">
+    <h2 class="mt-4">Dostępne testy</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <ng-container *ngIf="tests; else loading">
             <tbody>
-                <tr *ngFor="let test of tests" (click)="onSelectTest(test)">
-                    <td>{{ test.id }}</td>
-                    <td>Name</td>
+                <tr *ngFor="let test of tests">
+                    <td></td>
+                    <td>{{test.title}}</td>
                     <td>
                         <button class="btn btn-success">Zmień</button>
                     </td>
@@ -25,6 +23,7 @@
                     </th>
                 </tr>
             </tbody>
-        </table>
-    </div>
+        </ng-container>
+    </table>
+    <ng-template #loading>Ładowanie...</ng-template>
 </div>

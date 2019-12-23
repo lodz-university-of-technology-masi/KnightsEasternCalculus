@@ -12,7 +12,8 @@ public class CloseQuestion implements Serializable {
     private ArrayList<String> incorrectAnswers;
     private int maxScore;
 
-    public CloseQuestion() {}
+    public CloseQuestion() {
+    }
 
     public CloseQuestion(CloseQuestion closeQuestion) {
         this.question = closeQuestion.question;

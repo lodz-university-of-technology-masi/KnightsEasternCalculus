@@ -5,8 +5,6 @@ import lambda.Handler;
 import model.test.Test;
 import util.Response;
 
-import java.io.IOException;
-
 public class DeleteTest extends Handler<Test> {
 
     @Override
@@ -19,15 +17,4 @@ public class DeleteTest extends Handler<Test> {
         }
         return new Response(404, "Such test does not exist");
     }
-
-//    @Override
-//    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
-//        Test test = getTestFormBody(input);
-//        if (test.getId() != null) {
-//            if (dynamoDBMapper.load(Test.class, test.getId()) != null) {
-//                dynamoDBMapper.delete(test);
-//                return getResponse(200, "Successfully deleted");
-//            }
-//        } return getResponse(404, "Such test does not exist");
-//    }
 }

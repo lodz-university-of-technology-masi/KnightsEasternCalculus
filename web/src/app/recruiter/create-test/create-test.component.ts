@@ -2,16 +2,6 @@ import { Component, OnInit, Injectable } from '@angular/core';
 import { CloseQuestion } from '../../model/close-question';
 import { OpenQuestion } from '../../model/open-question';
 import { CreateTestService } from '../../services/create-test.service';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Test } from '../../model/test';
-import { throwError, Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type':  'application/json'
-  })
-};
 
 @Component({
   selector: 'app-create-test',
@@ -23,8 +13,7 @@ const httpOptions = {
 export class CreateTestComponent implements OnInit {
 
   constructor(
-    private createTestService: CreateTestService,
-    private httpClient : HttpClient
+    private createTestService: CreateTestService
   ) { }
 
 
@@ -33,7 +22,6 @@ export class CreateTestComponent implements OnInit {
   ifClose: boolean;
 
   ngOnInit() {
-    // this.getQuestions();
     this.ifOpen = false;
     this.ifClose = true;
   }
@@ -69,16 +57,30 @@ export class CreateTestComponent implements OnInit {
 
   addCorrectCloseAnswer(): void {
     this.correctCloseAnswers.push(this.inputCorrectCloseAnswer);
-    this.inputCorrectCloseAnswer = "";
+    this.inputCorrectCloseAnswer = null;
   }
 
   addIncorrectCloseAnswer(): void {
     this.incorrectCloseAnswers.push(this.inputIncorrectCloseAnswer);
-    this.inputIncorrectCloseAnswer = "";
+    this.inputIncorrectCloseAnswer = null;
   }
 
-  addCloseQuestion(): void{
-    this.closeQuestions.push(new CloseQuestion(this.inputCloseQuestion, this.correctCloseAnswers, this.incorrectCloseAnswers, this.inputMaxScoreClose))
+  addCloseQuestion(): void {
+    if (this.correctCloseAnswers.length != 0) {
+      this.closeQuestions.push(new CloseQuestion(this.inputCloseQuestion, this.correctCloseAnswers, this.incorrectCloseAnswers, this.inputMaxScoreClose));
+      this.inputCloseQuestion = null;
+      this.inputCorrectCloseAnswer = null;
+      this.correctCloseAnswers = null;
+      this.inputIncorrectCloseAnswer = null;
+      this.incorrectCloseAnswers = null;
+      this.inputMaxScoreClose = 1;
+    } else {
+      alert("Nie dodano pytania (brak poprawnej odpowiedzi)")
+    }
+  }
+
+  removeCloseQuestion(closeQuestion: CloseQuestion): void {
+    this.closeQuestions.splice(this.closeQuestions.indexOf(closeQuestion), 1);
   }
 
   onSelectCloseQuestion(closeQuestion: CloseQuestion): void {
@@ -95,6 +97,13 @@ export class CreateTestComponent implements OnInit {
 
   addOpenQuestion(): void {
     this.openQuestions.push(new OpenQuestion(this.inputOpenQuestion, this.inputCorrectOpenAnswer, this.inputMaxScoreOpen))
+    this.inputOpenQuestion = null;
+    this.inputCorrectOpenAnswer = null;
+    this.inputMaxScoreOpen = 1;
+  }
+
+  removeOpenQuestion(openQuestion: OpenQuestion): void {
+    this.openQuestions.splice(this.openQuestions.indexOf(openQuestion), 1);
   }
 
   onSelectOpenQuestion(openQuestion: OpenQuestion): void {
@@ -103,14 +112,9 @@ export class CreateTestComponent implements OnInit {
   //#endregion
 
   //#region "Create Test"
-  addTestUrl: string = "https://luznpx1mg3.execute-api.us-east-1.amazonaws.com/Test/tests";
-  test: Test;
+  inputTestTitle: string = "";
   public createTest(): void {
-    this.test = new Test(this.openQuestions, this.closeQuestions);
-    this.httpClient.post<Test>(this.addTestUrl, this.test, httpOptions).subscribe({
-        error: error => ({}),
-        complete: () => {}
-    });
+    this.createTestService.createTest(this.inputTestTitle, this.openQuestions, this.closeQuestions);
   }
   //#endregion
 }

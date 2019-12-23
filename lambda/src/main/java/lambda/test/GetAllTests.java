@@ -21,19 +21,6 @@ public class GetAllTests extends Handler<Object> {
             return new Response(404, "Could not get all tests");
         }
     }
-
-
-//    @Override
-//    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
-//        List<Test> tests = dynamoDBMapper.scan(Test.class, new DynamoDBScanExpression());
-//        String result = null;
-//        try {
-//            result = objectMapper.writeValueAsString(tests);
-//        } catch (JsonProcessingException e) {
-//            result = "Could not get all tests";
-//        }
-//        return getResponse(200, result);
-//    }
 }
 
 

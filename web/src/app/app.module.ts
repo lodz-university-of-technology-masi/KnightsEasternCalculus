@@ -20,7 +20,7 @@ import {ChangePasswordComponent} from './change-password/change-password.compone
     LoginComponent,
     SignupComponent,
     ConfirmCodeComponent,
-    ChangePasswordComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

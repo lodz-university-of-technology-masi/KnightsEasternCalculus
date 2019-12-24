@@ -1,6 +1,5 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Applicant } from '../../model/applicant';
+import {Component, Input, OnInit} from '@angular/core';
+import {Applicant} from '../../model/applicant';
 import {ApplicantService} from '../../services/applicant.service';
 import { formatDate } from '@angular/common';
 
@@ -11,13 +10,12 @@ import { formatDate } from '@angular/common';
 })
 export class ApplicantProfileComponent implements OnInit {
   applicant: Applicant;
+  @Input() applicantId: string;
 
-  constructor(private route: ActivatedRoute, private applicantService: ApplicantService) {
-
-  }
+  constructor(private applicantService: ApplicantService) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(value => this.fillProperties(value.get('id')));
+    this.fillProperties(this.applicantId);
   }
 
   fillProperties(id: string): void {
@@ -27,4 +25,5 @@ export class ApplicantProfileComponent implements OnInit {
   formatDate(date: Date, format: string, locale: string): string {
     return formatDate(date, format, locale);
   }
+
 }

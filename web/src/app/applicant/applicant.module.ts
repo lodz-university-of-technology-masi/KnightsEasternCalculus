@@ -5,6 +5,8 @@ import { HomePageComponent } from './home-page/home-page.component';
 import {FormsModule} from '@angular/forms';
 import {AppApplicantComponent} from './app-applicant/app-applicant.component';
 import {ApplicantRoutingModule} from './applicant.routing.module';
+import { MyProfileComponent } from './my-profile/my-profile.component';
+import {CommonComponentsModule} from '../common-components/common-components.module';
 
 
 
@@ -12,12 +14,14 @@ import {ApplicantRoutingModule} from './applicant.routing.module';
   declarations: [
     ApplicantNavigationComponent,
     HomePageComponent,
-    AppApplicantComponent
+    AppApplicantComponent,
+    MyProfileComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    ApplicantRoutingModule
+    ApplicantRoutingModule,
+    CommonComponentsModule
   ]
 })
 export class ApplicantModule { }

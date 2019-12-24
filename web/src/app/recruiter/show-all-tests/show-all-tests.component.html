@@ -1,29 +1,26 @@
-
-<div class="shadow bg-white rounded p-4 my-3">
-    <h2 class="mt-4">Dostępne testy</h2>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
+<h2 class="mt-4">Dostępne testy</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <ng-container *ngIf="tests; else loading">
+        <tbody>
+            <tr *ngFor="let test of tests">
+                <td></td>
+                <td>{{test.title}}</td>
+                <td>
+                    <button class="btn btn-success">Zmień</button>
+                </td>
+                <th>
+                    <button class="btn btn-danger" (click)="deleteTest(test)">Usuń</button>
+                </th>
             </tr>
-        </thead>
-        <ng-container *ngIf="tests; else loading">
-            <tbody>
-                <tr *ngFor="let test of tests">
-                    <td></td>
-                    <td>{{test.title}}</td>
-                    <td>
-                        <button class="btn btn-success">Zmień</button>
-                    </td>
-                    <th>
-                        <button class="btn btn-danger" (click)="deleteTest(test)">Usuń</button>
-                    </th>
-                </tr>
-            </tbody>
-        </ng-container>
-    </table>
-    <ng-template #loading>Ładowanie...</ng-template>
-</div>
+        </tbody>
+    </ng-container>
+</table>
+<ng-template #loading>Ładowanie...</ng-template>

@@ -13,9 +13,4 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
-  tmp() {
-    this.auth.getUsername().subscribe( username => console.log(username) );
-    console.log(this.auth.getAccessToken());
-  }
-
 }

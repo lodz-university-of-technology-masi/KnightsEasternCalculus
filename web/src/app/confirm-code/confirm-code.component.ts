@@ -22,10 +22,6 @@ export class ConfirmCodeComponent implements OnInit {
   }
 
   confirmCode() {
-    this.authService.confirmCode(this.email, this.code, this.password).subscribe( result => {
-      this.authService.signIn(this.email, this.password).subscribe( res => {
-        this.authService.addToGroup(this.email, 'recruiter');
-      });
-    });
+    this.authService.confirmCode(this.email, this.code, this.password);
   }
 }

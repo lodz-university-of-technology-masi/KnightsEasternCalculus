@@ -24,56 +24,20 @@ export class AuthenticationRecruiterService {
 
   constructor() {}
 
-  // signUp(username, password, name, surname, email) {
-  //   console.log(email);
-  //   const attrs = [
-  //     {
-  //     Name: 'email',
-  //     Value: email
-  //     },
-  //     {
-  //       Name: 'name',
-  //       Value: surname
-  //     },
-  //     {
-  //       Name: 'given_name',
-  //       Value: name
-  //     }
-  //     ];
-  //   const attributeList = [];
-  //   attrs.forEach(attr => {
-  //     attributeList.push(new CognitoUserAttribute(attr));
-  //   });
-  //   return new Observable((observer) => {
-  //     userPool.signUp(username, password, attributeList, null, (err, result) => {
-  //       if (err) {
-  //         console.log('signup error', err);
-  //         observer.error(err);
-  //         return;
-  //       }
-  //       this.cognitoUser = result.user;
-  //       console.log('signup succsesful', result);
-  //       observer.next(result);
-  //       observer.complete();
-  //     });
-  //   });
-  // }
-
-
   signIn(username, password) {
-    const authenticationData = {
-      Username: username,
-      Password: password
-    };
-    const authenticationDetails = new AuthenticationDetails(authenticationData);
-
-    const userData = {
-      Username: username,
-      Pool: userPool
-    };
-
-    this.cognitoUser = new CognitoUser(userData);
     return new Observable(observer => {
+      const authenticationData = {
+        Username: username,
+        Password: password
+      };
+      const authenticationDetails = new AuthenticationDetails(authenticationData);
+
+      const userData = {
+        Username: username,
+        Pool: userPool
+      };
+
+      this.cognitoUser = new CognitoUser(userData);
       this.cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: result => {
           localStorage.setItem('accessToken', result.getAccessToken().getJwtToken());
@@ -86,6 +50,10 @@ export class AuthenticationRecruiterService {
             Logins: {
               'cognito-idp.us-east-1.amazonaws.com/us-east-1_ARBXLqVHX': result.getIdToken().getJwtToken()
             }
+          });
+
+          AWS.config.getCredentials( err => {
+            if (err) { observer.error(err); } else { console.log(AWS.config.credentials); }
           });
 
           this.cognitoUser.getUserAttributes( (err, res) => {
@@ -116,76 +84,55 @@ export class AuthenticationRecruiterService {
   }
 
   addToGroup(username, group) {
-    const params = {
-      GroupName: group,
-      UserPoolId: poolData.UserPoolId,
-      Username: username
-    };
+    return new Observable( observer => {
+      const params = {
+        GroupName: group,
+        UserPoolId: poolData.UserPoolId,
+        Username: username
+      };
 
-    this.getUser().getSession( (err, session) => {
-      if (err) {
-        console.log('session err: ', err);
-        return;
-      }
+      this.cognitoUser.getSession((err, session) => {
+        if (err) {
+          observer.error(err);
+        }
 
-      console.log('session valid: ', session.isValid());
-      const creds = new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: 'us-east-1:6b668023-3071-49da-b222-e7fa4ef3dcde',
-        Logins: {
-          'cognito-idp.us-east-1.amazonaws.com/us-east-1_ARBXLqVHX': session.getIdToken().getJwtToken()
+        console.log('session valid: ', session.isValid());
+      });
+
+      const idProvider = new AWS.CognitoIdentityServiceProvider();
+      idProvider.adminAddUserToGroup(params, (err, data) => {
+        if (err) {
+          observer.error(err);
+        } else {
+          observer.next(data);
+          observer.complete();
         }
       });
-
-      AWS.config.update({
-        region: 'us-east-1',
-        credentials: creds
-      });
     });
-
-    AWS.config.getCredentials( err => {
-      if (err) { console.log(err); } else { console.log(AWS.config); }
-    });
-
-    const idProvider = new AWS.CognitoIdentityServiceProvider();
-    idProvider.adminAddUserToGroup(params, (err, data) => {
-      if (err) {
-        console.log('addToGroupErr: ', err);
-      } else {
-        console.log(data);
-      }
-    });
-
   }
 
   confirmCode(username, code, password) {
-    this.signIn(username, 'password');
-
-    const user = {
-      Username: this.cognitoUser.getUsername(),
+    const userData = {
+      Username: username,
       Pool: userPool
     };
 
-    const attrs = [];
+    const cUser = new CognitoUser(userData);
+    cUser.confirmRegistration(code, false, (err, result) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
 
-    return new Observable(observer => {
-      const cUser = new CognitoUser(user);
-      cUser.confirmRegistration(code, true, (err, result) => {
-        if (err) {
-          console.log('code confirmation error', err);
-          observer.error(err);
-          return;
-        }
-
-        this.cognitoUser.completeNewPasswordChallenge(password, attrs, {
-          onSuccess: r => {
-            console.log('newpass success');
-            console.log('result: ', r);
-            observer.next(r);
-            observer.complete();
-          }, onFailure: e => {
-            console.log('newpass err', e);
-            observer.error(e);
+      this.signIn(username, 'password').subscribe( res => {
+        this.cognitoUser.changePassword('password', password, (e, r) => {
+          if (e) {
+            console.log(e);
           }
+        });
+
+        // TODO "this is only a temporary group name. Change when ready to the user group"
+        this.addToGroup(username, 'recruiter').subscribe(re => {
         });
       });
     });
@@ -212,9 +159,7 @@ export class AuthenticationRecruiterService {
     });
   }
 
-  setNewPassword(newPassword, name, surname) {
-    this.sessionUserAttributes.name = name;
-    this.sessionUserAttributes.given_name = surname;
+  setNewPassword(newPassword) {
     return new Observable( observer => {
       this.cognitoUser.completeNewPasswordChallenge(newPassword, this.sessionUserAttributes, {
         onSuccess: result => {
@@ -224,7 +169,7 @@ export class AuthenticationRecruiterService {
           observer.next(result);
           observer.complete();
         }, onFailure: err => {
-          console.log('setNewPassword: ' + err.toString());
+          console.log('setNewPassword: ', err);
           observer.error(err);
         }
       });
@@ -250,10 +195,7 @@ export class AuthenticationRecruiterService {
 
 
   getUsername() {
-    return new Observable( observer => {
-      observer.next(localStorage.getItem('email'));
-      observer.complete();
-    });
+    return localStorage.getItem('email');
   }
 
   logOut() {

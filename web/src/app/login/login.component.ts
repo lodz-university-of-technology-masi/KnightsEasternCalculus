@@ -18,7 +18,6 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     this.authService.signIn(this.username, this.password).subscribe(result => {
-      console.log(result.toString());
       if (result === 'newPass') {
         this.router.navigateByUrl('/change-password');
       } else {

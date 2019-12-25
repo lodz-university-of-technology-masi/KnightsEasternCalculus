@@ -14,9 +14,6 @@ export class RecruiterNavigationComponent implements OnInit {
   constructor(private authService: AuthenticationRecruiterService) { }
 
   ngOnInit() {
-    if (this.authService.isLogged()) {
-      this.username = this.authService.getUser().getUsername();
-    }
   }
 
   logout(): void {

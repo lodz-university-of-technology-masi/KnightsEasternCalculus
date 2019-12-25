@@ -1,20 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
-import { ApplicantListComponent } from '../recruiter/applicant-list/applicant-list.component';
-import { ApplicantProfileComponent } from '../recruiter/applicant-profile/applicant-profile.component';
 import { SignupComponent } from '../signup/signup.component';
 import {ConfirmCodeComponent} from '../confirm-code/confirm-code.component';
-import {LinkGeneratorComponent} from '../recruiter/link-generator/link-generator.component';
-import { HomePageComponent } from '../recruiter/home-page/home-page.component';
-import { CreateTestComponent } from '../recruiter/create-test/create-test.component';
 import {ChangePasswordComponent} from '../change-password/change-password.component';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: '/recruiter', // '/login',
-    pathMatch: 'full'
+    path: 'applicant',
+    loadChildren: () => import('../applicant/applicant.module').then(m => m.ApplicantModule)
   },
   {
     path: 'login',

@@ -11,6 +11,7 @@ import java.util.List;
 @DynamoDBTable(tableName = "tests")
 public class Test implements Serializable {
     private String id;
+    private String title;
     private List<CloseQuestion> closeQuestions;
     private List<OpenQuestion> openQuestions;
 
@@ -18,9 +19,10 @@ public class Test implements Serializable {
     }
 
     public Test(Test test) {
-        if(test.getId() != null){
+        if (test.getId() != null) {
             this.id = test.getId();
         }
+        this.title = test.title;
         this.closeQuestions = test.closeQuestions;
         this.openQuestions = test.openQuestions;
     }
@@ -33,6 +35,15 @@ public class Test implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @DynamoDBAttribute(attributeName = "title")
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @DynamoDBAttribute(attributeName = "closeQuestions")

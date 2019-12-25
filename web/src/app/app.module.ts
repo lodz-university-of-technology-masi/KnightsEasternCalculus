@@ -26,7 +26,7 @@ import {ChangePasswordComponent} from './change-password/change-password.compone
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

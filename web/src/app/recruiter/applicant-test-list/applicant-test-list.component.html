@@ -1,0 +1,23 @@
+<div class="mt-4">
+  <h5 class="d-inline">Testy</h5>
+  <button type="button" class="btn btn-outline-primary btn-sm ml-2 mb-2">Przypisz</button>
+  <div class="clearfix"></div>
+</div>
+<ng-container *ngIf="true; else noEntries">
+  <ul class="list-group">
+    <a class="list-group-item d-flex justify-content-between align-items-center list-group-item-action text-dark" [routerLink]="test">
+      Jakiś test
+      <span class="badge badge-success">ROZWIĄZANY</span>
+    </a>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      Inny test
+      <span class="badge badge-warning">OCZEKUJE</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      Jeszcze inny
+      <span class="badge badge-danger">USUNIĘTY</span>
+    </li>
+  </ul>
+</ng-container>
+<ng-template #noEntries><span>(brak)</span></ng-template>
+<ng-template #loading><span>Ładowanie...</span></ng-template>

@@ -1,30 +1,29 @@
-<div class="shadow bg-white rounded p-4 my-3">
-  <h2 class="mt-4">Lista kandydatów</h2>
-  <form class="form-inline">
-    <input type="text" class="form-control mb-2 mr-sm-2" id="lastName" placeholder="Last Name" [(ngModel)]="searchLastName" [ngModelOptions]="{standalone: true}">
-    <button type="submit" class="btn btn-primary mb-2" (click)="searchApplicants()">Search</button>
-  </form>
-  <table class="table table-hover">
-    <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Imię</th>
-      <th scope="col">Nazwisko</th>
-      <th scope="col">Email</th>
-      <th scope="col">Wykształcenie</th>
+<h2 class="mt-4">Lista kandydatów</h2>
+<form class="form-inline">
+  <input type="text" class="form-control mb-2 mr-sm-2" id="lastName" placeholder="Last Name" [(ngModel)]="searchLastName" [ngModelOptions]="{standalone: true}">
+  <button type="submit" class="btn btn-primary mb-2" (click)="searchApplicants()">Search</button>
+</form>
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Imię</th>
+    <th scope="col">Nazwisko</th>
+    <th scope="col">Email</th>
+    <th scope="col">Wykształcenie</th>
+  </tr>
+  </thead>
+  <ng-container *ngIf="applicants; else loading">
+    <tbody>
+    <tr *ngFor="let applicant of applicants; let i = index" [routerLink]="['../applicant', applicant.id]" style="cursor: pointer;">
+      <th scope="row">{{i+1}}</th>
+      <td>{{applicant.firstName}}</td>
+      <td>{{applicant.lastName}}</td>
+      <td>{{applicant.email}}</td>
+      <td>{{applicant.universities[0]?.degree?.concat(": ")}}{{applicant.universities[0]?.major}}</td>
     </tr>
-    </thead>
-    <ng-container *ngIf="applicants; else loading">
-      <tbody>
-      <tr *ngFor="let applicant of applicants; let i = index" [routerLink]="['../applicant', applicant.id]" style="cursor: pointer;">
-        <th scope="row">{{i+1}}</th>
-        <td>{{applicant.firstName}}</td>
-        <td>{{applicant.lastName}}</td>
-        <td>{{applicant.email}}</td>
-        <td>{{applicant.universities[0]?.degree?.concat(": ")}}{{applicant.universities[0]?.major}}</td>
-      </tr>
-      </tbody>
-    </ng-container>
-  </table>
-  <ng-template #loading>Ładowanie...</ng-template>
-</div>
+    </tbody>
+  </ng-container>
+</table>
+<ng-template #loading>Ładowanie...</ng-template>
+

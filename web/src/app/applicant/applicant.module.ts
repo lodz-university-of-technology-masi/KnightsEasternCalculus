@@ -1,12 +1,27 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ApplicantNavigationComponent } from './applicant-navigation/applicant-navigation.component';
+import { HomePageComponent } from './home-page/home-page.component';
+import {FormsModule} from '@angular/forms';
+import {AppApplicantComponent} from './app-applicant/app-applicant.component';
+import {ApplicantRoutingModule} from './applicant.routing.module';
+import { MyProfileComponent } from './my-profile/my-profile.component';
+import {CommonComponentsModule} from '../common-components/common-components.module';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ApplicantNavigationComponent,
+    HomePageComponent,
+    AppApplicantComponent,
+    MyProfileComponent
+  ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    ApplicantRoutingModule,
+    CommonComponentsModule
   ]
 })
 export class ApplicantModule { }

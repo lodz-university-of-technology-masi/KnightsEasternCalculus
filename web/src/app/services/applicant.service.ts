@@ -11,7 +11,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 export class ApplicantService {
 
   mockdata: Applicant[];
-  private apiUrl = 'https://duw9x3fu5a.execute-api.us-east-1.amazonaws.com/test/applicant';
+  private apiUrl = 'https://09pa1518c7.execute-api.us-east-1.amazonaws.com/test/applicant';
 
   constructor(private http: HttpClient) {
     this.mockdata = new Array(new Applicant('1', 'Marian', 'Kowal', new Date(1998, 2, 20), 'Betonowa 10', 'Łódź', '90-116', 'marek@lowcaSzparek.com', '999666333',

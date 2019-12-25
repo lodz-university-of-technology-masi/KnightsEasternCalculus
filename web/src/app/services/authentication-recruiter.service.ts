@@ -40,7 +40,7 @@ export class AuthenticationRecruiterService {
       this.cognitoUser = new CognitoUser(userData);
       this.cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: result => {
-          localStorage.setItem('accessToken', result.getAccessToken().getJwtToken());
+          sessionStorage.setItem('accessToken', result.getAccessToken().getJwtToken());
           localStorage.setItem('refreshToken', result.getRefreshToken().getToken());
 
 
@@ -163,7 +163,7 @@ export class AuthenticationRecruiterService {
     return new Observable( observer => {
       this.cognitoUser.completeNewPasswordChallenge(newPassword, this.sessionUserAttributes, {
         onSuccess: result => {
-          localStorage.setItem('accessToken', result.getAccessToken().getJwtToken());
+          sessionStorage.setItem('accessToken', result.getAccessToken().getJwtToken());
           localStorage.setItem('refreshToken', result.getRefreshToken().getToken());
 
           observer.next(result);
@@ -186,7 +186,7 @@ export class AuthenticationRecruiterService {
   }
 
   getAccessToken() {
-    return localStorage.getItem('accessToken');
+    return sessionStorage.getItem('accessToken');
   }
 
   getRefreshToken() {
@@ -200,6 +200,7 @@ export class AuthenticationRecruiterService {
 
   logOut() {
     localStorage.clear();
+    sessionStorage.clear();
     this.getUser().signOut();
     this.cognitoUser = null;
   }

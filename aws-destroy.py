@@ -30,4 +30,12 @@ subprocess.call("aws s3 rm s3://applicant-photos --recursive", shell=True)
 print("Deleting S3 bucket...")
 subprocess.call("aws s3api delete-bucket --bucket applicant-photos", shell=True)
 
+print("Deleting Cognito User Pools")
+pools = json.loads(subprocess.check_output("aws cognito-idp list-user-pools --max-results 20", shell=True).decode("utf-8"))["UserPools"]
+for pool in pools:
+    if pool["Name"] == "kotec":
+        pool_id = pool["Id"]
+        break
+subprocess.call("aws cognito-idp delete-user-pool --user-pool-id '{}'".format(pool_id), shell=True)
+
 print("Script finished.")

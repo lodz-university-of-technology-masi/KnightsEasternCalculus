@@ -49,5 +49,28 @@ subprocess.call("aws s3 sync --acl public-read dummy-data/photos s3://applicant-
 print("Deploying API...")
 subprocess.call("aws apigateway create-deployment --rest-api-id {} --stage-name test".format(gatewayID), shell=True)
 
+print("Creating Cognito User Pool...")
+# load json config file
+with open("cognito_config.json", 'r') as f:
+    cognito_config = f.read()
+subprocess.call("aws cognito-idp create-user-pool --cli-input-json '{}'".format(cognito_config), shell=True, stdout=subprocess.DEVNULL)
+
+print("\tCreating Cognito App Client...")
+# get pool id
+pools = json.loads(subprocess.check_output("aws cognito-idp list-user-pools --max-results 20", shell=True).decode("utf-8"))["UserPools"]
+for pool in pools:
+    if pool["Name"] == "kotec":
+        pool_id = pool["Id"]
+
+client = json.loads(subprocess.check_output("aws cognito-idp create-user-pool-client --user-pool-id '{}' --client-name 'kotec' --no-generate-secret --refresh-token-validity 3650".format(pool_id), shell=True).decode("utf-8"))["UserPoolClient"]
+print("\t\tUser Pool Id: {}\n\t\tClientId: {}".format(client["UserPoolId"], client["ClientId"]))
+
+print("\tCreating Cognito User Groups...")
+
+print("\t\tRecruiter")
+subprocess.call("aws cognito-idp create-group --group-name 'recruiter' --user-pool-id '{}'".format(pool_id), shell=True, stdout=subprocess.DEVNULL)
+print("\t\tClient")
+subprocess.call("aws cognito-idp create-group --group-name 'client' --user-pool-id '{}'".format(pool_id), shell=True, stdout=subprocess.DEVNULL)
+
 print("Script finished.")
 print("Make sure the apiUrl in applicant.service is set to 'https://{}.execute-api.us-east-1.amazonaws.com/test/applicant'".format(gatewayID))

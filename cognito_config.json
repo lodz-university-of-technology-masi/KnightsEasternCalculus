@@ -1,0 +1,43 @@
+{
+    "PoolName": "kotec",
+    "Policies": {
+        "PasswordPolicy": {
+            "MinimumLength": 6,
+            "RequireUppercase": false,
+            "RequireLowercase": false,
+            "RequireNumbers": false,
+            "RequireSymbols": false,
+            "TemporaryPasswordValidityDays": 7
+        }
+    },
+    "AutoVerifiedAttributes": [
+        "email"
+    ],
+    "UsernameAttributes": [
+        "email"
+    ],
+    "EmailVerificationMessage": "Supply additional information at http://localhost:4200/confirm?code={####}",
+    "VerificationMessageTemplate": {
+        "DefaultEmailOption": "CONFIRM_WITH_CODE"
+    },
+    "MfaConfiguration": "OFF",
+    "DeviceConfiguration": {
+        "ChallengeRequiredOnNewDevice": false,
+        "DeviceOnlyRememberedOnUserPrompt": false
+    },
+    "AdminCreateUserConfig": {
+        "AllowAdminCreateUserOnly": false
+    },
+    "Schema": [
+        {
+            "Name": "email",
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Required": true
+        }
+    ],
+    "UserPoolAddOns": {
+        "AdvancedSecurityMode": "AUDIT"
+    }
+}

@@ -77,4 +77,10 @@ with open(os.path.join("web", "src", "app", "app-consts.ts"), "w+") as file:
     file.write("export const clientId = '{}';\n".format(client["ClientId"]))
     file.write("export const recruiterIdentityPoolId = '{}';\n".format("us-east-1:6b668023-3071-49da-b222-e7fa4ef3dcde"))
 
+print("Creating Cognito Identity Pool")
+region = pool_id.split('_')[0]
+provider = "cognito-idp.{}.amazonaws.com/{}".format(region, pool_id)
+identity_pool_id = json.loads(subprocess.check_output("aws cognito-identity create-identity-pool --identity-pool-name kotec_id --no-allow-unauthenticated-identities --cognito-identity-providers ProviderName={},ClientId={}".format(provider, client["ClientId"]), shell=True).decode('utf-8'))["IdentityPoolId"]
+print("\tCognito Identity Pool ID: {}".format(identity_pool_id))
+print("\tProvider: {}".format(provider))
 print("Script finished.")

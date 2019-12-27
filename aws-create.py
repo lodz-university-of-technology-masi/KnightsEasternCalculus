@@ -83,5 +83,11 @@ subprocess.call("aws cognito-idp create-group --group-name 'recruiter' --user-po
 print("\t\tClient")
 subprocess.call("aws cognito-idp create-group --group-name 'client' --user-pool-id '{}'".format(pool_id), shell=True, stdout=subprocess.DEVNULL)
 
+print("Creating Cognito Identity Pool")
+region = pool_id.split('_')[0]
+provider = "cognito-idp.{}.amazonaws.com/{}".format(region, pool_id)
+identity_pool_id = json.loads(subprocess.check_output("aws cognito-identity create-identity-pool --identity-pool-name kotec_id --no-allow-unauthenticated-identities --cognito-identity-providers ProviderName={},ClientId={}".format(provider, client["ClientId"]), shell=True).decode('utf-8'))["IdentityPoolId"]
+print("\tCognito Identity Pool ID: {}".format(identity_pool_id))
+print("\tProvider: {}".format(provider))
 print("Script finished.")
 print("Make sure the apiUrl in applicant.service is set to 'https://{}.execute-api.us-east-1.amazonaws.com/test/applicant'".format(gatewayID))

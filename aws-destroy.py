@@ -48,4 +48,12 @@ for pool in pools:
         break
 subprocess.call("aws cognito-idp delete-user-pool --user-pool-id '{}'".format(pool_id), shell=True)
 
+print("Deleting Cognito Identity Pools")
+id_pools = json.loads(subprocess.check_output("aws cognito-identity list-identity-pools --max-results 20", shell=True).decode('utf-8'))["IdentityPools"]
+for pool in id_pools:
+    if pool["IdentityPoolName"] == "kotec_id":
+        id_pool_id = pool["IdentityPoolId"]
+        break
+subprocess.call("aws cognito-identity delete-identity-pool --identity-pool-id {}".format(id_pool_id), shell=True)
+
 print("Script finished.")

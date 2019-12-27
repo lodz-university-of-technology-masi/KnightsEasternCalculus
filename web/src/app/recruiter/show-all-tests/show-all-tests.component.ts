@@ -61,6 +61,7 @@ export class ShowAllTestsComponent implements OnInit {
         var httpOptions2  = {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' }), 
             body: test};
+        this.tests.splice(this.tests.indexOf(test), 1);
         this.httpClient.delete(this.testUrl, httpOptions2)
         .subscribe((res: Response) => 
             console.log(res.body));

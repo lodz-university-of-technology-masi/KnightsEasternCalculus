@@ -10,6 +10,7 @@ role = "arn:aws:iam::{}:role/lambda-cli-role".format(accountID)
 
 print("Creating dynamodb table...")
 subprocess.call("aws dynamodb create-table --table-name Applicant --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
+subprocess.call("aws dynamodb create-table --table-name Tests --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
 
 print("Creating lambdas...")
 lambdaZip = os.path.join("lambda", "build", "distributions", "lambda-0.1.zip")
@@ -23,10 +24,20 @@ subprocess.call("aws lambda create-function --function-name get-applicants --zip
 #add add-applicant lambda
 subprocess.call("aws lambda create-function --function-name add-applicant --zip-file fileb://{} --handler lambda.applicant.AddApplicant::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
 
+#get-all-tests lambda
+subprocess.call("aws lambda create-function --function-name get-all-tests --zip-file fileb://{} --handler lambda.test.GetAllTests::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
+
+#add-test lambda
+subprocess.call("aws lambda create-function --function-name add-test --zip-file fileb://{} --handler lambda.test.AddTest::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
+
+#delete-test lambda
+subprocess.call("aws lambda create-function --function-name delete-test --zip-file fileb://{} --handler lambda.test.DeleteTest::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
+
+#update-test lambda
+subprocess.call("aws lambda create-function --function-name update-test --zip-file fileb://{} --handler lambda.test.UpdateTest::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
 
 print("Creating gateways...")
 gatewayID = json.loads(subprocess.check_output("aws apigateway import-rest-api --body fileb://API-documentation.txt", shell=True))["id"]
-
 
 #lambda names to automate permission granting
 lambdas = ["get-applicant", "get-applicants"]

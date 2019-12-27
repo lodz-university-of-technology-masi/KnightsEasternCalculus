@@ -4,6 +4,7 @@ import time
 
 print("Deleting dynamodb table...")
 subprocess.call("aws dynamodb delete-table --table-name Applicant", shell=True)
+subprocess.call("aws dynamodb delete-table --table-name Tests", shell=True)
 
 print("Deleting lambdas...")
 #delete get-applicant lambda
@@ -14,6 +15,15 @@ subprocess.call("aws lambda delete-function --function-name get-applicants", she
 
 #delete add-applicant lambda
 subprocess.call("aws lambda delete-function --function-name add-applicant", shell=True)
+
+#delete add-test lambda
+subprocess.call("aws lambda delete-function --function-name add-test", shell=True)
+#delete delete-test lambda
+subprocess.call("aws lambda delete-function --function-name delete-test", shell=True)
+#delete update-test lambda
+subprocess.call("aws lambda delete-function --function-name update-test", shell=True)
+#delete get-all-tests lambda
+subprocess.call("aws lambda delete-function --function-name get-all-tests", shell=True)
 
 print("Deleting gateways...")
 

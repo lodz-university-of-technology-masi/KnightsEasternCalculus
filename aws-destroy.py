@@ -2,6 +2,10 @@ import subprocess
 import json
 import time
 
+print("Fetching account info...")
+accountID = json.loads(subprocess.check_output("aws sts get-caller-identity", shell=True).decode("utf-8"))["Account"]
+print("The account id is {}".format(accountID))
+
 print("Deleting dynamodb table...")
 subprocess.call("aws dynamodb delete-table --table-name Applicant", shell=True)
 subprocess.call("aws dynamodb delete-table --table-name Tests", shell=True)
@@ -25,12 +29,12 @@ for gateway in gatewaysID:
     time.sleep(5)
 
 print("Clearing S3 buckets...")
-subprocess.call("aws s3 rm s3://applicant-photos --recursive", shell=True)
-subprocess.call("aws s3 rm s3://kotec-lambda --recursive", shell=True)
+# subprocess.call("aws s3 rm s3://applicant-photos --recursive", shell=True)
+subprocess.call("aws s3 rm s3://{}-kotec-lambda --recursive".format(accountID), shell=True)
 
 print("Deleting S3 buckets...")
-subprocess.call("aws s3api delete-bucket --bucket applicant-photos", shell=True)
-subprocess.call("aws s3api delete-bucket --bucket kotec-lambda", shell=True)
+# subprocess.call("aws s3api delete-bucket --bucket applicant-photos", shell=True)
+subprocess.call("aws s3api delete-bucket --bucket {}-kotec-lambda".format(accountID), shell=True)
 
 print("Deleting Cognito User Pools")
 pools = json.loads(subprocess.check_output("aws cognito-idp list-user-pools --max-results 20", shell=True).decode("utf-8"))["UserPools"]

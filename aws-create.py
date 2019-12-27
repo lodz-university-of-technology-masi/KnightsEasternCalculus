@@ -7,12 +7,12 @@ accountID = json.loads(subprocess.check_output("aws sts get-caller-identity", sh
 print("The account id is {}".format(accountID))
 
 print("Creating lambda bucket...")
-subprocess.call("aws s3api create-bucket --bucket kotec-lambda", shell=True)
+subprocess.call("aws s3api create-bucket --bucket {}-kotec-lambda".format(accountID), shell=True)
 print("Uploading file...")
-subprocess.call("aws s3 cp lambda/build/distributions/lambda-0.1.zip s3://kotec-lambda", shell=True)
+subprocess.call("aws s3 cp lambda/build/distributions/lambda-0.1.zip s3://{}-kotec-lambda".format(accountID), shell=True)
 
 role = "arn:aws:iam::{}:role/lambda-cli-role".format(accountID)
-bucket_spec = "S3Bucket=kotec-lambda,S3Key=lambda-0.1.zip"
+bucket_spec = "S3Bucket={}-kotec-lambda,S3Key=lambda-0.1.zip".format(accountID)
 
 print("Creating dynamodb table...")
 subprocess.call("aws dynamodb create-table --table-name Applicant --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)

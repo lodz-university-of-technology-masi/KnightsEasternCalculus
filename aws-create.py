@@ -50,27 +50,31 @@ print("Deploying API...")
 subprocess.call("aws apigateway create-deployment --rest-api-id {} --stage-name test".format(gatewayID), shell=True)
 
 print("Creating Cognito User Pool...")
-# load json config file
-with open("cognito_config.json", 'r') as f:
-    cognito_config = f.read()
-subprocess.call("aws cognito-idp create-user-pool --cli-input-json '{}'".format(cognito_config), shell=True, stdout=subprocess.DEVNULL)
+
+pool_id = json.loads(subprocess.check_output("aws cognito-idp create-user-pool --cli-input-json fileb://cognito_config.json", shell=True))["UserPool"]["Id"]
+print("\tThe pool id is {}".format(pool_id))
 
 print("\tCreating Cognito App Client...")
-# get pool id
-pools = json.loads(subprocess.check_output("aws cognito-idp list-user-pools --max-results 20", shell=True).decode("utf-8"))["UserPools"]
-for pool in pools:
-    if pool["Name"] == "kotec":
-        pool_id = pool["Id"]
 
-client = json.loads(subprocess.check_output("aws cognito-idp create-user-pool-client --user-pool-id '{}' --client-name 'kotec' --no-generate-secret --refresh-token-validity 3650".format(pool_id), shell=True).decode("utf-8"))["UserPoolClient"]
+client = json.loads(subprocess.check_output("aws cognito-idp create-user-pool-client --user-pool-id {} --client-name kotec --no-generate-secret --refresh-token-validity 3650".format(pool_id), shell=True).decode("utf-8"))["UserPoolClient"]
 print("\t\tUser Pool Id: {}\n\t\tClientId: {}".format(client["UserPoolId"], client["ClientId"]))
 
 print("\tCreating Cognito User Groups...")
 
 print("\t\tRecruiter")
-subprocess.call("aws cognito-idp create-group --group-name 'recruiter' --user-pool-id '{}'".format(pool_id), shell=True, stdout=subprocess.DEVNULL)
+subprocess.call("aws cognito-idp create-group --group-name recruiter --user-pool-id {}".format(pool_id), shell=True, stdout=subprocess.DEVNULL)
 print("\t\tClient")
-subprocess.call("aws cognito-idp create-group --group-name 'client' --user-pool-id '{}'".format(pool_id), shell=True, stdout=subprocess.DEVNULL)
+subprocess.call("aws cognito-idp create-group --group-name client --user-pool-id {}".format(pool_id), shell=True, stdout=subprocess.DEVNULL)
+
+print("\tAdding test account...")
+subprocess.call("aws cognito-idp admin-create-user --user-pool-id {} --username admin@example.com --user-attributes=Name=email,Value=admin@example.com --message-action SUPPRESS".format(pool_id), shell=True)
+subprocess.call("aws cognito-idp admin-add-user-to-group --user-pool-id {} --username admin@example.com --group-name recruiter".format(pool_id), shell=True)
+
+print("Generating constants file...")
+with open(os.path.join("web", "src", "app", "app-consts.ts"), "w+") as file:
+    file.write("export const apiBaseUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/applicant';\n".format(gatewayID))
+    file.write("export const userPoolId = '{}';\n".format(pool_id))
+    file.write("export const clientId = '{}';\n".format(client["ClientId"]))
+    file.write("export const recruiterIdentityPoolId = '{}';\n".format("us-east-1:6b668023-3071-49da-b222-e7fa4ef3dcde"))
 
 print("Script finished.")
-print("Make sure the apiUrl in applicant.service is set to 'https://{}.execute-api.us-east-1.amazonaws.com/test/applicant'".format(gatewayID))

@@ -36,6 +36,6 @@ for pool in pools:
     if pool["Name"] == "kotec":
         pool_id = pool["Id"]
         break
-subprocess.call("aws cognito-idp delete-user-pool --user-pool-id '{}'".format(pool_id), shell=True)
+subprocess.call("aws cognito-idp delete-user-pool --user-pool-id {}".format(pool_id), shell=True)
 
 print("Script finished.")

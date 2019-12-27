@@ -7,6 +7,7 @@ import {AppApplicantComponent} from './app-applicant/app-applicant.component';
 import {ApplicantRoutingModule} from './applicant.routing.module';
 import { MyProfileComponent } from './my-profile/my-profile.component';
 import {CommonComponentsModule} from '../common-components/common-components.module';
+import { TestListComponent } from './test-list/test-list.component';
 
 
 
@@ -15,7 +16,8 @@ import {CommonComponentsModule} from '../common-components/common-components.mod
     ApplicantNavigationComponent,
     HomePageComponent,
     AppApplicantComponent,
-    MyProfileComponent
+    MyProfileComponent,
+    TestListComponent
   ],
   imports: [
     CommonModule,

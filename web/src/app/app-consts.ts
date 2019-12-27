@@ -1,4 +1,4 @@
-export const apiBaseUrl = 'https://6prbbnygdj.execute-api.us-east-1.amazonaws.com/test/applicant';
-export const userPoolId = 'us-east-1_S1Y5GTvJ5';
-export const clientId = '24nsocb485e2k1er6eig8lgmo8';
-export const recruiterIdentityPoolId = 'us-east-1:6b668023-3071-49da-b222-e7fa4ef3dcde';
+export const apiBaseUrl = 'https://unb3hured6.execute-api.us-east-1.amazonaws.com/test/applicant';
+export const userPoolId = 'us-east-1_l660ZcP9c';
+export const clientId = '1dbruefiorqcjfg0k8d0kt5gnh';
+export const recruiterIdentityPoolId = 'us-east-1:f44e8ba9-571f-49ff-a60c-6cf39d0bb245';

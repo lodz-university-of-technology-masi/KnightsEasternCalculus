@@ -6,35 +6,26 @@ print("Fetching account info...")
 accountID = json.loads(subprocess.check_output("aws sts get-caller-identity", shell=True).decode("utf-8"))["Account"]
 print("The account id is {}".format(accountID))
 
+print("Creating lambda bucket...")
+subprocess.call("aws s3api create-bucket --bucket kotec-lambda", shell=True)
+print("Uploading file...")
+subprocess.call("aws s3 cp lambda/build/distributions/lambda-0.1.zip s3://kotec-lambda", shell=True)
+
 role = "arn:aws:iam::{}:role/lambda-cli-role".format(accountID)
+bucket_spec = "S3Bucket=kotec-lambda,S3Key=lambda-0.1.zip"
 
 print("Creating dynamodb table...")
 subprocess.call("aws dynamodb create-table --table-name Applicant --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
 subprocess.call("aws dynamodb create-table --table-name Tests --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
 
 print("Creating lambdas...")
-lambdaZip = os.path.join("lambda", "build", "distributions", "lambda-0.1.zip")
 
-#get get-applicant lambda
-subprocess.call("aws lambda create-function --function-name get-applicant --zip-file fileb://{} --handler lambda.applicant.GetApplicant::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
+lambda_data=[("get-applicant", "lambda.applicant.GetApplicant"), ("get-applicants", "lambda.applicant.GetApplicants"), ("add-applicant", "lambda.applicant.AddApplicant"),
+             ("get-all-tests", "lambda.test.GetAllTests"), ("add-test", "lambda.test.AddTest"), ("delete-test", "lambda.test.DeleteTest"), ("update-test", "lambda.test.UpdateTest")]
 
-#get get-applicants lambda
-subprocess.call("aws lambda create-function --function-name get-applicants --zip-file fileb://{} --handler lambda.applicant.GetApplicants::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
-
-#add add-applicant lambda
-subprocess.call("aws lambda create-function --function-name add-applicant --zip-file fileb://{} --handler lambda.applicant.AddApplicant::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
-
-#get-all-tests lambda
-subprocess.call("aws lambda create-function --function-name get-all-tests --zip-file fileb://{} --handler lambda.test.GetAllTests::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
-
-#add-test lambda
-subprocess.call("aws lambda create-function --function-name add-test --zip-file fileb://{} --handler lambda.test.AddTest::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
-
-#delete-test lambda
-subprocess.call("aws lambda create-function --function-name delete-test --zip-file fileb://{} --handler lambda.test.DeleteTest::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
-
-#update-test lambda
-subprocess.call("aws lambda create-function --function-name update-test --zip-file fileb://{} --handler lambda.test.UpdateTest::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lambdaZip, role), shell=True)
+for lam in lambda_data:
+    print("\t"+lam[0])
+    subprocess.call("aws lambda create-function --function-name {} --code {} --handler {}::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lam[0], bucket_spec, lam[1], role), shell=True)
 
 print("Creating gateways...")
 gatewayID = json.loads(subprocess.check_output("aws apigateway import-rest-api --body fileb://API-documentation.txt", shell=True))["id"]
@@ -78,7 +69,7 @@ print("\t\tClient")
 subprocess.call("aws cognito-idp create-group --group-name client --user-pool-id {}".format(pool_id), shell=True, stdout=subprocess.DEVNULL)
 
 print("\tAdding test account...")
-subprocess.call("aws cognito-idp admin-create-user --user-pool-id {} --username admin@example.com --user-attributes=Name=email,Value=admin@example.com --message-action SUPPRESS".format(pool_id), shell=True)
+subprocess.call("aws cognito-idp admin-create-user --user-pool-id {} --username admin@example.com --user-attributes=Name=email,Value=admin@example.com --temporary-password password --message-action SUPPRESS".format(pool_id), shell=True)
 subprocess.call("aws cognito-idp admin-add-user-to-group --user-pool-id {} --username admin@example.com --group-name recruiter".format(pool_id), shell=True)
 
 print("Creating Cognito Identity Pool")

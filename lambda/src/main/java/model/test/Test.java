@@ -8,7 +8,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import java.io.Serializable;
 import java.util.List;
 
-@DynamoDBTable(tableName = "tests")
+@DynamoDBTable(tableName = "Tests")
 public class Test implements Serializable {
     private String id;
     private String title;

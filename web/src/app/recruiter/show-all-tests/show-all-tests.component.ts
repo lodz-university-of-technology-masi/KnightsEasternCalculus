@@ -36,7 +36,7 @@ export class ShowAllTestsComponent implements OnInit {
         this.selectedTest = test;
     }
 
-    testUrl: string = "https://luznpx1mg3.execute-api.us-east-1.amazonaws.com/Test/tests";
+    testUrl: string = "https://zivdvi6n2d.execute-api.us-east-1.amazonaws.com/test/recruiter/tests";
     test: Test;
 
     public getAllTests(): void{

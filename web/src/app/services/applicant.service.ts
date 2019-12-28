@@ -4,7 +4,6 @@ import {Experience} from '../model/experience';
 import {University} from '../model/university';
 import { Observable, of } from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import * as Globals from '../app-consts';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,7 @@ import * as Globals from '../app-consts';
 export class ApplicantService {
 
   mockdata: Applicant[];
-  private apiUrl = Globals.apiBaseUrl;
+  private apiUrl = 'https://09pa1518c7.execute-api.us-east-1.amazonaws.com/test/applicant';
 
   constructor(private http: HttpClient) {
     this.mockdata = new Array(new Applicant('1', 'Marian', 'Kowal', new Date(1998, 2, 20), 'Betonowa 10', 'Łódź', '90-116', 'marek@lowcaSzparek.com', '999666333',

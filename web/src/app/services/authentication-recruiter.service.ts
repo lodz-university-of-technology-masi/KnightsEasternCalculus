@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import {BehaviorSubject, Observable, Observer} from 'rxjs';
+import {BoundEventAst} from '@angular/compiler';
 import * as AWS from 'aws-sdk';
-import * as Globals from '../app-consts';
+
 
 const poolData = {
-  UserPoolId: Globals.userPoolId,
-  ClientId: Globals.clientId
+  UserPoolId: 'us-east-1_ARBXLqVHX',
+  ClientId: '3edam8edr09uc0tm32vo802vk1'
 };
 
 const userPool = new CognitoUserPool(poolData);
@@ -45,9 +46,9 @@ export class AuthenticationRecruiterService {
 
           AWS.config.region = 'us-east-1';
           AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-            IdentityPoolId: Globals.recruiterIdentityPoolId,
+            IdentityPoolId: 'us-east-1:6b668023-3071-49da-b222-e7fa4ef3dcde',
             Logins: {
-              [`cognito-idp.us-east-1.amazonaws.com/${Globals.userPoolId}`]: result.getIdToken().getJwtToken()
+              'cognito-idp.us-east-1.amazonaws.com/us-east-1_ARBXLqVHX': result.getIdToken().getJwtToken()
             }
           });
 

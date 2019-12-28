@@ -1,9 +1,9 @@
 import { Component, OnInit, Injectable } from '@angular/core';
-import { Applicant } from '../../model/applicant';
-import { FillInfoService } from '../../services/fill-info.service';
-import {Experience} from '../../model/experience';
-import {University} from '../../model/university';
-import {CloseQuestion} from '../../model/close-question';
+import { Applicant } from '../model/applicant';
+import { FillInfoService } from '../services/fill-info.service';
+import {Experience} from '../model/experience';
+import {University} from '../model/university';
+import {CloseQuestion} from '../model/close-question';
 
 @Component({
   selector: 'app-fill-info',

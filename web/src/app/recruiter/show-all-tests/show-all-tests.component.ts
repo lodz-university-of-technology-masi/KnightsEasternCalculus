@@ -36,7 +36,7 @@ export class ShowAllTestsComponent implements OnInit {
         this.selectedTest = test;
     }
 
-    testUrl: string = "https://zivdvi6n2d.execute-api.us-east-1.amazonaws.com/test/recruiter/tests";
+    testUrl: string = "https://luznpx1mg3.execute-api.us-east-1.amazonaws.com/Test/tests";
     test: Test;
 
     public getAllTests(): void{
@@ -61,7 +61,6 @@ export class ShowAllTestsComponent implements OnInit {
         var httpOptions2  = {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' }), 
             body: test};
-        this.tests.splice(this.tests.indexOf(test), 1);
         this.httpClient.delete(this.testUrl, httpOptions2)
         .subscribe((res: Response) => 
             console.log(res.body));

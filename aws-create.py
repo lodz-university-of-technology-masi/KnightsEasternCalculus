@@ -1,6 +1,7 @@
 import subprocess
 import json
 import os
+import fileinput, re
 
 print("Fetching account info...")
 accountID = json.loads(subprocess.check_output("aws sts get-caller-identity", shell=True).decode("utf-8"))["Account"]
@@ -27,8 +28,15 @@ for lam in lambda_data:
     print("\t"+lam[0])
     subprocess.call("aws lambda create-function --function-name {} --code {} --handler {}::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lam[0], bucket_spec, lam[1], role), shell=True)
 
+with open('API-documentation.txt', 'r') as infile:
+    with open('API-documentation-customized.txt', 'w+') as outfile:
+        for line in infile:
+                        outfile.write(re.sub('arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:.*?:function:', 'arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:{}:function:'.format(accountID), line, flags=re.DOTALL))
+
 print("Creating gateways...")
-gatewayID = json.loads(subprocess.check_output("aws apigateway import-rest-api --body fileb://API-documentation.txt", shell=True))["id"]
+gatewayID = json.loads(subprocess.check_output("aws apigateway import-rest-api --body fileb://API-documentation-customized.txt", shell=True))["id"]
+
+
 
 #lambda names to automate permission granting
 lambdas = ["get-applicant", "get-applicants", "add-test", "get-all-tests", "update-test", "delete-test"]

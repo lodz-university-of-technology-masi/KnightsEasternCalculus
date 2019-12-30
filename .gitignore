@@ -5,3 +5,4 @@ node_modules
 dist
 dump
 app-consts.ts
+API-documentation-customized.txt

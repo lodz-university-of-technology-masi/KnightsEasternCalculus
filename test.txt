@@ -1,6 +1,0 @@
-import os
-with open(os.path.join("web", "src", "app", "app-consts.ts"), "w+") as file:
-    file.write("export const apiBaseUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/applicant'".format('gatewayID'))
-    file.write("export const userPoolId = '{}".format('pool_id'))
-    file.write("export const clientId = '{}'".format('client["ClientId"]'))
-    file.write("export const recruiterIdentityPoolId = '{}'".format("us-east-1:6b668023-3071-49da-b222-e7fa4ef3dcde"))

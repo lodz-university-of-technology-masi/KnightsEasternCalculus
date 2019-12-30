@@ -35,7 +35,7 @@
       <ul class="navbar-nav mr-0" *ngIf="authService.isLogged()">
         <div class="nav-item dropdown">
           <div class="btn-group">
-            <a routerLink="" class="btn btn-link nav-link pl-1">{{username}}</a>
+            <a routerLink="" class="btn btn-link nav-link pl-1">{{this.authService.getUsername()}}</a>
             <button type="button" class="btn btn-link nav-link dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
             <div class="dropdown-menu">
               <a class="dropdown-item" routerLink="generate-link">Wygeneruj link</a>

@@ -1,0 +1,247 @@
+<!-- TOP -->
+<h2 class="mt-2" align="center">Rejestracja użytkownika</h2>
+<div class="card-body">
+  <div>
+    <h5 class="mt-2">Identyfikator:</h5>
+    <input id="id" name="id" class="form-control" type="text" required
+           [(ngModel)]="inId" #id="ngModel"
+           (input)="inId=$event.target.value">
+    <div *ngIf="id.invalid && (id.dirty || id.touched)" class="alert alert-danger mt-2">
+      <div *ngIf="id.errors.required">
+        Identyfikator jest wymagany.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h5 class="mt-2">Imię:</h5>
+    <input id="firstName" name="firstName" class="form-control" type="text" required
+           [(ngModel)]="inFirstName" #firstName="ngModel"
+           (input)="inFirstName=$event.target.value">
+    <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="alert alert-danger mt-2">
+      <div *ngIf="firstName.errors.required">
+        Imię jest wymagane.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h5 class="mt-2">Nazwisko:</h5>
+    <input id="lastName" name="lastName" class="form-control" type="text" required
+           [(ngModel)]="inLastName" #lastName="ngModel"
+           (input)="inLastName=$event.target.value">
+    <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="alert alert-danger mt-2">
+      <div *ngIf="lastName.errors.required">
+        Nazwisko jest wymagane.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h5 class="mt-2">Data urodzenia:</h5>
+    <input id="dateOfBirth" name="dateOfBirth" class="form-control" type="date" required
+           [(ngModel)]="inDateOfBirth" #dateOfBirth="ngModel"
+           (input)="inDateOfBirth=$event.target.value">
+    <div *ngIf="dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched)" class="alert alert-danger mt-2">
+      <div *ngIf="dateOfBirth.errors.required">
+        Data urodzenia jest wymagana.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h5 class="mt-2">Adres:</h5>
+    <input id="address" name="address" class="form-control" type="text" required
+           [(ngModel)]="inAddress" #address="ngModel"
+           (input)="inAddress=$event.target.value">
+    <div *ngIf="address.invalid && (address.dirty || address.touched)" class="alert alert-danger mt-2">
+      <div *ngIf="address.errors.required">
+        Adres jest wymagany.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h5 class="mt-2">Miasto:</h5>
+    <input id="city" name="city" class="form-control" type="text" required
+           [(ngModel)]="inCity" #city="ngModel"
+           (input)="inCity=$event.target.value">
+    <div *ngIf="city.invalid && (city.dirty || city.touched)" class="alert alert-danger mt-2">
+      <div *ngIf="city.errors.required">
+        Miasto jest wymagane.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h5 class="mt-2">Kod pocztowy:</h5>
+    <input id="postalCode" name="postalCode" class="form-control" type="text" pattern="[0-9]{2}-[0-9]{3}" required
+           [(ngModel)]="inPostalCode" #postalCode="ngModel"
+           (input)="inPostalCode=$event.target.value">
+    <div *ngIf="postalCode.invalid && (postalCode.dirty || postalCode.touched)" class="alert alert-danger mt-2">
+      <div *ngIf="postalCode.errors.required">
+        Kod pocztowy jest wymagany.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h5 class="mt-2">Adres email:</h5>
+    <input id="email" name="email" class="form-control" type="email" required
+           [(ngModel)]="inEmail" #email="ngModel"
+           (input)="inEmail=$event.target.value">
+    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger mt-2">
+      <div *ngIf="email.errors.required">
+        Email jest wymagany.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h5 class="mt-2">Numer telefonu:</h5>
+    <input id="phoneNumber" name="phoneNumber" class="form-control" type="tel" pattern="[0-9]{9}" required
+           [(ngModel)]="inPhoneNumber" #phoneNumber="ngModel"
+           (input)="inPhoneNumber=$event.target.value">
+    <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" class="alert alert-danger mt-2">
+      <div *ngIf="phoneNumber.errors.required">
+        Numer telefonu jest wymagany.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h5 class="mt-2">O mnie:</h5>
+    <input id="aboutMe" name="aboutMe" class="form-control" type="text" required
+           [(ngModel)]="inAboutMe" #aboutMe="ngModel"
+           (input)="inAboutMe=$event.target.value">
+    <div *ngIf="aboutMe.invalid && (aboutMe.dirty || aboutMe.touched)" class="alert alert-danger mt-2">
+      <div *ngIf="aboutMe.errors.required">
+        Opis jest wymagany.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h5 class="mt-2">Zdjęcie:</h5>
+    <input id="photoUrl" name="photoUrl" class="form-control" type="url" required
+           [(ngModel)]="inPhotoUrl" #photoUrl="ngModel"
+           (input)="inPhotoUrl=$event.target.value">
+    <div *ngIf="photoUrl.invalid && (photoUrl.dirty || photoUrl.touched)" class="alert alert-danger mt-2">
+      <div *ngIf="photoUrl.errors.required">
+        Zdjęcie jest wymagane.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h5 class="mt-2">Doświadczenia:</h5>
+    <div class="input-group">
+      <input id="ename" name="ename" class="form-control" type="text" required
+             [(ngModel)]="inEname" #ename="ngModel"
+             (input)="inEname=$event.target.value">
+      <input id="eposition" name="eposition" class="form-control" type="text" required
+             [(ngModel)]="inEposition" #eposition="ngModel"
+             (input)="inEposition=$event.target.value">
+      <input id="eyears" name="eyears" class="form-control" type="text" pattern="[0-9]{4}-[0-9]{4}" required
+             [(ngModel)]="inEyears" #eyears="ngModel"
+             (input)="inEyears=$event.target.value">
+      <div class="input-group-append">
+        <button class="btn btn-success" type="button" (click)="addExperience()"
+                [disabled]="!ename.valid || !eposition.valid || !eyears.valid">
+          Dodaj
+        </button>
+      </div>
+    </div>
+    <div *ngIf="(ename.invalid && (ename.dirty || ename.touched)) || (eposition.invalid && (eposition.dirty || eposition.touched)) || (eyears.invalid && (eyears.dirty || eyears.touched)) " class="alert alert-danger mt-2">
+      <div *ngIf="ename.errors.required || eposition.errors.required || eyears.errors.required">
+        Brakujące dane w doświadczeniach.
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>Nazwa doświadczenia</th>
+        <th>Zajmowana pozycja</th>
+        <th>Lata odbywania</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let experience of ex" (click)="onSelectExperience(experience)"
+          [class.selected]="experience === selectedExperience">
+        <td>{{ experience.name }}</td>
+        <td>{{ experience.position }}</td>
+        <td>{{ experience.years }}</td>
+        <td>
+          <button class="btn btn-danger" (click)="removeExperience(experience)">Usuń</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  <div>
+  <h5 class="mt-2">Uniwersytety:</h5>
+    <div class="input-group">
+      <input id="uname" name="uname" class="form-control" type="text" required
+             [(ngModel)]="inUname" #uname="ngModel"
+             (input)="inUname=$event.target.value">
+      <input id="umajor" name="umajor" class="form-control" type="text" required
+             [(ngModel)]="inUmajor" #umajor="ngModel"
+             (input)="inUmajor=$event.target.value">
+      <input id="uyears" name="uyears" class="form-control" type="text" pattern="[0-9]{4}-[0-9]{4}" required
+             [(ngModel)]="inUyears" #uyears="ngModel"
+             (input)="inUyears=$event.target.value">
+      <input id="udegree" name="udegree" class="form-control" type="text" required
+             [(ngModel)]="inUdegree" #udegree="ngModel"
+             (input)="inUdegree=$event.target.value">
+      <div class="input-group-append">
+        <button class="btn btn-success" type="button" (click)="addUniversity()"
+                [disabled]="!uname.valid || !umajor.valid || !uyears.valid || !udegree.valid">
+          Dodaj
+        </button>
+      </div>
+    </div>
+    <div *ngIf="(uname.invalid && (uname.dirty || uname.touched)) || (umajor.invalid && (umajor.dirty || umajor.touched)) || (uyears.invalid && (uyears.dirty || uyears.touched)) || (udegree.invalid && (udegree.dirty || udegree.touched))" class="alert alert-danger mt-2">
+      <div *ngIf="uname.errors.required || umajor.errors.required || uyears.errors.required || udegree.errors.required">
+        Brakujące dane w uniwersytetach.
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Nazwa uczelni</th>
+            <th>Kierunek</th>
+            <th>Lata studiowania</th>
+            <th>Tytuł</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let university of un" (click)="onSelectUniversity(university)"
+            [class.selected]="university === selectedUniversity">
+          <td>{{ university.name }}</td>
+          <td>{{ university.major }}</td>
+          <td>{{ university.years }}</td>
+          <td>{{ university.degree }}</td>
+          <td>
+            <button class="btn btn-danger" (click)="removeUniversity(university)">Usuń</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+  </div>
+</div>
+
+<!-- BOTTOM -->
+<div>
+  <button class="btn btn-success full-button" (click)="fillInfo()" routerLink="/">
+    Zarejestruj
+  </button>
+</div>
+</div>

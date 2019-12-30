@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {AuthenticationUserService} from '../services/authentication-user.service';
 import {AuthenticationRecruiterService} from '../services/authentication-recruiter.service';
 
 @Component({
@@ -19,8 +18,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   changePassword() {
-    this.authService.setNewPassword(this.password, this.name, this.surname).subscribe( result => {
-      console.log(result);
+    this.authService.setNewPassword(this.password).subscribe( result => {
       this.router.navigateByUrl('/');
     }, error => {
       alert('Error: ' + error.toString());

@@ -2,8 +2,6 @@ import { Component, OnInit, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { ShowAllTestService } from 'src/app/services/show-all-test.service';
 import { Test } from '../../model/test';
-import { map } from 'rxjs/internal/operators/map';
-import { observable } from 'rxjs';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -29,9 +27,9 @@ export class ShowAllTestsComponent implements OnInit {
         this.getAllTests();
     }
 
-    tests: Test[] = [];
+    tests: Test[];
     selectedTest : Test;
-    
+
     public onSelectTest(test: Test): void {
         this.selectedTest = test;
     }
@@ -46,24 +44,20 @@ export class ShowAllTestsComponent implements OnInit {
             console.log(res.body);
             this.tests = <Test[]> JSON.parse(JSON.stringify(res.body));
         });
-
-        // this.httpClient.get<Test[]>(this.testUrl, httpOptions)
-        // .pipe(
-        //     map(response => { 
-        //         this.tests = <Test[]> response;
-        //     })
-        // )
-        // .subscribe(data => {console.log(data)});
-        // .subscribe((res : Response) => this.tests = <Test[]> JSON.parse(res.body.));
     }
 
-    public deleteTest(test : Test): void{
+    public deleteTest(test : Test): void {
         var httpOptions2  = {
-            headers: new HttpHeaders({ 'Content-Type': 'application/json' }), 
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
             body: test};
+
         this.tests.splice(this.tests.indexOf(test), 1);
         this.httpClient.delete(this.testUrl, httpOptions2)
-        .subscribe((res: Response) => 
+        .subscribe((res: Response) =>
             console.log(res.body));
+    }
+
+    public updateTest(test: Test): void{
+
     }
 }

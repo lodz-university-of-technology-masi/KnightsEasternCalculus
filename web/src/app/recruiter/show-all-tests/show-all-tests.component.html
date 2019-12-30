@@ -2,23 +2,19 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th scope="col">#</th>
+            <th scope="col" width="5%">#</th>
             <th scope="col">Name</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
+            <th scope="col" width="5%"></th>
+            <th scope="col" width="5%"></th>
         </tr>
     </thead>
     <ng-container *ngIf="tests; else loading">
         <tbody>
-            <tr *ngFor="let test of tests">
-                <th></th>
+            <tr *ngFor="let test of tests; let i = index">
+                <th>{{i+1}}</th>
                 <th>{{test.title}}</th>
                 <th>
-                    <button class="btn">Pobierz</button>
-                </th>
-                <th>
-                    <button class="btn btn-success">Zmień</button>
+                    <button class="btn btn-success" (click)="updateTest(test.id)">Zmień</button>
                 </th>
                 <th>
                     <button class="btn btn-danger" (click)="deleteTest(test)">Usuń</button>
@@ -27,4 +23,6 @@
         </tbody>
     </ng-container>
 </table>
-<ng-template #loading>Ładowanie...</ng-template>
+<ng-template #loading>
+    <div class="spinner-grow spinner-grow-sm" role="status">Loading...</div>
+</ng-template>

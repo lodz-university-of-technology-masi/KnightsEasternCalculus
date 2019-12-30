@@ -1,7 +1,7 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { CloseQuestion } from '../../model/close-question';
 import { OpenQuestion } from '../../model/open-question';
-import { CreateTestService } from '../../services/create-test.service';
+import { TestService } from '../../services/test.service';
 
 @Component({
   selector: 'app-create-test',
@@ -13,7 +13,7 @@ import { CreateTestService } from '../../services/create-test.service';
 export class CreateTestComponent implements OnInit {
 
   constructor(
-    private createTestService: CreateTestService
+    private testService: TestService
   ) { }
 
 
@@ -114,7 +114,7 @@ export class CreateTestComponent implements OnInit {
   //#region "Create Test"
   inputTestTitle: string = "";
   public createTest(): void {
-    this.createTestService.createTest(this.inputTestTitle, this.openQuestions, this.closeQuestions);
+    this.testService.createTest(this.inputTestTitle, this.openQuestions, this.closeQuestions);
   }
   //#endregion
 }

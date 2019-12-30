@@ -31,7 +31,7 @@ print("Creating gateways...")
 gatewayID = json.loads(subprocess.check_output("aws apigateway import-rest-api --body fileb://API-documentation.txt", shell=True))["id"]
 
 #lambda names to automate permission granting
-lambdas = ["get-applicant", "get-applicants"]
+lambdas = ["get-applicant", "get-applicants", "add-test", "get-all-tests", "update-test", "delete-test"]
 
 print("Granting lambda permissions...")
 for name in lambdas:
@@ -82,6 +82,7 @@ print("\tProvider: {}".format(provider))
 print("Generating constants file...")
 with open(os.path.join("web", "src", "app", "app-consts.ts"), "w+") as file:
     file.write("export const apiBaseUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/applicant';\n".format(gatewayID))
+    file.write("export const apiTestUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/recruiter/tests';\n".format(gatewayID))
     file.write("export const userPoolId = '{}';\n".format(pool_id))
     file.write("export const clientId = '{}';\n".format(client["ClientId"]))
     file.write("export const recruiterIdentityPoolId = '{}';\n".format(identity_pool_id))

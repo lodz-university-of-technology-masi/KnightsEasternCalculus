@@ -6,16 +6,20 @@
             <th scope="col">Name</th>
             <th scope="col"></th>
             <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <ng-container *ngIf="tests; else loading">
         <tbody>
             <tr *ngFor="let test of tests">
-                <td></td>
-                <td>{{test.title}}</td>
-                <td>
+                <th></th>
+                <th>{{test.title}}</th>
+                <th>
+                    <button class="btn">Pobierz</button>
+                </th>
+                <th>
                     <button class="btn btn-success">Zmień</button>
-                </td>
+                </th>
                 <th>
                     <button class="btn btn-danger" (click)="deleteTest(test)">Usuń</button>
                 </th>

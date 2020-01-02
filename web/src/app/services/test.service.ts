@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Test } from '../model/test';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import * as Globals from '../app-consts';
 
 const httpOptions = {
@@ -20,29 +19,39 @@ export class TestService {
   ) { }
 
   private testUrl: string = Globals.apiTestUrl;
-  private tests: Test[];
 
   public createTest(inputTestTitle, openQuestions, closeQuestions): void {
-    var test = new Test(inputTestTitle, openQuestions, closeQuestions);
+    var test = new Test("", inputTestTitle, openQuestions, closeQuestions);
     this.httpClient.post<Test>(this.testUrl, test, httpOptions).subscribe({
       error: error => ({}),
       complete: () => { }
     });
   }
 
-  public getAllTests(): Test[] {
+  public updateTest(id, inputTestTitle, openQuestions, closeQuestions): void {
+    var test = new Test(id, inputTestTitle, openQuestions, closeQuestions);
+    this.httpClient.patch(this.testUrl, test, httpOptions).subscribe({
+      error: error => ({}),
+      complete: () => { }
+    });
+  }
+
+  public getTest(id: string) {
     var httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     };
+    return this.httpClient.get(this.testUrl + `/${id}`, httpOptions);
+  }
 
-    this.httpClient.get(this.testUrl, httpOptions)
-      .subscribe((res: Response) => {
-        console.log(res.body);
-        this.tests = <Test[]>JSON.parse(JSON.stringify(res.body));
-      });
-    return this.tests;
+  public getAllTests() {
+    var httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.httpClient.get(this.testUrl, httpOptions);
   }
 
   public deleteTest(test: Test): void {
@@ -53,7 +62,6 @@ export class TestService {
       body: test
     };
 
-    this.tests.splice(this.tests.indexOf(test), 1);
     this.httpClient.delete(this.testUrl, httpOptions)
       .subscribe((res: Response) =>
         console.log(res.body));

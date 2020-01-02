@@ -26,8 +26,16 @@ export class ShowAllTestsComponent implements OnInit {
     //     this.selectedTest = test;
     // }
 
+    // public getAllTests(): void {
+    //     this.tests = this.testService.getAllTests();
+    // }
+
     public getAllTests(): void {
-        this.tests = this.testService.getAllTests();
+        this.testService.getAllTests()
+            .subscribe((res: Response) => {
+                console.log(res.body);
+                this.tests = <Test[]>JSON.parse(JSON.stringify(res.body));
+            });
     }
 
     public deleteTest(test: Test): void {

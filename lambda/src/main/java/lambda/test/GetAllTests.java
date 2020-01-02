@@ -2,7 +2,6 @@ package lambda.test;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.lambda.runtime.Context;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lambda.Handler;
 import model.test.Test;
 import util.Response;
@@ -10,7 +9,6 @@ import util.Response;
 import java.util.List;
 
 public class GetAllTests extends Handler<Object> {
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public Response handleRequest(Object input, Context context) {

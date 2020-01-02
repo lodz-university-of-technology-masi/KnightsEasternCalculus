@@ -14,7 +14,7 @@
                 <th>{{i+1}}</th>
                 <th>{{test.title}}</th>
                 <th>
-                    <button class="btn btn-success" (click)="updateTest(test.id)">Zmień</button>
+                    <button class="btn btn-success" (click)="updateTest(test.id)" [routerLink]="['update-test', test.id]">Zmień</button>
                 </th>
                 <th>
                     <button class="btn btn-danger" (click)="deleteTest(test)">Usuń</button>

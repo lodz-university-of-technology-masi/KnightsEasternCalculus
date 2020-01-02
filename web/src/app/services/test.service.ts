@@ -69,7 +69,7 @@ export class TestService {
     saveAs(file, test.title + "-" + test.id + '.csv')
   }
 
-  public importTest(file: string): void {
+  public importTest(file: string) {
     var splitFile = file.split("\n");
 
     var title: string, openQuestions: OpenQuestion[] = [], closeQuestions: CloseQuestion[] = [];
@@ -88,8 +88,11 @@ export class TestService {
         // question: string, correctAnswers: string[], incorrectAnswers: string[], maxScore: number
         closeQuestions.push(new CloseQuestion(splitValue[1], splitValue[2].split(","), splitValue[3].split(","), parseInt(splitValue[4])))
       }
-    })
-    this.createTest(title, openQuestions, closeQuestions);
+    });
+
+    var test = new Test("", title, openQuestions, closeQuestions);
+    return this.httpClient.post<Test>(this.testUrl, test, httpOptions);
+    // this.createTest(title, openQuestions, closeQuestions);
   }
 
   public getTest(id: string) {

@@ -122,7 +122,7 @@ export class UpdateTestComponent implements OnInit {
   }
 
   getTest(id: string): void {
-    this.testService.getTest(this.testId)
+    this.testService.getTest(id)
       .subscribe((res: Response) => {
         console.log(res.body);
         this.test = <Test>JSON.parse(JSON.stringify(res.body));

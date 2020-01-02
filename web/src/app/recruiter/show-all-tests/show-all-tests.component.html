@@ -6,6 +6,7 @@
             <th scope="col">Name</th>
             <th scope="col" width="5%"></th>
             <th scope="col" width="5%"></th>
+            <th scope="col" width="5%"></th>
         </tr>
     </thead>
     <ng-container *ngIf="tests; else loading">
@@ -14,7 +15,10 @@
                 <th>{{i+1}}</th>
                 <th>{{test.title}}</th>
                 <th>
-                    <button class="btn btn-success" (click)="updateTest(test.id)" [routerLink]="['update-test', test.id]">Zmień</button>
+                    <button class="btn btn-link" (click)="downloadTest(test.id)">Pobierz</button>
+                </th>
+                <th>
+                    <button class="btn btn-success" [routerLink]="['update-test', test.id]">Zmień</button>
                 </th>
                 <th>
                     <button class="btn btn-danger" (click)="deleteTest(test)">Usuń</button>
@@ -26,3 +30,10 @@
 <ng-template #loading>
     <div class="spinner-grow spinner-grow-sm" role="status"></div>
 </ng-template>
+<input type="file" (change)="loadTest($event.target.files)">
+<button class="btn btn-success" (click)="importTest()">Importuj</button>
+
+<div class="mt-3">
+    <h5>Podgląd pliku</h5>
+    <pre> {{fileContent}} </pre>
+</div>

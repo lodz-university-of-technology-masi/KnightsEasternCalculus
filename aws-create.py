@@ -6,12 +6,15 @@ print("Fetching account info...")
 accountID = json.loads(subprocess.check_output("aws sts get-caller-identity", shell=True).decode("utf-8"))["Account"]
 print("The account id is {}".format(accountID))
 
+role_tmp = "arn:aws:iam::{}:role/{}"
+
 print("Creating lambda bucket...")
 subprocess.call("aws s3api create-bucket --bucket {}-kotec-lambda".format(accountID), shell=True)
 print("Uploading file...")
 subprocess.call("aws s3 cp lambda/build/distributions/lambda-0.1.zip s3://{}-kotec-lambda".format(accountID), shell=True)
 
-role = "arn:aws:iam::{}:role/lambda-cli-role".format(accountID)
+
+role = role_tmp.format(accountID, "lambda-cli-role")
 bucket_spec = "S3Bucket={}-kotec-lambda,S3Key=lambda-0.1.zip".format(accountID)
 
 print("Creating dynamodb table...")
@@ -45,10 +48,9 @@ for file in files:
     subprocess.call("aws lambda invoke --function-name add-applicant --payload fileb://{} dump".format(os.path.join("dummy-data", file)), shell=True)
 
 print("\tFilling S3...")
-subprocess.call("aws s3api create-bucket --bucket applicant-photos", shell=True)
-subprocess.call("aws s3 sync --acl public-read dummy-data/photos s3://applicant-photos", shell=True)
-
-print("Deploying API...")
+subprocess.call("aws s3api create-bucket --bucket applicant-photos", shell=True) 
+subprocess.call("aws s3 sync --acl public-read dummy-data/photos s3://applicant-photos", shell=True) 
+print("Deploying API...") 
 subprocess.call("aws apigateway create-deployment --rest-api-id {} --stage-name test".format(gatewayID), shell=True)
 
 print("Creating Cognito User Pool...")
@@ -64,13 +66,9 @@ print("\t\tUser Pool Id: {}\n\t\tClientId: {}".format(client["UserPoolId"], clie
 print("\tCreating Cognito User Groups...")
 
 print("\t\tRecruiter")
-subprocess.call("aws cognito-idp create-group --group-name recruiter --user-pool-id {}".format(pool_id), shell=True, stdout=subprocess.DEVNULL)
+subprocess.call("aws cognito-idp create-group --group-name recruiter --user-pool-id {} --role-arn {}".format(pool_id, role_tmp.format(accountID, "Cognito_kotecAuth_Role")), shell=True, stdout=subprocess.DEVNULL)
 print("\t\tClient")
-subprocess.call("aws cognito-idp create-group --group-name client --user-pool-id {}".format(pool_id), shell=True, stdout=subprocess.DEVNULL)
-
-print("\tAdding test account...")
-subprocess.call("aws cognito-idp admin-create-user --user-pool-id {} --username admin@example.com --user-attributes=Name=email,Value=admin@example.com --temporary-password password --message-action SUPPRESS".format(pool_id), shell=True)
-subprocess.call("aws cognito-idp admin-add-user-to-group --user-pool-id {} --username admin@example.com --group-name recruiter".format(pool_id), shell=True)
+subprocess.call("aws cognito-idp create-group --group-name client --user-pool-id {} --role-arn {}".format(pool_id, role_tmp.format(accountID, "Cognito_kotecAuth_Role")), shell=True, stdout=subprocess.DEVNULL)
 
 print("Creating Cognito Identity Pool")
 region = pool_id.split('_')[0]
@@ -78,6 +76,33 @@ provider = "cognito-idp.{}.amazonaws.com/{}".format(region, pool_id)
 identity_pool_id = json.loads(subprocess.check_output("aws cognito-identity create-identity-pool --identity-pool-name kotec_id --no-allow-unauthenticated-identities --cognito-identity-providers ProviderName={},ClientId={}".format(provider, client["ClientId"]), shell=True).decode('utf-8'))["IdentityPoolId"]
 print("\tCognito Identity Pool ID: {}".format(identity_pool_id))
 print("\tProvider: {}".format(provider))
+
+print("\tSetting roles for the Identity Pool")
+print("\t\tCreating roles...")
+with open("policy_template.json", 'r') as f:
+    policy_template = json.loads(f.read())
+
+# an absolutely fucking stupid way of doing it but... 
+policy_template['Statement'][0]['Condition']['StringEquals']['cognito-identity.amazonaws.com:aud'] = identity_pool_id
+policy_template['Statement'][0]['Condition']['ForAnyValue:StringLike']['cognito-identity.amazonaws.com:amr'] = 'authenticated'
+with open("policy.json", 'w') as f:
+    json.dump(policy_template, f)
+subprocess.call("aws iam create-role --role-name 'Cognito_kotecAuth_Role' --assume-role-policy-document file://policy.json", shell=True)
+subprocess.call("aws iam attach-role-policy --role-name Cognito_kotecAuth_Role --policy-arn arn:aws:iam::aws:policy/AmazonCognitoPowerUser", shell=True)
+
+policy_template['Statement'][0]['Condition']['ForAnyValue:StringLike']['cognito-identity.amazonaws.com:amr'] = 'unauthenticated'
+with open("policy.json", 'w') as f:
+    json.dump(policy_template, f)
+subprocess.call("aws iam create-role --role-name 'Cognito_kotecUnauth_Role' --assume-role-policy-document file://policy.json", shell=True)
+
+auth_role = role_tmp.format(accountID, "Cognito_kotecAuth_Role")
+unauth_role = role_tmp.format(accountID, "Cognito_kotecUnauth_Role")
+subprocess.call("aws cognito-identity set-identity-pool-roles --identity-pool-id {} --roles unauthenticated={},authenticated={}".format(identity_pool_id, unauth_role, auth_role), shell=True)
+
+print("\tAdding test account...")
+subprocess.call("aws cognito-idp admin-create-user --user-pool-id {} --username admin@example.com --user-attributes=Name=email,Value=admin@example.com --temporary-password password --message-action SUPPRESS".format(pool_id), shell=True)
+subprocess.call("aws cognito-idp admin-add-user-to-group --user-pool-id {} --username admin@example.com --group-name recruiter".format(pool_id), shell=True)
+
 
 print("Generating constants file...")
 with open(os.path.join("web", "src", "app", "app-consts.ts"), "w+") as file:

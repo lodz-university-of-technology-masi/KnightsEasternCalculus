@@ -43,17 +43,18 @@ export class AuthenticationRecruiterService {
           localStorage.setItem('refreshToken', result.getRefreshToken().getToken());
 
 
-          AWS.config.region = 'us-east-1';
-          AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-            IdentityPoolId: Globals.recruiterIdentityPoolId,
-            Logins: {
-              [`cognito-idp.us-east-1.amazonaws.com/${Globals.userPoolId}`]: result.getIdToken().getJwtToken()
-            }
-          });
+          // AWS.config.region = 'us-east-1';
+          // const tmp = new AWS.CognitoIdentityCredentials({
+          //   IdentityPoolId: Globals.recruiterIdentityPoolId,
+          //   Logins: {
+          //     [`cognito-idp.us-east-1.amazonaws.com/${Globals.userPoolId}`]: result.getIdToken().getJwtToken()
+          //   }
+          // });
+          //
+          // // bullshit workaround for updating the credentials params
+          // AWS.config.update({credentials: tmp, region: 'us-east-1'});
 
-          AWS.config.getCredentials( err => {
-            if (err) { observer.error(err); } else { console.log(AWS.config.credentials); }
-          });
+
 
           this.cognitoUser.getUserAttributes( (err, res) => {
             if (err) {
@@ -73,6 +74,7 @@ export class AuthenticationRecruiterService {
           console.log(err);
           observer.error(err);
         }, newPasswordRequired: ((userAttributes, requiredAttributes) => {
+          localStorage.setItem('email', userAttributes.email);
           delete userAttributes.email_verified;
           this.sessionUserAttributes = userAttributes;
           observer.next('newPass');
@@ -90,23 +92,54 @@ export class AuthenticationRecruiterService {
         Username: username
       };
 
-      this.cognitoUser.getSession((err, session) => {
-        if (err) {
-          observer.error(err);
-        }
+      if (this.cognitoUser != null ) {
+        this.cognitoUser.getSession( (err, session) => {
+          console.log('session valid: ', session.isValid());
 
-        console.log('session valid: ', session.isValid());
-      });
+          const loginProvider = {};
+          console.log(session.getIdToken().getJwtToken());
+          loginProvider[`cognito-idp.us-east-1.amazonaws.com/${Globals.userPoolId}`] = session.getIdToken().getJwtToken();
+          const creds = new AWS.CognitoIdentityCredentials({
+            IdentityPoolId: Globals.recruiterIdentityPoolId,
+            Logins: loginProvider
+          });
 
-      const idProvider = new AWS.CognitoIdentityServiceProvider();
-      idProvider.adminAddUserToGroup(params, (err, data) => {
-        if (err) {
-          observer.error(err);
-        } else {
-          observer.next(data);
-          observer.complete();
-        }
-      });
+          AWS.config.update({ credentials: creds, region: 'us-east-1'});
+          console.log(AWS.config.credentials);
+
+
+          AWS.config.getCredentials( error => {
+            if (error) {
+              console.log(error);
+            }
+            const idProvider = new AWS.CognitoIdentityServiceProvider();
+            idProvider.adminAddUserToGroup(params, (e, data) => {
+              if (e) {
+                observer.error(e);
+              } else {
+                observer.next(data);
+                observer.complete();
+              }
+            });
+          });
+          // AWS.config.credentials.refresh( error => {
+          //   if (error) {
+          //     console.log(error);
+          //   }
+          // });
+          //
+          // const idProvider = new AWS.CognitoIdentityServiceProvider();
+          // idProvider.adminAddUserToGroup(params, (e, data) => {
+          //   if (e) {
+          //     observer.error(e);
+          //   } else {
+          //     observer.next(data);
+          //     observer.complete();
+          //   }
+          // });
+        });
+      }
+
     });
   }
 
@@ -117,23 +150,26 @@ export class AuthenticationRecruiterService {
     };
 
     const cUser = new CognitoUser(userData);
-    cUser.confirmRegistration(code, false, (err, result) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
+    return new Observable( observer => {
+      cUser.confirmRegistration(code, false, (err, result) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
 
-      this.signIn(username, 'password').subscribe( res => {
-        this.cognitoUser.changePassword('password', password, (e, r) => {
-          if (e) {
-            console.log(e);
-          }
-        });
+        this.signIn(username, 'password').subscribe(res => {
+          this.cognitoUser.changePassword('password', password, (e, r) => {
+            if (e) {
+              console.log(e);
+            }
+          });
 
-        // TODO "this is only a temporary group name. Change when ready to the user group"
-        this.addToGroup(username, 'recruiter').subscribe(re => {
+          this.addToGroup(username, 'client').subscribe(re => {
+            observer.next('success');
+            observer.complete();
+            });
+          });
         });
-      });
     });
   }
 
@@ -200,7 +236,9 @@ export class AuthenticationRecruiterService {
   logOut() {
     localStorage.clear();
     sessionStorage.clear();
-    this.getUser().signOut();
+    if (this.getUser()) {
+      this.getUser().signOut();
+    }
     this.cognitoUser = null;
   }
 

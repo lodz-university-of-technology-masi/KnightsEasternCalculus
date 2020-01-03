@@ -7,9 +7,14 @@ export class Test {
     openQuestions: OpenQuestion[] = [];
     closeQuestions: CloseQuestion[] = [];
 
-    constructor(title: string, openQuestions: OpenQuestion[], closeQuestions: CloseQuestion[]){
+    constructor(id: string, title: string, openQuestions: OpenQuestion[], closeQuestions: CloseQuestion[]){
+        if(id != ""){
+            this.id = id;
+        }
         this.title = title;
         this.openQuestions = openQuestions;
         this.closeQuestions = closeQuestions;
     }
+
+
 }

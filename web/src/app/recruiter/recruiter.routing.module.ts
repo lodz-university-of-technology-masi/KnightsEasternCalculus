@@ -6,7 +6,8 @@ import { LinkGeneratorComponent } from './link-generator/link-generator.componen
 import { HomePageComponent } from './home-page/home-page.component';
 import { CreateTestComponent } from './create-test/create-test.component';
 import { ShowAllTestsComponent } from './show-all-tests/show-all-tests.component';
-import {AppRecruiterComponent} from './app-recruiter/app-recruiter.component';
+import { AppRecruiterComponent } from './app-recruiter/app-recruiter.component';
+import { UpdateTestComponent } from './update-test/update-test.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
       {
         path: 'show-all-tests',
         component: ShowAllTestsComponent
+      },
+      {
+        path: 'show-all-tests/update-test/:id',
+        component: UpdateTestComponent
       },
       {
         path: 'applicant/:id',

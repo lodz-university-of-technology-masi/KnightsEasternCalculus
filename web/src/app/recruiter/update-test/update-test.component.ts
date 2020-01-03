@@ -1,21 +1,25 @@
 import { Component, OnInit, Injectable } from '@angular/core';
-import { CloseQuestion } from '../../model/close-question';
-import { OpenQuestion } from '../../model/open-question';
-import { TestService } from '../../services/test.service';
+import { ActivatedRoute } from '@angular/router';
+import { TestService } from 'src/app/services/test.service';
+import { Test } from '../../model/test';
+import { CloseQuestion } from 'src/app/model/close-question';
+import { OpenQuestion } from 'src/app/model/open-question';
 
 @Component({
-  selector: 'app-create-test',
-  templateUrl: './create-test.component.html',
-  styleUrls: ['./create-test.component.scss']
+  selector: 'app-update-test',
+  templateUrl: './update-test.component.html',
+  styleUrls: ['./update-test.component.scss']
 })
 
 @Injectable()
-export class CreateTestComponent implements OnInit {
+export class UpdateTestComponent implements OnInit {
+  testId: string;
+  test: Test;
 
   constructor(
-    private testService: TestService
+    private testService: TestService,
+    private route: ActivatedRoute
   ) { }
-
 
   //#region "Init and choices beetween open and close question"
   ifOpen: boolean;
@@ -24,6 +28,9 @@ export class CreateTestComponent implements OnInit {
   ngOnInit() {
     this.ifOpen = false;
     this.ifClose = true;
+
+    this.route.paramMap.subscribe(value => this.testId = value.get('id'));
+    this.getTest(this.testId);
   }
 
   getIfOpen(): boolean {
@@ -46,7 +53,6 @@ export class CreateTestComponent implements OnInit {
   //#endregion
 
   //#region "Close Question"
-  closeQuestions: CloseQuestion[] = [];
   inputCloseQuestion: string;
   correctCloseAnswers: string[] = [];
   incorrectCloseAnswers: string[] = [];
@@ -67,7 +73,7 @@ export class CreateTestComponent implements OnInit {
 
   addCloseQuestion(): void {
     if (this.correctCloseAnswers.length != 0) {
-      this.closeQuestions.push(new CloseQuestion(this.inputCloseQuestion, this.correctCloseAnswers, this.incorrectCloseAnswers, this.inputMaxScoreClose));
+      this.test.closeQuestions.push(new CloseQuestion(this.inputCloseQuestion, this.correctCloseAnswers, this.incorrectCloseAnswers, this.inputMaxScoreClose));
       this.inputCloseQuestion = null;
       this.inputCorrectCloseAnswer = null;
       this.correctCloseAnswers = null;
@@ -80,7 +86,7 @@ export class CreateTestComponent implements OnInit {
   }
 
   removeCloseQuestion(closeQuestion: CloseQuestion): void {
-    this.closeQuestions.splice(this.closeQuestions.indexOf(closeQuestion), 1);
+    this.test.closeQuestions.splice(this.test.closeQuestions.indexOf(closeQuestion), 1);
   }
 
   onSelectCloseQuestion(closeQuestion: CloseQuestion): void {
@@ -89,21 +95,20 @@ export class CreateTestComponent implements OnInit {
   //#endregion
 
   //#region "Open Question"
-  openQuestions: OpenQuestion[] = [];
   inputOpenQuestion: string;
   inputCorrectOpenAnswer: string;
   selectedOpenQuestion: OpenQuestion;
   inputMaxScoreOpen; number;
 
   addOpenQuestion(): void {
-    this.openQuestions.push(new OpenQuestion(this.inputOpenQuestion, this.inputCorrectOpenAnswer, this.inputMaxScoreOpen))
+    this.test.openQuestions.push(new OpenQuestion(this.inputOpenQuestion, this.inputCorrectOpenAnswer, this.inputMaxScoreOpen))
     this.inputOpenQuestion = null;
     this.inputCorrectOpenAnswer = null;
     this.inputMaxScoreOpen = 1;
   }
 
   removeOpenQuestion(openQuestion: OpenQuestion): void {
-    this.openQuestions.splice(this.openQuestions.indexOf(openQuestion), 1);
+    this.test.openQuestions.splice(this.test.openQuestions.indexOf(openQuestion), 1);
   }
 
   onSelectOpenQuestion(openQuestion: OpenQuestion): void {
@@ -111,10 +116,17 @@ export class CreateTestComponent implements OnInit {
   }
   //#endregion
 
-  //#region "Create Test"
-  inputTestTitle: string = "";
-  public createTest(): void {
-    this.testService.createTest(this.inputTestTitle, this.openQuestions, this.closeQuestions);
+  //#region "Test Management"
+  public updateTest(): void {
+    this.testService.updateTest(this.test.id, this.test.title, this.test.openQuestions, this.test.closeQuestions);
+  }
+
+  getTest(id: string): void {
+    this.testService.getTest(id)
+      .subscribe((res: Response) => {
+        console.log(res.body);
+        this.test = <Test>JSON.parse(JSON.stringify(res.body));
+      });
   }
   //#endregion
 }

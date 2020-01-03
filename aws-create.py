@@ -1,17 +1,22 @@
 import subprocess
 import json
 import os
+import fileinput
+import re
 
 print("Fetching account info...")
-accountID = json.loads(subprocess.check_output("aws sts get-caller-identity", shell=True).decode("utf-8"))["Account"]
+accountID = json.loads(subprocess.check_output(
+    "aws sts get-caller-identity", shell=True).decode("utf-8"))["Account"]
 print("The account id is {}".format(accountID))
 
 role_tmp = "arn:aws:iam::{}:role/{}"
 
 print("Creating lambda bucket...")
-subprocess.call("aws s3api create-bucket --bucket {}-kotec-lambda".format(accountID), shell=True)
+subprocess.call(
+    "aws s3api create-bucket --bucket {}-kotec-lambda".format(accountID), shell=True)
 print("Uploading file...")
-subprocess.call("aws s3 cp lambda/build/distributions/lambda-0.1.zip s3://{}-kotec-lambda".format(accountID), shell=True)
+subprocess.call(
+    "aws s3 cp lambda/build/distributions/lambda-0.1.zip s3://{}-kotec-lambda".format(accountID), shell=True)
 
 
 role = role_tmp.format(accountID, "lambda-cli-role")
@@ -23,45 +28,64 @@ subprocess.call("aws dynamodb create-table --table-name Tests --attribute-defini
 
 print("Creating lambdas...")
 
-lambda_data=[("get-applicant", "lambda.applicant.GetApplicant"), ("get-applicants", "lambda.applicant.GetApplicants"), ("add-applicant", "lambda.applicant.AddApplicant"),
-             ("get-all-tests", "lambda.test.GetAllTests"), ("add-test", "lambda.test.AddTest"), ("delete-test", "lambda.test.DeleteTest"), ("update-test", "lambda.test.UpdateTest")]
+lambda_data = [("get-applicant", "lambda.applicant.GetApplicant"), ("get-applicants", "lambda.applicant.GetApplicants"), ("add-applicant", "lambda.applicant.AddApplicant"),
+               ("get-all-tests", "lambda.test.GetAllTests"), ("add-test", "lambda.test.AddTest"), ("delete-test", "lambda.test.DeleteTest"), ("update-test", "lambda.test.UpdateTest"), ("get-test", "lambda.test.GetTest")]
 
 for lam in lambda_data:
     print("\t"+lam[0])
-    subprocess.call("aws lambda create-function --function-name {} --code {} --handler {}::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(lam[0], bucket_spec, lam[1], role), shell=True)
+    subprocess.call("aws lambda create-function --function-name {} --code {} --handler {}::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(
+        lam[0], bucket_spec, lam[1], role), shell=True)
+
+with open('API-documentation.txt', 'r') as infile:
+    with open('API-documentation-customized.txt', 'w+') as outfile:
+        for line in infile:
+            outfile.write(re.sub('arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:.*?:function:',
+                                 'arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:{}:function:'.format(accountID), line, flags=re.DOTALL))
 
 print("Creating gateways...")
-gatewayID = json.loads(subprocess.check_output("aws apigateway import-rest-api --body fileb://API-documentation.txt", shell=True))["id"]
+gatewayID = json.loads(subprocess.check_output(
+    "aws apigateway import-rest-api --body fileb://API-documentation-customized.txt", shell=True))["id"]
 
-#lambda names to automate permission granting
-lambdas = ["get-applicant", "get-applicants"]
+
+# lambda names to automate permission granting
+lambdas = ["get-applicant", "get-applicants", "add-test",
+           "get-all-tests", "update-test", "delete-test", "get-test"]
 
 print("Granting lambda permissions...")
 for name in lambdas:
-    subprocess.call("aws lambda add-permission --function-name {0} --statement-id api-{0} --action lambda:InvokeFunction --principal apigateway.amazonaws.com --source-arn arn:aws:execute-api:us-east-1:{1}:{2}/*/**".format(name, accountID, gatewayID), shell=True)
+    subprocess.call("aws lambda add-permission --function-name {0} --statement-id api-{0} --action lambda:InvokeFunction --principal apigateway.amazonaws.com --source-arn arn:aws:execute-api:us-east-1:{1}:{2}/*/**".format(
+        name, accountID, gatewayID), shell=True)
 
 print("Filling test data...")
 files = ["marian.txt", "zosia.txt", "anna.txt"]
 
 print("\tFilling dynamodb")
 for file in files:
-    subprocess.call("aws lambda invoke --function-name add-applicant --payload fileb://{} dump".format(os.path.join("dummy-data", file)), shell=True)
+    subprocess.call("aws lambda invoke --function-name add-applicant --payload fileb://{} dump".format(
+        os.path.join("dummy-data", file)), shell=True)
 
 print("\tFilling S3...")
-subprocess.call("aws s3api create-bucket --bucket applicant-photos", shell=True) 
-subprocess.call("aws s3 sync --acl public-read dummy-data/photos s3://applicant-photos", shell=True) 
-print("Deploying API...") 
-subprocess.call("aws apigateway create-deployment --rest-api-id {} --stage-name test".format(gatewayID), shell=True)
+subprocess.call(
+    "aws s3api create-bucket --bucket applicant-photos", shell=True)
+subprocess.call(
+    "aws s3 sync --acl public-read dummy-data/photos s3://applicant-photos", shell=True)
+
+print("Deploying API...")
+subprocess.call(
+    "aws apigateway create-deployment --rest-api-id {} --stage-name test".format(gatewayID), shell=True)
 
 print("Creating Cognito User Pool...")
 
-pool_id = json.loads(subprocess.check_output("aws cognito-idp create-user-pool --cli-input-json fileb://cognito_config.json", shell=True))["UserPool"]["Id"]
+pool_id = json.loads(subprocess.check_output(
+    "aws cognito-idp create-user-pool --cli-input-json fileb://cognito_config.json", shell=True))["UserPool"]["Id"]
 print("\tThe pool id is {}".format(pool_id))
 
 print("\tCreating Cognito App Client...")
 
-client = json.loads(subprocess.check_output("aws cognito-idp create-user-pool-client --user-pool-id {} --client-name kotec --no-generate-secret --refresh-token-validity 3650".format(pool_id), shell=True).decode("utf-8"))["UserPoolClient"]
-print("\t\tUser Pool Id: {}\n\t\tClientId: {}".format(client["UserPoolId"], client["ClientId"]))
+client = json.loads(subprocess.check_output(
+    "aws cognito-idp create-user-pool-client --user-pool-id {} --client-name kotec --no-generate-secret --refresh-token-validity 3650".format(pool_id), shell=True).decode("utf-8"))["UserPoolClient"]
+print("\t\tUser Pool Id: {}\n\t\tClientId: {}".format(
+    client["UserPoolId"], client["ClientId"]))
 
 print("\tCreating Cognito User Groups...")
 
@@ -73,7 +97,8 @@ subprocess.call("aws cognito-idp create-group --group-name client --user-pool-id
 print("Creating Cognito Identity Pool")
 region = pool_id.split('_')[0]
 provider = "cognito-idp.{}.amazonaws.com/{}".format(region, pool_id)
-identity_pool_id = json.loads(subprocess.check_output("aws cognito-identity create-identity-pool --identity-pool-name kotec_id --no-allow-unauthenticated-identities --cognito-identity-providers ProviderName={},ClientId={}".format(provider, client["ClientId"]), shell=True).decode('utf-8'))["IdentityPoolId"]
+identity_pool_id = json.loads(subprocess.check_output("aws cognito-identity create-identity-pool --identity-pool-name kotec_id --no-allow-unauthenticated-identities --cognito-identity-providers ProviderName={},ClientId={}".format(
+    provider, client["ClientId"]), shell=True).decode('utf-8'))["IdentityPoolId"]
 print("\tCognito Identity Pool ID: {}".format(identity_pool_id))
 print("\tProvider: {}".format(provider))
 
@@ -107,8 +132,10 @@ subprocess.call("aws cognito-idp admin-add-user-to-group --user-pool-id {} --use
 print("Generating constants file...")
 with open(os.path.join("web", "src", "app", "app-consts.ts"), "w+") as file:
     file.write("export const apiBaseUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/applicant';\n".format(gatewayID))
+    file.write("export const apiTestUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/recruiter/tests';\n".format(gatewayID))
     file.write("export const userPoolId = '{}';\n".format(pool_id))
     file.write("export const clientId = '{}';\n".format(client["ClientId"]))
-    file.write("export const recruiterIdentityPoolId = '{}';\n".format(identity_pool_id))
+    file.write("export const recruiterIdentityPoolId = '{}';\n".format(
+        identity_pool_id))
 
 print("Script finished.")

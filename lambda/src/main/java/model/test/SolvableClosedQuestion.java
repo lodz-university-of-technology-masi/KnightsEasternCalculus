@@ -20,6 +20,7 @@ public class SolvableClosedQuestion {
         this.chosenAnswers = new ArrayList<String>();
     }
 
+
     public String getQuestion() {
         return question;
     }

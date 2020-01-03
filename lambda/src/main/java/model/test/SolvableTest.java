@@ -1,6 +1,7 @@
 package model.test;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SolvableTest {
@@ -9,13 +10,13 @@ public class SolvableTest {
     private String applicantID;
     private Timestamp timestamp;
     private String title;
-    private List<CloseQuestion> closeQuestions;
-    private List<OpenQuestion> openQuestions;
+    private List<SolvableClosedQuestion> closeQuestions;
+    private List<SolvableOpenQuestion> openQuestions;
     private float maxScore;
     private float receivedScore;
     private TestStatus status;
 
-    public SolvableTest(String applicantID, Timestamp timestamp, String title, List<CloseQuestion> closeQuestions, List<OpenQuestion> openQuestions, float maxScore, float receivedScore, TestStatus status) {
+    public SolvableTest(String applicantID, Timestamp timestamp, String title, List<SolvableClosedQuestion> closeQuestions, List<SolvableOpenQuestion> openQuestions, float maxScore, float receivedScore, TestStatus status) {
         this.applicantID = applicantID;
         this.timestamp = timestamp;
         this.title = title;
@@ -24,6 +25,24 @@ public class SolvableTest {
         this.maxScore = maxScore;
         this.receivedScore = receivedScore;
         this.status = status;
+    }
+
+    public SolvableTest(TestInstance test) {
+        this.applicantID = test.getApplicantID();
+        this.timestamp = test.getTimestamp();
+        this.title = test.getTitle();
+        this.maxScore = test.getMaxScore();
+        this.receivedScore = test.getReceivedScore();
+        this.status = test.getStatus();
+        this.closeQuestions = new ArrayList<>();
+        this.openQuestions = new ArrayList<>();
+
+        for (CloseQuestion c : test.getCloseQuestions()) {
+            this.closeQuestions.add(new SolvableClosedQuestion(c));
+        }
+        for (OpenQuestion o : test.getOpenQuestions()) {
+            this.openQuestions.add(new SolvableOpenQuestion(o));
+        }
     }
 
     public String getApplicantID() {
@@ -50,19 +69,19 @@ public class SolvableTest {
         this.title = title;
     }
 
-    public List<CloseQuestion> getCloseQuestions() {
+    public List<SolvableClosedQuestion> getCloseQuestions() {
         return closeQuestions;
     }
 
-    public void setCloseQuestions(List<CloseQuestion> closeQuestions) {
+    public void setCloseQuestions(List<SolvableClosedQuestion> closeQuestions) {
         this.closeQuestions = closeQuestions;
     }
 
-    public List<OpenQuestion> getOpenQuestions() {
+    public List<SolvableOpenQuestion> getOpenQuestions() {
         return openQuestions;
     }
 
-    public void setOpenQuestions(List<OpenQuestion> openQuestions) {
+    public void setOpenQuestions(List<SolvableOpenQuestion> openQuestions) {
         this.openQuestions = openQuestions;
     }
 

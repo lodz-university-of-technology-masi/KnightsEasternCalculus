@@ -13,4 +13,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
+  tmp() {
+    console.log(this.auth.getUsername());
+    console.log(this.auth.getAccessToken());
+  }
 }

@@ -62,4 +62,14 @@ for pool in id_pools:
 subprocess.call(
     "aws cognito-identity delete-identity-pool --identity-pool-id {}".format(id_pool_id), shell=True)
 
+print("Deleting IAM roles")
+arn = "arn:aws:iam::aws:policy/AmazonCognitoPowerUser"
+
+print("\tDetaching IAM policies...")
+subprocess.call("aws iam detach-role-policy --role-name Cognito_kotecAuth_Role --policy-arn {}".format(arn), shell=True)
+    
+
+subprocess.call("aws iam delete-role --role-name 'Cognito_kotecAuth_Role'", shell=True)
+subprocess.call("aws iam delete-role --role-name 'Cognito_kotecUnauth_Role'", shell=True)
+
 print("Script finished.")

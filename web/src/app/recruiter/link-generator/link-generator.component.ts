@@ -19,7 +19,7 @@ export class LinkGeneratorComponent implements OnInit {
   send() {
     this.authService.sendMail(this.mail).subscribe(result => {
       console.log('link-get');
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/recruiter');
     }, err => {
       console.log('error', err);
     });

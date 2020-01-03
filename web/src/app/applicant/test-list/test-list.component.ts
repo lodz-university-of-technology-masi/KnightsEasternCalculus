@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {SolvableTest} from '../../model/solvable-test';
+import {Component, OnInit} from '@angular/core';
+import {SolvableTest, TestStatus} from '../../model/solvable-test';
 import {TestService} from '../../services/test.service';
-import {TestStatus} from '../../model/solvable-test';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-test-list',
@@ -12,17 +12,23 @@ export class TestListComponent implements OnInit {
   testStatus = TestStatus;
   tests: SolvableTest[];
 
-  constructor(private testService: TestService) {}
+  constructor(private testService: TestService, private router: Router) {}
 
   ngOnInit() {
     this.getTests();
   }
 
   getTests() {
-    this.testService.getAllUserTests('username').subscribe(tests => this.tests = tests);
+    // this.testService.getAllUserTests('username').subscribe(tests => this.tests = tests);
+    this.testService.getAllTests().subscribe( (result: Response) => {
+      this.tests = JSON.parse(JSON.stringify(result.body));
+      console.log(this.tests);
+    });
+
   }
 
-  solve(index) {
-    console.log(index);
+  solve(id, timestamp) {
+    this.router.navigate(['applicant/solve_test', id]);
   }
+
 }

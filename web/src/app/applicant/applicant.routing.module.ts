@@ -4,6 +4,7 @@ import {AppApplicantComponent} from './app-applicant/app-applicant.component';
 import {HomePageComponent} from './home-page/home-page.component';
 import {MyProfileComponent} from './my-profile/my-profile.component';
 import {TestListComponent} from './test-list/test-list.component';
+import {SolveTestComponent} from './solve-test/solve-test.component';
 const routes: Routes = [
   {
     path: '', component: AppApplicantComponent, children: [
@@ -18,6 +19,10 @@ const routes: Routes = [
       {
         path: 'tests',
         component: TestListComponent
+      },
+      {
+        path: 'solve_test/:id',
+        component: SolveTestComponent
       }
     ]
   }

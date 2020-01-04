@@ -1,0 +1,49 @@
+<h3>Wyniki</h3>
+<div class="container my-4">
+  <div class="row justify-content-md-center border rounded p-3">
+    <div class="col col-lg-3 text-left">{{test.title}}</div>
+    <div class="col col-lg-3 text-center">{{test.receivedScore}} / {{test.maxScore}} pkt</div>
+    <div class="col col-lg-3 text-right">{{applicant.firstName}} {{applicant.lastName}}</div>
+  </div>
+</div>
+<div class="card my-3" *ngFor="let question of test.closeQuestions; let j = index">
+  <div class="card-header">Pytanie {{j+1}}</div>
+  <div class="row no-gutters">
+    <div class="col-md-auto">
+      <div class="card-body text-center" [ngClass]="{'text-success': question.receivedScore === question.maxScore, 'text-danger': question.receivedScore === 0}">
+      {{question.receivedScore}} / {{question.maxScore}} pkt
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div class="card-body form-group">
+        <label class="card-title h6">{{question.question}}</label>
+        <div class="form-check" *ngFor="let answer of question.answers; let i = index">
+          <input class="form-check-input" type="checkbox" onclick="return false;" [checked]="question.chosenAnswers.includes(i)">
+          <label class="form-check-label" [ngClass]="{'text-success': question.correctAnswers.includes(i),
+                 'text-danger': !question.correctAnswers.includes(i) && question.chosenAnswers.includes(i)}">{{answer}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card my-3" *ngFor="let question of test.openQuestions; let j = index">
+  <div class="card-header">Pytanie {{j+test.closeQuestions.length+1}}</div>
+  <div class="row no-gutters">
+    <div class="col-md-auto">
+      <div class="card-body text-center" [ngClass]="{'text-success': question.receivedScore === question.maxScore, 'text-danger': question.receivedScore === 0}">
+        {{question.receivedScore}} / {{question.maxScore}} pkt
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div class="card-body">
+        <label class="card-title h6">{{question.question}}</label>
+        <textarea class="form-control" disabled style="background: #FFF !important; color: #000 !important;" [value]="question.answer"></textarea>
+<!--        <p class="card-text">{{question.answer}}</p>-->
+        <div *ngIf="question.correctAnswer" class="mt-5">
+          <label class="text-muted">Przykładowa poprawna odpowiedź:</label>
+          <p class="card-text text-muted">{{question.correctAnswer}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

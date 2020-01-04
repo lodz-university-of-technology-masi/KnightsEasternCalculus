@@ -21,4 +21,8 @@ export class TestListComponent implements OnInit {
   getTests() {
     this.testService.getAllUserTests('username').subscribe(tests => this.tests = tests);
   }
+
+  solve(index) {
+    console.log(index);
+  }
 }

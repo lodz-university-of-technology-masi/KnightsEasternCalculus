@@ -3,10 +3,11 @@
 <ng-container *ngIf="tests; else loading">
   <ng-container *ngIf="tests.length > 0; else noEntries">
     <ul class="list-group">
-      <ng-container *ngFor="let test of tests">
+      <ng-container *ngFor="let test of tests; let i = index">
         <a class="list-group-item d-flex justify-content-between align-items-center list-group-item-action text-dark"
            *ngIf="test.status !== testStatus.Solved" [ngClass]="{'font-weight-bold': test.status===testStatus.NotSolved}" routerLink="{{test.timestamp}}">
           {{test.title}}
+          <button type="button" class="btn btn-primary" *ngIf="test.status == testStatus.NotSolved" (click)="this.solve(index)">Rozwiąż</button>
           <span class="badge badge-primary" *ngIf="test.status==testStatus.NotSolved">NIEROZWIĄZANY</span>
           <span class="badge badge-secondary" *ngIf="test.status==testStatus.Checked">SPRAWDZONY</span>
         </a>

@@ -24,7 +24,7 @@
           <th>{{closedQuestion.question}}</th>
         </tr>
         <tr>
-          <td *ngFor="let answer of closedQuestion.possibleAnswer; let j = index">
+          <td *ngFor="let answer of closedQuestion.answers; let j = index">
             <div>
               <input type="checkbox" id="{{j}},{{i}}" name="{{closedQuestion.question}}" value="{{answer}}" >
               <label for="{{j}},{{i}}">{{answer}}</label>

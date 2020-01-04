@@ -20,15 +20,17 @@ public class TestInstance implements Serializable {
 
     public TestInstance(){}
 
-    public TestInstance(String applicantID, long timestamp, String title, List<CloseQuestion> closeQuestions, List<OpenQuestion> openQuestions, float maxScore, float receivedScore, int status) {
+    public TestInstance(String applicantID, long timestamp, String title, List<SolvableClosedQuestion> closeQuestions, List<SolvableOpenQuestion> openQuestions, float maxScore, float receivedScore, int status) {
         this.applicantID = applicantID;
         this.timestamp = timestamp;
         this.title = title;
-        this.closeQuestions = closeQuestions;
-        this.openQuestions = openQuestions;
+//        this.closeQuestions = closeQuestions;
+//        this.openQuestions = openQuestions;
         this.maxScore = maxScore;
         this.receivedScore = receivedScore;
         this.status = status;
+
+        
     }
 
     @DynamoDBHashKey(attributeName = "applicantID")

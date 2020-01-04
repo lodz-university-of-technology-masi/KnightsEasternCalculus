@@ -1,14 +1,14 @@
-export class SolvedOpenQuestion {
+export class SolvableOpenQuestion {
   question: string;
-  public answer: string;
+  answer: string;
   maxScore: number;
-  receivedScore: number;
+  // receivedScore: number;
 
 
   constructor(question: string, answer: string, maxScore: number, receivedScore: number) {
     this.question = question;
     this.answer = answer;
     this.maxScore = maxScore;
-    this.receivedScore = receivedScore;
+    // this.receivedScore = receivedScore;
   }
 }

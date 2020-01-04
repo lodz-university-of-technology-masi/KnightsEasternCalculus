@@ -1,19 +1,19 @@
-import {SolvedOpenQuestion} from './solved-open-question';
-import {SolvedCloseQuestion} from './solved-close-question';
+import {SolvableOpenQuestion} from './solvable-open-question';
+import {SolvableCloseQuestion} from './solvable-close-question';
 
-export class SolvableTest {
+export class TestInstance {
   applicantId: string;
   timestamp: number;
   title: string;
   status: TestStatus;
-  openQuestions: SolvedOpenQuestion[];
-  closeQuestions: SolvedCloseQuestion[];
+  openQuestions: SolvableOpenQuestion[];
+  closeQuestions: SolvableCloseQuestion[];
   maxScore: number;
   receivedScore: number;
 
 
-  constructor(applicantId: string, timestamp: number, title: string, status: TestStatus, openQuestions: SolvedOpenQuestion[],
-              closeQuestions: SolvedCloseQuestion[], maxScore: number, receivedScore: number) {
+  constructor(applicantId: string, timestamp: number, title: string, status: TestStatus, openQuestions: SolvableOpenQuestion[],
+              closeQuestions: SolvableCloseQuestion[], maxScore: number, receivedScore: number) {
     this.applicantId = applicantId;
     this.timestamp = timestamp;
     this.title = title;

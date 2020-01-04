@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {SolvableTest, TestStatus} from '../../model/solvable-test';
+import { Component, OnInit } from '@angular/core';
+import {TestInstance} from '../../model/test-instance';
 import {TestService} from '../../services/test.service';
+import {TestStatus} from '../../model/test-instance';
 import {Router} from '@angular/router';
 
 @Component({
@@ -10,7 +11,7 @@ import {Router} from '@angular/router';
 })
 export class TestListComponent implements OnInit {
   testStatus = TestStatus;
-  tests: SolvableTest[];
+  tests: TestInstance[];
 
   constructor(private testService: TestService, private router: Router) {}
 
@@ -28,7 +29,7 @@ export class TestListComponent implements OnInit {
   }
 
   solve(id, timestamp) {
-    this.router.navigate(['applicant/solve_test', id + '=' + timestamp]);
+    this.router.navigate(['applicant/solve-test', id + '=' + timestamp]);
   }
 
 }

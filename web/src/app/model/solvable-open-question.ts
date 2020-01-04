@@ -1,4 +1,4 @@
-export class SolvedOpenQuestion {
+export class SolvableOpenQuestion {
   question: string;
   correctAnswer: string;
   answer: string;

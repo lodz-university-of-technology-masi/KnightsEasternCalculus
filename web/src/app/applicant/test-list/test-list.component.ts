@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {SolvableTest} from '../../model/solvable-test';
+import {TestInstance} from '../../model/test-instance';
 import {TestService} from '../../services/test.service';
-import {TestStatus} from '../../model/solvable-test';
+import {TestStatus} from '../../model/test-instance';
 
 @Component({
   selector: 'app-test-list',
@@ -10,7 +10,7 @@ import {TestStatus} from '../../model/solvable-test';
 })
 export class TestListComponent implements OnInit {
   testStatus = TestStatus;
-  tests: SolvableTest[];
+  tests: TestInstance[];
 
   constructor(private testService: TestService) {}
 

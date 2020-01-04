@@ -8,6 +8,7 @@ import {ApplicantRoutingModule} from './applicant.routing.module';
 import { MyProfileComponent } from './my-profile/my-profile.component';
 import {CommonComponentsModule} from '../common-components/common-components.module';
 import { TestListComponent } from './test-list/test-list.component';
+import { SolvedTestComponent } from './solved-test/solved-test.component';
 
 
 
@@ -17,7 +18,8 @@ import { TestListComponent } from './test-list/test-list.component';
     HomePageComponent,
     AppApplicantComponent,
     MyProfileComponent,
-    TestListComponent
+    TestListComponent,
+    SolvedTestComponent
   ],
   imports: [
     CommonModule,
@@ -27,3 +29,4 @@ import { TestListComponent } from './test-list/test-list.component';
   ]
 })
 export class ApplicantModule { }
+

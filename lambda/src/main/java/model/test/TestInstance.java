@@ -1,19 +1,16 @@
 package model.test;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedJson;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.List;
 
 @DynamoDBTable(tableName="TestInstances")
 public class TestInstance implements Serializable {
 
     private String applicantID;
-    private String timestamp;
+    private long timestamp;
     private String title;
     private List<CloseQuestion> closeQuestions;
     private List<OpenQuestion> openQuestions;
@@ -23,7 +20,7 @@ public class TestInstance implements Serializable {
 
     public TestInstance(){}
 
-    public TestInstance(String applicantID, String timestamp, String title, List<CloseQuestion> closeQuestions, List<OpenQuestion> openQuestions, float maxScore, float receivedScore, int status) {
+    public TestInstance(String applicantID, long timestamp, String title, List<CloseQuestion> closeQuestions, List<OpenQuestion> openQuestions, float maxScore, float receivedScore, int status) {
         this.applicantID = applicantID;
         this.timestamp = timestamp;
         this.title = title;
@@ -44,15 +41,14 @@ public class TestInstance implements Serializable {
     }
 
     @DynamoDBHashKey(attributeName = "timestamp")
-    public String getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 
-    @DynamoDBAttribute(attributeName = "title")
     public String getTitle() {
         return title;
     }
@@ -61,8 +57,7 @@ public class TestInstance implements Serializable {
         this.title = title;
     }
 
-    @DynamoDBAttribute(attributeName = "closedQuestions")
-    @DynamoDBTypeConvertedJson
+
     public List<CloseQuestion> getCloseQuestions() {
         return closeQuestions;
     }
@@ -71,8 +66,7 @@ public class TestInstance implements Serializable {
         this.closeQuestions = closeQuestions;
     }
 
-    @DynamoDBAttribute(attributeName = "openQuestions")
-    @DynamoDBTypeConvertedJson
+
     public List<OpenQuestion> getOpenQuestions() {
         return openQuestions;
     }
@@ -81,7 +75,7 @@ public class TestInstance implements Serializable {
         this.openQuestions = openQuestions;
     }
 
-    @DynamoDBAttribute(attributeName = "maxScore")
+
     public float getMaxScore() {
         return maxScore;
     }
@@ -90,7 +84,7 @@ public class TestInstance implements Serializable {
         this.maxScore = maxScore;
     }
 
-    @DynamoDBAttribute(attributeName = "receivedScore")
+
     public float getReceivedScore() {
         return receivedScore;
     }
@@ -99,7 +93,7 @@ public class TestInstance implements Serializable {
         this.receivedScore = receivedScore;
     }
 
-    @DynamoDBAttribute(attributeName = "status")
+
     public int getStatus() {
         return status;
     }

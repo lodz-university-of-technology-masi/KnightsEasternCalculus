@@ -13,19 +13,19 @@ role_tmp = "arn:aws:iam::{}:role/{}"
 
 print("Creating lambda bucket...")
 subprocess.call(
-    "aws s3api create-bucket --bucket {}-kotec-lambda".format(accountID), shell=True)
+    "aws s3api create-bucket --bucket {}-kotec-lambda-{}".format(accountID, accountID), shell=True)
 print("Uploading file...")
 subprocess.call(
-    "aws s3 cp lambda/build/distributions/lambda-0.1.zip s3://{}-kotec-lambda".format(accountID), shell=True)
+    "aws s3 cp lambda/build/distributions/lambda-0.1.zip s3://{}-kotec-lambda-{}".format(accountID, accountID), shell=True)
 
 
 role = role_tmp.format(accountID, "lambda-cli-role")
-bucket_spec = "S3Bucket={}-kotec-lambda,S3Key=lambda-0.1.zip".format(accountID)
+bucket_spec = "S3Bucket={}-kotec-lambda-{},S3Key=lambda-0.1.zip".format(accountID, accountID)
 
 print("Creating dynamodb table...")
 subprocess.call("aws dynamodb create-table --table-name Applicant --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
 subprocess.call("aws dynamodb create-table --table-name Tests --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
-subprocess.call("aws dynamodb create-table --table-name TestInstances --attribute-definitions AttributeName=applicantID,AttributeType=S AttributeName=timestamp,AttributeType=S --key-schema AttributeName=applicantID,KeyType=HASH AttributeName=timestamp,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
+subprocess.call("aws dynamodb create-table --table-name TestInstances --attribute-definitions AttributeName=applicantID,AttributeType=S AttributeName=timestamp,AttributeType=N --key-schema AttributeName=applicantID,KeyType=HASH AttributeName=timestamp,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
 
 print("Creating lambdas...")
 

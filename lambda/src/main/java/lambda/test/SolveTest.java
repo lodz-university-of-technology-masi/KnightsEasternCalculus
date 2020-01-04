@@ -15,11 +15,11 @@ public class SolveTest extends Handler<SolvableTest> {
     public Response handleRequest(SolvableTest input, Context context) {
         if (input != null) {
             String appID = input.getApplicantID();
-            String time = input.getTimestamp();
+            long time = input.getTimestamp();
             List<TestInstance> tests = getMapper().scan(TestInstance.class, new DynamoDBScanExpression());
             TestInstance test = new TestInstance();
             for (TestInstance t : tests) {
-                if (t.getApplicantID().equals(appID) && t.getTimestamp().equals(time)) {
+                if (t.getApplicantID().equals(appID) && t.getTimestamp() == time) {
                     test = t;
                     break;
                 }

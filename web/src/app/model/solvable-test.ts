@@ -3,7 +3,7 @@ import {SolvedCloseQuestion} from './solved-close-question';
 
 export class SolvableTest {
   applicantId: string;
-  timestamp: string;
+  timestamp: number;
   title: string;
   status: TestStatus;
   openQuestions: SolvedOpenQuestion[];
@@ -12,7 +12,8 @@ export class SolvableTest {
   receivedScore: number;
 
 
-  constructor(applicantId: string, timestamp: string, title: string, status: TestStatus, openQuestions: SolvedOpenQuestion[], closeQuestions: SolvedCloseQuestion[], maxScore: number, receivedScore: number) {
+  constructor(applicantId: string, timestamp: number, title: string, status: TestStatus, openQuestions: SolvedOpenQuestion[],
+              closeQuestions: SolvedCloseQuestion[], maxScore: number, receivedScore: number) {
     this.applicantId = applicantId;
     this.timestamp = timestamp;
     this.title = title;

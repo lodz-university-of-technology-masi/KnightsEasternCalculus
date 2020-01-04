@@ -8,7 +8,7 @@ public class SolvableTest implements Serializable {
 
 
     private String applicantID;
-    private String timestamp;
+    private long timestamp;
     private String title;
     private List<SolvableClosedQuestion> closeQuestions;
     private List<SolvableOpenQuestion> openQuestions;
@@ -18,7 +18,7 @@ public class SolvableTest implements Serializable {
 
     public SolvableTest() {}
 
-    public SolvableTest(String applicantID, String timestamp, String title, List<SolvableClosedQuestion> closeQuestions, List<SolvableOpenQuestion> openQuestions, float maxScore, float receivedScore, int status) {
+    public SolvableTest(String applicantID, long timestamp, String title, List<SolvableClosedQuestion> closeQuestions, List<SolvableOpenQuestion> openQuestions, float maxScore, float receivedScore, int status) {
         this.applicantID = applicantID;
         this.timestamp = timestamp;
         this.title = title;
@@ -55,11 +55,11 @@ public class SolvableTest implements Serializable {
         this.applicantID = applicantID;
     }
 
-    public String getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 

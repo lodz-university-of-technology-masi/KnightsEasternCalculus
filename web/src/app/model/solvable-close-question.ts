@@ -2,14 +2,16 @@ export class SolvableCloseQuestion {
   question: string;
   answers: string[];
   chosenAnswers: number[];
+  correctAnswers: number[];
   maxScore: number;
-  // receivedScore: number;
+  receivedScore: number;
 
-  constructor(question: string, answers: string[], chosenAnswers: number[], maxScore: number, receivedScore: number) {
+  constructor(question: string, answers: string[], chosenAnswers: number[], maxScore: number, receivedScore: number, correctAnswers: number[]) {
     this.question = question;
     this.answers = answers;
     this.chosenAnswers = chosenAnswers;
     this.maxScore = maxScore;
-    // this.receivedScore = receivedScore;
+    this.receivedScore = receivedScore;
+    this.correctAnswers = correctAnswers;
   }
 }

@@ -121,16 +121,16 @@ export class TestService {
   public getAllUserTests(username: string) {
     return of([new TestInstance('2', 1, 'Computer Systems Comprehension I', TestStatus.NotSolved, [], [], 100, 0),
       new TestInstance('3', 1, 'Am I an idiot? Find the type of bread you are.', TestStatus.NotSolved,
-        [new SolvableOpenQuestion('What is a v table?', '', 10, 0),
-          new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', '', 20, 15)],
-        [new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[];', 'int[5] i;', 'int i[] = new int[10];'],  [], 20, 0),
-          new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning an array of int pointers'],  [], 10, 0)],
+        [new SolvableOpenQuestion('What is a v table?', '', 10, 0, ''),
+          new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', '', 20, 15, '')],
+        [new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[];', 'int[5] i;', 'int i[] = new int[10];'],  [], 20, 0, []),
+          new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning an array of int pointers'],  [], 10, 0, [])],
         60, 15),
       new TestInstance('3', 1, 'C++ basic knowledge', TestStatus.Checked,
-        [new SolvableOpenQuestion('What is a v table?', '', 10, 0),
-          new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', '', 20, 15)],
-        [new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[5];', 'int i[2] = {1};'], [], 20, 0),
-          new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning an array of int pointers'], [], 10, 0)],
+        [new SolvableOpenQuestion('What is a v table?', '', 10, 0, ''),
+          new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', '', 20, 15, '')],
+        [new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[5];', 'int i[2] = {1};'], [], 20, 0, []),
+          new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning an array of int pointers'], [], 10, 0, [])],
         60, 15)]);
   }
 

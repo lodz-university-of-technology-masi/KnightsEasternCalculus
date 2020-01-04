@@ -13,6 +13,7 @@ public class SolvableClosedQuestion implements Serializable {
     private ArrayList<Integer> chosenAnswers;
     private ArrayList<Integer> correctAnswers;
     private int maxScore;
+    private float receivedScore;
 
     public SolvableClosedQuestion() {
     }
@@ -29,7 +30,7 @@ public class SolvableClosedQuestion implements Serializable {
         selectCorrectAnswers(closeQuestion.getCorrectAnswers());
     }
 
-    public void selectCorrectAnswers(ArrayList<String> answers) {
+    private void selectCorrectAnswers(ArrayList<String> answers) {
         for (int i = 0; i < answers.size(); i++) {
             if (answers.get(i).equals(this.answers.get(i))) {
                 this.correctAnswers.add(i);
@@ -68,5 +69,21 @@ public class SolvableClosedQuestion implements Serializable {
 
     public void setMaxScore(int maxScore) {
         this.maxScore = maxScore;
+    }
+
+    public ArrayList<Integer> getCorrectAnswers() {
+        return correctAnswers;
+    }
+
+    public void setCorrectAnswers(ArrayList<Integer> correctAnswers) {
+        this.correctAnswers = correctAnswers;
+    }
+
+    public float getReceivedScore() {
+        return receivedScore;
+    }
+
+    public void setReceivedScore(float receivedScore) {
+        this.receivedScore = receivedScore;
     }
 }

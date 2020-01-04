@@ -3,16 +3,15 @@ package lambda.test;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
-import model.test.SolvableTest;
 import model.test.TestInstance;
 import util.Response;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SolveTest extends Handler<SolvableTest> {
+public class SolveTest extends Handler<TestInstance> {
     @Override
-    public Response handleRequest(SolvableTest input, Context context) {
+    public Response handleRequest(TestInstance input, Context context) {
         if (input != null) {
             String appID = input.getApplicantID();
             long time = input.getTimestamp();
@@ -51,36 +50,40 @@ public class SolveTest extends Handler<SolvableTest> {
 
     }
 
-    private ArrayList<Double> checkClosed(SolvableTest sTest, TestInstance test) {
-        ArrayList<Double> answers = new ArrayList<>();
-        for (int i = 0; i < sTest.getCloseQuestions().size(); i++) {
-            answers.add(0.0);
-        }
-
-        for (int i = 0; i < sTest.getCloseQuestions().size() ; i++) {
-            for (String answer : sTest.getCloseQuestions().get(i).getChosenAnswers()) {
-                if (test.getCloseQuestions().get(i).getCorrectAnswers().contains(answer)) {
-                    Double tmp = answers.get(i);
-                    answers.set(i, tmp + (test.getCloseQuestions().get(i).getMaxScore() / test.getCloseQuestions().size()));
-                }
-            }
-        }
-
-        return answers;
+    private ArrayList<Double> checkClosed(TestInstance sTest, TestInstance test) {
+//        ArrayList<Double> answers = new ArrayList<>();
+//        for (int i = 0; i < sTest.getCloseQuestions().size(); i++) {
+//            answers.add(0.0);
+//        }
+//
+//        for (int i = 0; i < sTest.getCloseQuestions().size() ; i++) {
+//            for (String answer : sTest.getCloseQuestions().get(i).getChosenAnswers()) {
+//                if (test.getCloseQuestions().get(i).getCorrectAnswers().contains(answer)) {
+//                    Double tmp = answers.get(i);
+//                    answers.set(i, tmp + (test.getCloseQuestions().get(i).getMaxScore() / test.getCloseQuestions().size()));
+//                }
+//            }
+//        }
+//
+//        return answers;
+        // TODO
+        return null;
     }
 
-    private ArrayList<Double> checkOpen(SolvableTest sTest, TestInstance test) {
-        ArrayList<Double> answers = new ArrayList<>();
-        for (int i = 0; i < sTest.getOpenQuestions().size(); i++) {
-            answers.add(0.0);
-        }
-
-        for (int i = 0; i < sTest.getOpenQuestions().size(); i++) {
-            if (sTest.getOpenQuestions().get(i).getAnswer().equals(test.getOpenQuestions().get(i).getCorrectAnswer())) {
-                answers.set(i, (double) test.getOpenQuestions().get(i).getMaxScore());
-            }
-        }
-
-        return answers;
+    private ArrayList<Double> checkOpen(TestInstance sTest, TestInstance test) {
+//        ArrayList<Double> answers = new ArrayList<>();
+//        for (int i = 0; i < sTest.getOpenQuestions().size(); i++) {
+//            answers.add(0.0);
+//        }
+//
+//        for (int i = 0; i < sTest.getOpenQuestions().size(); i++) {
+//            if (sTest.getOpenQuestions().get(i).getAnswer().equals(test.getOpenQuestions().get(i).getCorrectAnswer())) {
+//                answers.set(i, (double) test.getOpenQuestions().get(i).getMaxScore());
+//            }
+//        }
+//
+//        return answers;
+        //TODO
+        return null;
     }
 }

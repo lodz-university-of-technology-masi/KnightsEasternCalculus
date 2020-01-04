@@ -12,8 +12,8 @@ public class TestInstance implements Serializable {
     private String applicantID;
     private long timestamp;
     private String title;
-    private List<CloseQuestion> closeQuestions;
-    private List<OpenQuestion> openQuestions;
+    private List<SolvableClosedQuestion> closeQuestions;
+    private List<SolvableOpenQuestion> openQuestions;
     private float maxScore;
     private float receivedScore;
     private int status;
@@ -24,13 +24,13 @@ public class TestInstance implements Serializable {
         this.applicantID = applicantID;
         this.timestamp = timestamp;
         this.title = title;
-//        this.closeQuestions = closeQuestions;
-//        this.openQuestions = openQuestions;
+        this.closeQuestions = closeQuestions;
+        this.openQuestions = openQuestions;
         this.maxScore = maxScore;
         this.receivedScore = receivedScore;
         this.status = status;
 
-        
+
     }
 
     @DynamoDBHashKey(attributeName = "applicantID")
@@ -60,20 +60,20 @@ public class TestInstance implements Serializable {
     }
 
 
-    public List<CloseQuestion> getCloseQuestions() {
+    public List<SolvableClosedQuestion> getCloseQuestions() {
         return closeQuestions;
     }
 
-    public void setCloseQuestions(List<CloseQuestion> closeQuestions) {
+    public void setCloseQuestions(List<SolvableClosedQuestion> closeQuestions) {
         this.closeQuestions = closeQuestions;
     }
 
 
-    public List<OpenQuestion> getOpenQuestions() {
+    public List<SolvableOpenQuestion> getOpenQuestions() {
         return openQuestions;
     }
 
-    public void setOpenQuestions(List<OpenQuestion> openQuestions) {
+    public void setOpenQuestions(List<SolvableOpenQuestion> openQuestions) {
         this.openQuestions = openQuestions;
     }
 

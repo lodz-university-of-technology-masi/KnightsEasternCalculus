@@ -19,16 +19,16 @@ export class TestListComponent implements OnInit {
   }
 
   getTests() {
-    // this.testService.getAllUserTests('username').subscribe(tests => this.tests = tests);
-    this.testService.getAllTests().subscribe( (result: Response) => {
-      this.tests = JSON.parse(JSON.stringify(result.body));
-      console.log(this.tests);
-    });
+    this.testService.getAllUserTests('username').subscribe(tests => this.tests = tests);
+    // this.testService.getAllTests().subscribe( (result: Response) => {
+    //   this.tests = JSON.parse(JSON.stringify(result.body));
+    //   console.log(this.tests);
+    // });
 
   }
 
   solve(id, timestamp) {
-    this.router.navigate(['applicant/solve_test', id]);
+    this.router.navigate(['applicant/solve_test', id + '=' + timestamp]);
   }
 
 }

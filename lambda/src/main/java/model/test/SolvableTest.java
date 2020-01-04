@@ -16,6 +16,8 @@ public class SolvableTest {
     private float receivedScore;
     private TestStatus status;
 
+    public SolvableTest() {}
+
     public SolvableTest(String applicantID, Timestamp timestamp, String title, List<SolvableClosedQuestion> closeQuestions, List<SolvableOpenQuestion> openQuestions, float maxScore, float receivedScore, TestStatus status) {
         this.applicantID = applicantID;
         this.timestamp = timestamp;

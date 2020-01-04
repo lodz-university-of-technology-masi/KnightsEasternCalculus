@@ -119,15 +119,15 @@ export class TestService {
 
   public getAllUserTests(username: string) {
     return of([new SolvableTest('2', '1', 'Computer Systems Comprehension I', TestStatus.NotSolved, [], [], 100, 0),
-      new SolvableTest('2', '1', 'Am I an idiot? Find the type of bread you are.', TestStatus.Solved,
-        [new SolvedOpenQuestion('What is a v table?', 'A lookup table of functions used to resolve virtual function calls', 'I don\'t know, sorry', 10, 0),
-          new SolvedOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', 'while(i++%14 != 0);', 'while(i % 14 != 0) {i+= 1;}', 20, 15)],
-        [new SolvedCloseQuestion('Choose the correct array declaration method.', ['int i[5];', 'int i[2] = {1};'], ['int i[];', 'int[5] i;', 'int i[] = new int[10];'], [1, 3], 20, 0),
-          new SolvedCloseQuestion('What does this pointer point to? int (*fpa())[]', new Array('a function returning a pointer to an array of ints'), ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning an array of int pointers'], new Array(2), 10, 0)],
+      new SolvableTest('3', '1', 'Am I an idiot? Find the type of bread you are.', TestStatus.NotSolved,
+        [new SolvedOpenQuestion('What is a v table?', '', 10, 0),
+          new SolvedOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', '', 20, 15)],
+        [new SolvedCloseQuestion('Choose the correct array declaration method.', [], ['int i[];', 'int[5] i;', 'int i[] = new int[10];'], [], 20, 0),
+          new SolvedCloseQuestion('What does this pointer point to? int (*fpa())[]', [], ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning an array of int pointers'], new Array(2), 10, 0)],
         60, 15),
       new SolvableTest('3', '0', 'C++ basic knowledge', TestStatus.Checked,
-        [new SolvedOpenQuestion('What is a v table?', 'A lookup table of functions used to resolve virtual function calls', 'I don\'t know, sorry', 10, 0),
-          new SolvedOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', 'while(i++%14 != 0);', 'while(i % 14 != 0) {i+= 1;}', 20, 15)],
+        [new SolvedOpenQuestion('What is a v table?', '', 10, 0),
+          new SolvedOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', '', 20, 15)],
         [new SolvedCloseQuestion('Choose the correct array declaration method.', ['int i[5];', 'int i[2] = {1};'], ['int i[];', 'int[5] i;', 'int i[] = new int[10];'], [1, 3], 20, 0),
           new SolvedCloseQuestion('What does this pointer point to? int (*fpa())[]', new Array('a function returning a pointer to an array of ints'), ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning an array of int pointers'], new Array(2), 10, 0)],
         60, 15)]);
@@ -144,5 +144,17 @@ export class TestService {
     this.httpClient.delete(this.testUrl, httpOptions)
       .subscribe((res: Response) =>
         console.log(res.body));
+  }
+
+  public sendSolvedTest(test: SolvableTest) {
+      // this.httpClient.post(Globals.apiSolveUrl.replace('\{ID\}', test.applicantId), httpOptions).subscribe( {
+      //   error: err => {
+      //     console.log(err);
+      //   },
+      //   next: value => {
+      //     console.log(value);
+      //   }
+      // });
+    console.log(JSON.stringify(test));
   }
 }

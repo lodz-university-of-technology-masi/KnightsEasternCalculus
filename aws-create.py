@@ -29,7 +29,8 @@ subprocess.call("aws dynamodb create-table --table-name Tests --attribute-defini
 print("Creating lambdas...")
 
 lambda_data = [("get-applicant", "lambda.applicant.GetApplicant"), ("get-applicants", "lambda.applicant.GetApplicants"), ("add-applicant", "lambda.applicant.AddApplicant"),
-               ("get-all-tests", "lambda.test.GetAllTests"), ("add-test", "lambda.test.AddTest"), ("delete-test", "lambda.test.DeleteTest"), ("update-test", "lambda.test.UpdateTest"), ("get-test", "lambda.test.GetTest")]
+               ("get-all-tests", "lambda.test.GetAllTests"), ("add-test", "lambda.test.AddTest"), ("delete-test", "lambda.test.DeleteTest"), ("update-test", "lambda.test.UpdateTest"), ("get-test", "lambda.test.GetTest"),
+               ("solve-test", "lambda.test.SolveTest")]
 
 for lam in lambda_data:
     print("\t"+lam[0])
@@ -49,7 +50,7 @@ gatewayID = json.loads(subprocess.check_output(
 
 # lambda names to automate permission granting
 lambdas = ["get-applicant", "get-applicants", "add-test",
-           "get-all-tests", "update-test", "delete-test", "get-test"]
+           "get-all-tests", "update-test", "delete-test", "get-test", "solve-test"]
 
 print("Granting lambda permissions...")
 for name in lambdas:

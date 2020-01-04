@@ -1,5 +1,7 @@
 package model.test;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
+
 import java.util.ArrayList;
 
 public class SolvableClosedQuestion {

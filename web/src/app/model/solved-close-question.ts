@@ -1,15 +1,15 @@
 export class SolvedCloseQuestion {
   question: string;
-  correctAnswers: string[];
-  incorrectAnswers: string[];
+  chosenAnswer: string[];
+  possibleAnswer: string[];
   answers: number[];
   maxScore: number;
   receivedScore: number;
 
-  constructor(question: string, correctAnswers: string[], incorrectAnswers: string[], answers: number[], maxScore: number, receivedScore: number) {
+  constructor(question: string, chosenAnswer: string[], possibleAnswer: string[], answers: number[], maxScore: number, receivedScore: number) {
     this.question = question;
-    this.correctAnswers = correctAnswers;
-    this.incorrectAnswers = incorrectAnswers;
+    this.chosenAnswer = chosenAnswer;
+    this.possibleAnswer = possibleAnswer;
     this.answers = answers;
     this.maxScore = maxScore;
     this.receivedScore = receivedScore;

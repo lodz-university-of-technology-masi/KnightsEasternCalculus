@@ -1,0 +1,39 @@
+<h2 class="mt-2">{{test.title}}</h2>
+<div>
+  <div class="card-body" *ngIf="test.openQuestions.length != 0">
+    <table class="table table-hover">
+      <tbody>
+        <div *ngFor="let openQuestion of test.openQuestions">
+          <tr>
+            <th>{{openQuestion.question}}</th>
+          </tr>
+          <tr>
+            <td>
+              <input [(ngModel)]="openQuestion.answer" />
+            </td>
+          </tr>
+        </div>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-body" *ngIf="test.closeQuestions.length != 0">
+    <table class="table table-hover">
+      <tbody>
+      <div *ngFor="let closedQuestion of test.closeQuestions; let i = index">
+        <tr>
+          <th>{{closedQuestion.question}}</th>
+        </tr>
+        <tr>
+          <td *ngFor="let answer of closedQuestion.possibleAnswer; let j = index">
+            <div>
+              <input type="checkbox" id="{{j}},{{i}}" name="{{closedQuestion.question}}" value="{{answer}}" >
+              <label for="{{j}},{{i}}">{{answer}}</label>
+            </div>
+          </td>
+        </tr>
+      </div>
+      </tbody>
+    </table>
+  </div>
+</div>
+<button type="button" class="btn" (click)="send()">Wyślij</button>

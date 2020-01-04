@@ -1,8 +1,13 @@
 package model.test;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+
 import java.sql.Timestamp;
 import java.util.List;
 
+@DynamoDBTable(tableName="testInstance")
 public class TestInstance {
 
     private String applicantID;
@@ -13,6 +18,8 @@ public class TestInstance {
     private float maxScore;
     private float receivedScore;
     private TestStatus status;
+
+    public TestInstance(){}
 
     public TestInstance(String applicantID, Timestamp timestamp, String title, List<CloseQuestion> closeQuestions, List<OpenQuestion> openQuestions, float maxScore, float receivedScore, TestStatus status) {
         this.applicantID = applicantID;
@@ -25,6 +32,7 @@ public class TestInstance {
         this.status = status;
     }
 
+    @DynamoDBHashKey(attributeName = "applicantID")
     public String getApplicantID() {
         return applicantID;
     }
@@ -33,6 +41,7 @@ public class TestInstance {
         this.applicantID = applicantID;
     }
 
+    @DynamoDBHashKey(attributeName = "timestamp")
     public Timestamp getTimestamp() {
         return timestamp;
     }
@@ -41,6 +50,7 @@ public class TestInstance {
         this.timestamp = timestamp;
     }
 
+    @DynamoDBAttribute(attributeName = "title")
     public String getTitle() {
         return title;
     }
@@ -49,6 +59,7 @@ public class TestInstance {
         this.title = title;
     }
 
+    @DynamoDBAttribute(attributeName = "closedQuestions")
     public List<CloseQuestion> getCloseQuestions() {
         return closeQuestions;
     }
@@ -57,6 +68,7 @@ public class TestInstance {
         this.closeQuestions = closeQuestions;
     }
 
+    @DynamoDBAttribute(attributeName = "openQuestions")
     public List<OpenQuestion> getOpenQuestions() {
         return openQuestions;
     }
@@ -65,6 +77,7 @@ public class TestInstance {
         this.openQuestions = openQuestions;
     }
 
+    @DynamoDBAttribute(attributeName = "maxScore")
     public float getMaxScore() {
         return maxScore;
     }
@@ -73,6 +86,7 @@ public class TestInstance {
         this.maxScore = maxScore;
     }
 
+    @DynamoDBAttribute(attributeName = "receivedScore")
     public float getReceivedScore() {
         return receivedScore;
     }
@@ -81,6 +95,7 @@ public class TestInstance {
         this.receivedScore = receivedScore;
     }
 
+    @DynamoDBAttribute(attributeName = "status")
     public TestStatus getStatus() {
         return status;
     }

@@ -30,4 +30,12 @@ public class SolvableOpenQuestion {
     public void setMaxScore(int maxScore) {
         this.maxScore = maxScore;
     }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
 }

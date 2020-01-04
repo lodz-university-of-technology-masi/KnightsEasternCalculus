@@ -7,6 +7,7 @@ public class SolvableOpenQuestion implements Serializable {
     private String question;
     private int maxScore;
     private String answer;
+    private String correctAnswer;
 
     public SolvableOpenQuestion() {
     }
@@ -14,6 +15,8 @@ public class SolvableOpenQuestion implements Serializable {
     public SolvableOpenQuestion(OpenQuestion openQuestion) {
         this.question = openQuestion.getQuestion();
         this.maxScore = openQuestion.getMaxScore();
+        this.correctAnswer = openQuestion.getCorrectAnswer();
+        this.answer = "";
     }
 
     public String getQuestion() {

@@ -1,6 +1,8 @@
 package model.test;
 
-public class SolvableOpenQuestion {
+import java.io.Serializable;
+
+public class SolvableOpenQuestion implements Serializable {
 
     private String question;
     private int maxScore;

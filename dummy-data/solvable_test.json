@@ -1,0 +1,42 @@
+{
+    "applicantID": "3",
+    "timestamp": "1",
+    "title": "Am I an idiot? Find the type of bread you are.",
+    "status": 0,
+    "openQuestions": [
+        {
+            "question": "What is a v table?",
+            "correctAnswer": "dupsko",
+            "maxScore": 10
+        },
+        {
+            "question": "Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.",
+            "answer": "",
+            "maxScore": 20
+        }
+    ],
+    "closeQuestions": [
+        {
+            "question": "Choose the correct array declaration method.",
+            "correctAnswers": ["dupsko"],
+            "incorrectAnswers": [
+                "int i[];",
+                "int[5] i;",
+                "int i[] = new int[10];"
+            ],
+            "maxScore": 20
+        },
+        {
+            "question": "What does this pointer point to? int (*fpa())[]",
+            "correctAnswers": ["still dupsko"],
+            "incorrectAnswers": [
+                "an array of functions returning int pointers",
+                "an array of pointers to functions returning an int",
+                "a function returning an array of int pointers"
+            ],
+            "maxScore": 10
+        }
+    ],
+    "maxScore": 60,
+    "receivedScore": 15
+}

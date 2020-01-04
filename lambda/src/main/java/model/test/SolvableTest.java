@@ -1,24 +1,24 @@
 package model.test;
 
-import java.sql.Timestamp;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SolvableTest {
+public class SolvableTest implements Serializable {
 
 
     private String applicantID;
-    private Timestamp timestamp;
+    private String timestamp;
     private String title;
     private List<SolvableClosedQuestion> closeQuestions;
     private List<SolvableOpenQuestion> openQuestions;
     private float maxScore;
     private float receivedScore;
-    private TestStatus status;
+    private int status;
 
     public SolvableTest() {}
 
-    public SolvableTest(String applicantID, Timestamp timestamp, String title, List<SolvableClosedQuestion> closeQuestions, List<SolvableOpenQuestion> openQuestions, float maxScore, float receivedScore, TestStatus status) {
+    public SolvableTest(String applicantID, String timestamp, String title, List<SolvableClosedQuestion> closeQuestions, List<SolvableOpenQuestion> openQuestions, float maxScore, float receivedScore, int status) {
         this.applicantID = applicantID;
         this.timestamp = timestamp;
         this.title = title;
@@ -55,11 +55,11 @@ public class SolvableTest {
         this.applicantID = applicantID;
     }
 
-    public Timestamp getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -103,11 +103,11 @@ public class SolvableTest {
         this.receivedScore = receivedScore;
     }
 
-    public TestStatus getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(TestStatus status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 }

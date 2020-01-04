@@ -3,25 +3,27 @@ package model.test;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedJson;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-@DynamoDBTable(tableName="testInstance")
-public class TestInstance {
+@DynamoDBTable(tableName="TestInstances")
+public class TestInstance implements Serializable {
 
     private String applicantID;
-    private Timestamp timestamp;
+    private String timestamp;
     private String title;
     private List<CloseQuestion> closeQuestions;
     private List<OpenQuestion> openQuestions;
     private float maxScore;
     private float receivedScore;
-    private TestStatus status;
+    private int status;
 
     public TestInstance(){}
 
-    public TestInstance(String applicantID, Timestamp timestamp, String title, List<CloseQuestion> closeQuestions, List<OpenQuestion> openQuestions, float maxScore, float receivedScore, TestStatus status) {
+    public TestInstance(String applicantID, String timestamp, String title, List<CloseQuestion> closeQuestions, List<OpenQuestion> openQuestions, float maxScore, float receivedScore, int status) {
         this.applicantID = applicantID;
         this.timestamp = timestamp;
         this.title = title;
@@ -42,11 +44,11 @@ public class TestInstance {
     }
 
     @DynamoDBHashKey(attributeName = "timestamp")
-    public Timestamp getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -60,6 +62,7 @@ public class TestInstance {
     }
 
     @DynamoDBAttribute(attributeName = "closedQuestions")
+    @DynamoDBTypeConvertedJson
     public List<CloseQuestion> getCloseQuestions() {
         return closeQuestions;
     }
@@ -69,6 +72,7 @@ public class TestInstance {
     }
 
     @DynamoDBAttribute(attributeName = "openQuestions")
+    @DynamoDBTypeConvertedJson
     public List<OpenQuestion> getOpenQuestions() {
         return openQuestions;
     }
@@ -96,11 +100,11 @@ public class TestInstance {
     }
 
     @DynamoDBAttribute(attributeName = "status")
-    public TestStatus getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(TestStatus status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 }

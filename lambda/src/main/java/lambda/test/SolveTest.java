@@ -4,11 +4,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
 import model.test.SolvableTest;
-import model.test.Test;
 import model.test.TestInstance;
 import util.Response;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +15,7 @@ public class SolveTest extends Handler<SolvableTest> {
     public Response handleRequest(SolvableTest input, Context context) {
         if (input != null) {
             String appID = input.getApplicantID();
-            Timestamp time = input.getTimestamp();
+            String time = input.getTimestamp();
             List<TestInstance> tests = getMapper().scan(TestInstance.class, new DynamoDBScanExpression());
             TestInstance test = new TestInstance();
             for (TestInstance t : tests) {

@@ -25,12 +25,13 @@ bucket_spec = "S3Bucket={}-kotec-lambda,S3Key=lambda-0.1.zip".format(accountID)
 print("Creating dynamodb table...")
 subprocess.call("aws dynamodb create-table --table-name Applicant --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
 subprocess.call("aws dynamodb create-table --table-name Tests --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
+subprocess.call("aws dynamodb create-table --table-name TestInstances --attribute-definitions AttributeName=applicantID,AttributeType=S AttributeName=timestamp,AttributeType=S --key-schema AttributeName=applicantID,KeyType=HASH AttributeName=timestamp,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
 
 print("Creating lambdas...")
 
 lambda_data = [("get-applicant", "lambda.applicant.GetApplicant"), ("get-applicants", "lambda.applicant.GetApplicants"), ("add-applicant", "lambda.applicant.AddApplicant"),
                ("get-all-tests", "lambda.test.GetAllTests"), ("add-test", "lambda.test.AddTest"), ("delete-test", "lambda.test.DeleteTest"), ("update-test", "lambda.test.UpdateTest"), ("get-test", "lambda.test.GetTest"),
-               ("solve-test", "lambda.test.SolveTest")]
+               ("solve-test", "lambda.test.SolveTest"), ("add-test-instance", "lambda.test.AddTestInstance")]
 
 for lam in lambda_data:
     print("\t"+lam[0])

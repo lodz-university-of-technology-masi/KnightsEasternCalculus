@@ -2,9 +2,10 @@ package model.test;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class SolvableClosedQuestion {
+public class SolvableClosedQuestion implements Serializable {
 
     private String question;
     private ArrayList<String> answers;

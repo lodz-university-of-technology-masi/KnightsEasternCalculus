@@ -10,6 +10,7 @@ print("The account id is {}".format(accountID))
 print("Deleting dynamodb table...")
 subprocess.call("aws dynamodb delete-table --table-name Applicant", shell=True)
 subprocess.call("aws dynamodb delete-table --table-name Tests", shell=True)
+subprocess.call("aws dynamodb delete-table --table-name TestInstances", shell=True)
 
 lambda_data = [("get-applicant", "lambda.applicant.GetApplicant"), ("get-applicants", "lambda.applicant.GetApplicants"), ("add-applicant", "lambda.applicant.AddApplicant"),
                ("get-all-tests", "lambda.test.GetAllTests"), ("add-test", "lambda.test.AddTest"), ("delete-test", "lambda.test.DeleteTest"), ("update-test", "lambda.test.UpdateTest"), ("get-test", "lambda.test.GetTest"),

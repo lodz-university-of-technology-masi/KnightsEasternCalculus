@@ -119,7 +119,7 @@ export class TestService {
   }
 
   public getAllUserTests(username: string) {
-    return of([new TestInstance('2', 1, 'Computer Systems Comprehension I', TestStatus.NotSolved, [], [], 100, 0),
+    return of([new TestInstance('2', 2, 'Computer Systems Comprehension I', TestStatus.NotSolved, [], [], 100, 0),
       new TestInstance('3', 1, 'Am I an idiot? Find the type of bread you are.', TestStatus.NotSolved,
         [new SolvableOpenQuestion('What is a v table?', '', 10, 0, ''),
           new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', '', 20, 15, '')],

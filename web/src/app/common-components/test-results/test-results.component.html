@@ -38,7 +38,6 @@
       <div class="card-body">
         <label class="card-title h6">{{question.question}}</label>
         <textarea class="form-control" disabled style="background: #FFF !important; color: #000 !important;" [value]="question.answer"></textarea>
-<!--        <p class="card-text">{{question.answer}}</p>-->
         <div *ngIf="question.correctAnswer" class="mt-5">
           <label class="text-muted">Przykładowa poprawna odpowiedź:</label>
           <p class="card-text text-muted">{{question.correctAnswer}}</p>

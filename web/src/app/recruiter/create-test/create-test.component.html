@@ -97,7 +97,7 @@
           </tbody>
       </table>
       <div>
-          <h5 class="mt-2">Maksymalna ilość punktów:</h5>
+          <h5 class="mt-2">Ilość punktów za odpowiedź:</h5>
           <div class="input-group">
               <input id="maxScore" name="maxScore" class="form-control" type="number" min="1" required
                   [(ngModel)]="inputMaxScoreClose" #maxScore="ngModel"
@@ -203,7 +203,7 @@
                     <th>Pytanie zamknięte</th>
                     <th>Poprawne odpowiedzi</th>
                     <th>Niepoprawne odpowiedzi</th>
-                    <th>Max pkt.</th>
+                    <th>Pkt za odp</th>
                     <th></th>
                 </tr>
             </thead>
@@ -213,7 +213,7 @@
                     <td>{{ closeQuestion.question }}</td>
                     <td>{{ closeQuestion.correctAnswers }}</td>
                     <td>{{ closeQuestion.incorrectAnswers }}</td>
-                    <td>{{ closeQuestion.maxScore }}</td>
+                    <td>{{ closeQuestion.answerScore }}</td>
                     <td>
                         <button class="btn btn-danger" (click)="removeCloseQuestion(closeQuestion)">Usuń</button>
                     </td>

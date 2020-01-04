@@ -93,7 +93,7 @@ export class CreateTestComponent implements OnInit {
   inputOpenQuestion: string;
   inputCorrectOpenAnswer: string;
   selectedOpenQuestion: OpenQuestion;
-  inputMaxScoreOpen; number;
+  inputMaxScoreOpen: number;
 
   addOpenQuestion(): void {
     this.openQuestions.push(new OpenQuestion(this.inputOpenQuestion, this.inputCorrectOpenAnswer, this.inputMaxScoreOpen))

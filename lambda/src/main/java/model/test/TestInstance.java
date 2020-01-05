@@ -30,8 +30,6 @@ public class TestInstance implements Serializable {
         this.maxScore = maxScore;
         this.receivedScore = receivedScore;
         this.status = status;
-
-
     }
 
     @DynamoDBHashKey(attributeName = "applicantID")

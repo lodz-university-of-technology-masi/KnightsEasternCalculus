@@ -161,5 +161,6 @@ export class TestService {
       //   }
       // });
     console.log(JSON.stringify(test));
+    console.log(test);
   }
 }

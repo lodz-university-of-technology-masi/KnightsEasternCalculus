@@ -51,7 +51,7 @@ gatewayID = json.loads(subprocess.check_output(
 
 # lambda names to automate permission granting
 lambdas = ["get-applicant", "get-applicants", "add-test",
-           "get-all-tests", "update-test", "delete-test", "get-test", "solve-test"]
+           "get-all-tests", "update-test", "delete-test", "get-test", "solve-test", "add-test-instance"]
 
 print("Granting lambda permissions...")
 for name in lambdas:
@@ -134,6 +134,7 @@ subprocess.call("aws cognito-idp admin-add-user-to-group --user-pool-id {} --use
 print("Generating constants file...")
 with open(os.path.join("web", "src", "app", "app-consts.ts"), "w+") as file:
     file.write("export const apiBaseUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/applicant';\n".format(gatewayID))
+    file.write("export const apiSolveUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/applicant/{ID}/tests';\n".format(gatewayID))
     file.write("export const apiTestUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/recruiter/tests';\n".format(gatewayID))
     file.write("export const userPoolId = '{}';\n".format(pool_id))
     file.write("export const clientId = '{}';\n".format(client["ClientId"]))

@@ -30,9 +30,6 @@ public class SolveTest extends Handler<TestInstance> {
                 return new Response(500, "ApplicantID can't be null");
             }
 
-            test.setReceivedScore( calculateClosed(input.getCloseQuestions(), test.getCloseQuestions())
-                    + calculateOpen(input.getOpenQuestions(), test.getOpenQuestions()));
-            test.setStatus(2);
 
             List<SolvableClosedQuestion> close = new ArrayList<>();
             SolvableClosedQuestion c = null;
@@ -52,6 +49,12 @@ public class SolveTest extends Handler<TestInstance> {
             }
             test.setOpenQuestions(open);
 
+            calculateClosed(test.getCloseQuestions());
+            calculateOpen(test.getOpenQuestions());
+            test.calculatePoints();
+
+            test.setStatus(2);
+
             DynamoDBMapperConfig dynamoDBMapperConfig = new DynamoDBMapperConfig.Builder()
                     .withConsistentReads(DynamoDBMapperConfig.ConsistentReads.CONSISTENT)
                     .withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.UPDATE)
@@ -65,25 +68,25 @@ public class SolveTest extends Handler<TestInstance> {
         return new Response(400, "Input can't be empty");
     }
 
-    private float calculateClosed(List<SolvableClosedQuestion> solved, List<SolvableClosedQuestion> fromDB) {
-        float sum = 2;
-//        for (int i = 0; i < fromDB.size(); i++) {
-//            if (fromDB.get(i).getCorrectAnswers().contains(solved.get(i).getChosenAnswers().get(i))) {
-//                sum += (fromDB.get(i).getMaxScore() / (fromDB.get(i).getCorrectAnswers().size() * 1.0));
-//            }
-//        }
-
-        return sum;
+    private void calculateClosed(List<SolvableClosedQuestion> closed) {
+        float sum;
+        for (int i = 0; i < closed.size(); i++) {
+            sum = 0;
+            for (Integer j : closed.get(i).getChosenAnswers()) {
+                if (closed.get(i).getCorrectAnswers().contains(j)) {
+                    sum += (closed.get(i).getMaxScore() / (closed.get(i).getCorrectAnswers().size() * 1.0));
+                }
+            }
+            closed.get(i).setReceivedScore(sum);
+        }
     }
 
-    private float calculateOpen(List<SolvableOpenQuestion> solved, List<SolvableOpenQuestion> fromDB) {
-        float sum = 5;
-//        for (int i = 0; i < fromDB.size(); i++) {
-//            if (fromDB.get(i).getCorrectAnswer().equals(solved.get(i).getAnswer())) {
-//                sum += fromDB.get(i).getMaxScore();
-//            }
-//        }
+    private void calculateOpen(List<SolvableOpenQuestion> open) {
+        for (SolvableOpenQuestion a : open) {
+            if (a.getCorrectAnswer().equalsIgnoreCase(a.getAnswer())) {
+                a.setReceivedScore(a.getMaxScore());
+            }
+        }
 
-        return sum;
     }
 }

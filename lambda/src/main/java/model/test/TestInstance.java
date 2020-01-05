@@ -102,4 +102,13 @@ public class TestInstance implements Serializable {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public void calculatePoints() {
+        for (SolvableClosedQuestion c : this.closeQuestions) {
+            this.receivedScore += c.getReceivedScore();
+        }
+        for (SolvableOpenQuestion c : this.openQuestions) {
+            this.receivedScore += c.getReceivedScore();
+        }
+    }
 }

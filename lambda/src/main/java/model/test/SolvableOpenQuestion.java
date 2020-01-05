@@ -1,7 +1,10 @@
 package model.test;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
+
 import java.io.Serializable;
 
+@DynamoDBDocument
 public class SolvableOpenQuestion implements Serializable {
 
     private String question;

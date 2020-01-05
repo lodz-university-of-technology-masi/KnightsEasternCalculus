@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
+@DynamoDBDocument
 public class SolvableClosedQuestion implements Serializable {
 
     private String question;

@@ -6,7 +6,7 @@ export class SolvedCloseQuestion {
   maxScore: number;
   receivedScore: number;
 
-  constructor(question: string, chosenAnswer: string[], possibleAnswer: string[], answers: number[], maxScore: number, receivedScore: number) {
+  constructor(question: string, chosenAnswer: string[], possibleAnswer: string[], answers: number[], maxScore: number, receivedScore: number = 0) {
     this.question = question;
     this.chosenAnswer = chosenAnswer;
     this.possibleAnswer = possibleAnswer;

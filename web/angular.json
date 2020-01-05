@@ -32,9 +32,6 @@
               "src/bootstrap/scss/bootstrap.scss"
             ],
             "scripts": [
-              "src/jquery/jquery.js",
-              "src/popper/popper.js",
-              "src/bootstrap/js/bootstrap.js"
             ]
           },
           "configurations": {
@@ -102,9 +99,6 @@
               "src/bootstrap/scss/bootstrap.scss"
             ],
             "scripts": [
-              "src/jquery/jquery.js",
-              "src/popper/popper.js",
-              "src/bootstrap/js/bootstrap.js"
             ]
           }
         },

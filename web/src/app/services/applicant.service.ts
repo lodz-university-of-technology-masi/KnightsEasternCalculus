@@ -40,4 +40,8 @@ export class ApplicantService {
     return this.http.get<Applicant>(this.apiUrl + `/${id}`);
   }
 
+  assignApplicantToTest(testId: string, applicantId: string) {
+    return of(true);
+  }
+
 }

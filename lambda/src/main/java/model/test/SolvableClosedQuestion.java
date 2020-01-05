@@ -1,7 +1,5 @@
 package model.test;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -17,7 +15,7 @@ public class SolvableClosedQuestion implements Serializable {
 
     public SolvableClosedQuestion(CloseQuestion closeQuestion) {
         this.question = closeQuestion.getQuestion();
-        this.maxScore = closeQuestion.getMaxScore();
+        this.maxScore = closeQuestion.getAnswerScore();
         this.answers = closeQuestion.getCorrectAnswers();
         this.answers.addAll(closeQuestion.getIncorrectAnswers());
         this.chosenAnswers = new ArrayList<String>();

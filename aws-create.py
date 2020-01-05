@@ -66,6 +66,10 @@ for file in files:
     subprocess.call("aws lambda invoke --function-name add-applicant --payload fileb://{} dump".format(
         os.path.join("dummy-data", file)), shell=True)
 
+print("\tAdding mock test")
+subprocess.call("aws lambda invoke --function-name add-test --payload fileb://{} dump".format(
+    os.path.join("dummy-data", "cpp-test.txt")), shell=True)
+
 print("\tFilling S3...")
 subprocess.call(
     "aws s3api create-bucket --bucket applicant-photos", shell=True)
@@ -109,7 +113,7 @@ print("\t\tCreating roles...")
 with open("policy_template.json", 'r') as f:
     policy_template = json.loads(f.read())
 
-# an absolutely fucking stupid way of doing it but... 
+# an absolutely fucking stupid way of doing it but...
 policy_template['Statement'][0]['Condition']['StringEquals']['cognito-identity.amazonaws.com:aud'] = identity_pool_id
 policy_template['Statement'][0]['Condition']['ForAnyValue:StringLike']['cognito-identity.amazonaws.com:amr'] = 'authenticated'
 with open("policy.json", 'w') as f:

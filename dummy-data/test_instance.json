@@ -1,42 +1,49 @@
 {
     "applicantID": "3",
     "timestamp": 1,
-    "title": "Am I an idiot? Find the type of bread you are.",
+    "title": "C++ basic knowledge",
     "status": 0,
     "openQuestions": [
         {
             "question": "What is a v table?",
-            "correctAnswer": "dupsko",
-            "maxScore": 10
+            "correctAnswer": "a table",
+            "answer": "",
+            "maxScore": 10,
+            "receivedScore": 0
         },
         {
             "question": "Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.",
+            "correctAnswer": "loop",
             "answer": "",
-            "maxScore": 20
+            "maxScore": 20,
+            "receivedScore": 0
         }
     ],
     "closeQuestions": [
         {
             "question": "Choose the correct array declaration method.",
-            "correctAnswers": ["dupsko"],
-            "incorrectAnswers": [
-                "int i[];",
-                "int[5] i;",
-                "int i[] = new int[10];"
+            "answers": [
+                "int i[5];",
+                "int i[2] = {1};"
             ],
-            "maxScore": 20
+            "correctAnswers": [1],
+            "chosenAnswers": [],
+            "maxScore": 20,
+            "receivedScore": 0
         },
         {
             "question": "What does this pointer point to? int (*fpa())[]",
-            "correctAnswers": ["still dupsko"],
-            "incorrectAnswers": [
+            "answers": [
                 "an array of functions returning int pointers",
                 "an array of pointers to functions returning an int",
                 "a function returning an array of int pointers"
             ],
-            "maxScore": 10
+            "correctAnswers": [0],
+            "chosenAnswers": [],
+            "maxScore": 10,
+            "receivedScore": 0
         }
     ],
     "maxScore": 60,
-    "receivedScore": 15
+    "receivedScore": 0
 }

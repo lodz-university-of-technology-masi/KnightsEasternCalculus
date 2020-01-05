@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {TestService} from '../../services/test.service';
 import {TestInstance} from '../../model/test-instance';
 
@@ -14,7 +14,7 @@ export class SolveTestComponent implements OnInit {
 
   test: TestInstance;
 
-  constructor(private route: ActivatedRoute, private testService: TestService) { }
+  constructor(private route: ActivatedRoute, private testService: TestService, private router: Router) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe( value => {
@@ -43,7 +43,11 @@ export class SolveTestComponent implements OnInit {
     }
     this.test.receivedScore = 0;
 
-    this.testService.sendSolvedTest(this.test);
+    this.testService.sendSolvedTest(this.test).subscribe( result => {
+      if (result) {
+        this.router.navigateByUrl('applicant/tests');
+      }
+    });
   }
 
 

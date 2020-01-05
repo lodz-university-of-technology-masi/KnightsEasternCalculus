@@ -27,15 +27,30 @@ public class SolveTest extends Handler<TestInstance> {
                 }
             }
             if (test.getApplicantID() == null) {
-                return new Response(500, "Test can't be found");
+                return new Response(500, "ApplicantID can't be null");
             }
 
             test.setReceivedScore( calculateClosed(input.getCloseQuestions(), test.getCloseQuestions())
                     + calculateOpen(input.getOpenQuestions(), test.getOpenQuestions()));
             test.setStatus(2);
 
-            test.setCloseQuestions(input.getCloseQuestions());
-            test.setOpenQuestions(input.getOpenQuestions());
+            List<SolvableClosedQuestion> close = new ArrayList<>();
+            SolvableClosedQuestion c = null;
+            for (int i = 0; i < test.getCloseQuestions().size(); i++) {
+                c = test.getCloseQuestions().get(i);
+                c.setChosenAnswers(input.getCloseQuestions().get(i).getChosenAnswers());
+                close.add(c);
+            }
+            test.setCloseQuestions(close);
+
+            List<SolvableOpenQuestion> open = new ArrayList<>();
+            SolvableOpenQuestion o = null;
+            for (int i = 0; i < test.getOpenQuestions().size(); i++) {
+                o = test.getOpenQuestions().get(i);
+                o.setAnswer(input.getOpenQuestions().get(i).getAnswer());
+                open.add(o);
+            }
+            test.setOpenQuestions(open);
 
             DynamoDBMapperConfig dynamoDBMapperConfig = new DynamoDBMapperConfig.Builder()
                     .withConsistentReads(DynamoDBMapperConfig.ConsistentReads.CONSISTENT)

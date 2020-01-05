@@ -6,7 +6,7 @@ import * as saveAs from 'file-saver';
 import {OpenQuestion} from '../model/open-question';
 import {CloseQuestion} from '../model/close-question';
 import {TestInstance, TestStatus} from '../model/test-instance';
-import {of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {SolvableOpenQuestion} from '../model/solvable-open-question';
 import {SolvableCloseQuestion} from '../model/solvable-close-question';
 import {map} from 'rxjs/operators';
@@ -152,15 +152,17 @@ export class TestService {
   }
 
   public sendSolvedTest(test: TestInstance) {
-      // this.httpClient.post(Globals.apiSolveUrl.replace('\{ID\}', test.applicantId), httpOptions).subscribe( {
-      //   error: err => {
-      //     console.log(err);
-      //   },
-      //   next: value => {
-      //     console.log(value);
-      //   }
-      // });
-    console.log(JSON.stringify(test));
-    console.log(test);
+      return new Observable( observer => {
+        this.httpClient.post<TestInstance>(Globals.apiSolveUrl.replace('\{ID\}', test.applicantID), test, httpOptions).subscribe( {
+          error: err => {
+            console.log(err);
+            observer.error(err);
+          },
+          next: value => {
+            observer.next(1);
+            observer.complete();
+          }
+        });
+      });
   }
 }

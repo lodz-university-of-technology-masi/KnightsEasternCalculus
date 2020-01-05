@@ -130,11 +130,14 @@ print("\tAdding test account...")
 subprocess.call("aws cognito-idp admin-create-user --user-pool-id {} --username admin@example.com --user-attributes=Name=email,Value=admin@example.com --temporary-password password --message-action SUPPRESS".format(pool_id), shell=True)
 subprocess.call("aws cognito-idp admin-add-user-to-group --user-pool-id {} --username admin@example.com --group-name recruiter".format(pool_id), shell=True)
 
+print("\tAdding tmp test...")
+subprocess.call("aws lambda invoke --function-name add-test-instance --payload fileb://dummy_data/test_instance.json", shell=True)
+
 
 print("Generating constants file...")
 with open(os.path.join("web", "src", "app", "app-consts.ts"), "w+") as file:
     file.write("export const apiBaseUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/applicant';\n".format(gatewayID))
-    file.write("export const apiSolveUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/applicant/{ID}/tests';\n".format(gatewayID))
+    file.write("export const apiSolveUrl = 'https://" + gatewayID + ".execute-api.us-east-1.amazonaws.com/test/applicant/\{ID\}/tests';\n")
     file.write("export const apiTestUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/recruiter/tests';\n".format(gatewayID))
     file.write("export const userPoolId = '{}';\n".format(pool_id))
     file.write("export const clientId = '{}';\n".format(client["ClientId"]))

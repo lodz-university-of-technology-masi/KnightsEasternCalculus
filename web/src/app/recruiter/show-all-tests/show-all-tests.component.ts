@@ -6,36 +6,39 @@ import * as saveAs from 'file-saver';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { stringify } from 'querystring';
 import { checkServerIdentity } from 'tls';
+import {ApplicantService} from '../../services/applicant.service';
+import {Applicant} from '../../model/applicant';
+import {AssignModalComponent} from './assign-modal/assign-modal.component';
+import {NgbModal, NgbPopover} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'show-all-tests',
     templateUrl: 'show-all-tests.component.html',
-    styleUrls: ['show-all-tests.component.scss']
+    styleUrls: ['show-all-tests.component.scss'],
+    styles: [`
+          :host >>> .popover {
+            color: #000;
+            max-width: 100%;
+          }
+      `]
 })
 
 @Injectable()
 export class ShowAllTestsComponent implements OnInit {
     test: Test;
+    searchLastName: string;
+    applicantLoading = false;
+    applicants: Applicant[];
+    tests: Test[];
+    popover: NgbPopover;
+    fileName: string;
+    fileContent: string = '';
 
-    constructor(
-        private testService: TestService,
-    ) { }
+    constructor(private testService: TestService, private applicantService: ApplicantService, private modalService: NgbModal) { }
 
     ngOnInit(): void {
         this.getAllTests();
     }
-
-    tests: Test[];
-    fileName: string;
-
-    // selectedTest : Test;
-    // public onSelectTest(test: Test): void {
-    //     this.selectedTest = test;
-    // }
-
-    // public getAllTests(): void {
-    //     this.tests = this.testService.getAllTests();
-    // }
 
     public downloadTest(id: string): void {
         this.testService.getTest(id)
@@ -45,8 +48,6 @@ export class ShowAllTestsComponent implements OnInit {
             });
 
     }
-
-    fileContent: string = '';
 
     public loadTest(fileList: FileList): void {
         let file = fileList[0];
@@ -88,4 +89,33 @@ export class ShowAllTestsComponent implements OnInit {
         this.testService.deleteTest(test);
         this.getAllTests();
     }
+
+  toggleAssign(popover, id: string, title: string) {
+    if (popover.isOpen()) {
+      popover.close();
+    } else {
+      this.applicantLoading = false;
+      this.applicants = null;
+      this.searchLastName = '';
+      this.popover = popover;
+      popover.open({id, title});
+    }
+  }
+
+  searchApplicants(): void {
+    this.applicantLoading = true;
+    this.applicants = null;
+    this.applicantService.getApplicants(this.searchLastName)
+      .subscribe(applicants => {this.applicants = applicants; this.applicantLoading = false;});
+  }
+
+  openAssignModal(testId: string, testName: string, applicantId: string, applicantFirstName: string, applicantLastName: string) {
+    this.popover.close();
+    const modalRef = this.modalService.open(AssignModalComponent, { centered: true });
+    modalRef.componentInstance.testId = testId;
+    modalRef.componentInstance.testName = testName;
+    modalRef.componentInstance.applicantId = applicantId;
+    modalRef.componentInstance.applicantFirstName = applicantFirstName;
+    modalRef.componentInstance.applicantLastName = applicantLastName;
+  }
 }

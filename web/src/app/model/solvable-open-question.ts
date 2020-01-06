@@ -4,8 +4,6 @@ export class SolvableOpenQuestion {
   answer: string;
   maxScore: number;
   receivedScore: number;
-
-
   constructor(question: string, answer: string, maxScore: number, receivedScore: number, correctAnswer: string) {
     this.question = question;
     this.correctAnswer = correctAnswer;

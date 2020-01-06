@@ -126,11 +126,11 @@ export class TestService {
         [new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[];', 'int[5] i;', 'int i[] = new int[10];'],  [], 20, 0, []),
           new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning an array of int pointers'],  [], 10, 0, [])],
         60, 15),
-      new TestInstance('3', 1, 'C++ basic knowledge', TestStatus.Checked,
-        [new SolvableOpenQuestion('What is a v table?', '', 10, 0, ''),
-          new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', '', 20, 15, '')],
-        [new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[5];', 'int i[2] = {1};'], [], 20, 0, []),
-          new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning an array of int pointers'], [], 10, 0, [])],
+      new TestInstance('3', 0, 'C++ basic knowledge', TestStatus.Checked,
+        [new SolvableOpenQuestion('What is a v table?', 'I don\'t know, sorry', 10, 0, 'A lookup table of functions used to resolve virtual function calls'),
+          new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', 'while(i % 14 != 0) {i+= 1;}', 20, 15, 'while(i++%14 != 0);')],
+        [new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[5];', 'int i[2] = {1};', 'int i[];', 'int[5] i;', 'int i[] = new int[10];'], [0, 1],  20, 0, [1, 3]),
+          new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning a pointer to an array of ints', 'a function returning an array of int pointers'], [2], 10, 0, [1])],
         60, 15)]);
   }
 

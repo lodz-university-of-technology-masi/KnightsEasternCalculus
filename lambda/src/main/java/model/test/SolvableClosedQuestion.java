@@ -21,7 +21,7 @@ public class SolvableClosedQuestion implements Serializable {
 
     public SolvableClosedQuestion(CloseQuestion closeQuestion) {
         this.question = closeQuestion.getQuestion();
-        this.maxScore = closeQuestion.getMaxScore();
+        this.maxScore = closeQuestion.getAnswerScore();
         this.answers = closeQuestion.getCorrectAnswers();
         this.answers.addAll(closeQuestion.getIncorrectAnswers());
         Collections.shuffle(this.answers);

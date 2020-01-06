@@ -66,6 +66,10 @@ for file in files:
     subprocess.call("aws lambda invoke --function-name add-applicant --payload fileb://{} dump".format(
         os.path.join("dummy-data", file)), shell=True)
 
+print("\tAdding mock test")
+subprocess.call("aws lambda invoke --function-name add-test --payload fileb://{} dump".format(
+    os.path.join("dummy-data", "cpp-test.txt")), shell=True)
+
 print("\tFilling S3...")
 subprocess.call(
     "aws s3api create-bucket --bucket applicant-photos", shell=True)
@@ -109,18 +113,18 @@ print("\t\tCreating roles...")
 with open("policy_template.json", 'r') as f:
     policy_template = json.loads(f.read())
 
-# an absolutely fucking stupid way of doing it but... 
+# an absolutely fucking stupid way of doing it but...
 policy_template['Statement'][0]['Condition']['StringEquals']['cognito-identity.amazonaws.com:aud'] = identity_pool_id
 policy_template['Statement'][0]['Condition']['ForAnyValue:StringLike']['cognito-identity.amazonaws.com:amr'] = 'authenticated'
 with open("policy.json", 'w') as f:
     json.dump(policy_template, f)
-subprocess.call("aws iam create-role --role-name 'Cognito_kotecAuth_Role' --assume-role-policy-document file://policy.json", shell=True)
+subprocess.call("aws iam create-role --role-name Cognito_kotecAuth_Role --assume-role-policy-document file://policy.json", shell=True)
 subprocess.call("aws iam attach-role-policy --role-name Cognito_kotecAuth_Role --policy-arn arn:aws:iam::aws:policy/AmazonCognitoPowerUser", shell=True)
 
 policy_template['Statement'][0]['Condition']['ForAnyValue:StringLike']['cognito-identity.amazonaws.com:amr'] = 'unauthenticated'
 with open("policy.json", 'w') as f:
     json.dump(policy_template, f)
-subprocess.call("aws iam create-role --role-name 'Cognito_kotecUnauth_Role' --assume-role-policy-document file://policy.json", shell=True)
+subprocess.call("aws iam create-role --role-name Cognito_kotecUnauth_Role --assume-role-policy-document file://policy.json", shell=True)
 
 auth_role = role_tmp.format(accountID, "Cognito_kotecAuth_Role")
 unauth_role = role_tmp.format(accountID, "Cognito_kotecUnauth_Role")
@@ -131,8 +135,7 @@ subprocess.call("aws cognito-idp admin-create-user --user-pool-id {} --username 
 subprocess.call("aws cognito-idp admin-add-user-to-group --user-pool-id {} --username admin@example.com --group-name recruiter".format(pool_id), shell=True)
 
 print("\tAdding tmp test...")
-subprocess.call("aws lambda invoke --function-name add-test-instance --payload fileb://dummy_data/test_instance.json", shell=True)
-
+subprocess.call("aws lambda invoke --function-name add-test-instance --payload fileb://{} dump".format(os.path.join("dummy-data", "test_instance.json")), shell=True)
 
 print("Generating constants file...")
 with open(os.path.join("web", "src", "app", "app-consts.ts"), "w+") as file:

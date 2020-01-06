@@ -10,7 +10,7 @@ public class CloseQuestion implements Serializable {
     private String question;
     private ArrayList<String> correctAnswers;
     private ArrayList<String> incorrectAnswers;
-    private int maxScore;
+    private int answerScore;
 
     public CloseQuestion() {
     }
@@ -19,7 +19,7 @@ public class CloseQuestion implements Serializable {
         this.question = closeQuestion.question;
         this.correctAnswers = closeQuestion.correctAnswers;
         this.incorrectAnswers = closeQuestion.incorrectAnswers;
-        this.maxScore = closeQuestion.maxScore;
+        this.answerScore = closeQuestion.answerScore;
     }
 
     public String getQuestion() {
@@ -46,11 +46,11 @@ public class CloseQuestion implements Serializable {
         this.incorrectAnswers = incorrectAnswers;
     }
 
-    public int getMaxScore() {
-        return maxScore;
+    public int getAnswerScore() {
+        return answerScore;
     }
 
-    public void setMaxScore(int maxScore) {
-        this.maxScore = maxScore;
+    public void setAnswerScore(int answerScore) {
+        this.answerScore = answerScore;
     }
 }

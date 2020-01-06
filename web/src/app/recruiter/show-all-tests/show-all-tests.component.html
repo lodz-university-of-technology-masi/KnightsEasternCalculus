@@ -3,10 +3,8 @@
     <thead>
         <tr>
             <th scope="col" width="5%">#</th>
-            <th scope="col">Name</th>
-            <th scope="col" width="5%"></th>
-            <th scope="col" width="5%"></th>
-            <th scope="col" width="5%"></th>
+            <th scope="col ">Name</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <ng-container *ngIf="tests; else loading">
@@ -14,14 +12,12 @@
             <tr *ngFor="let test of tests; let i = index">
                 <th>{{i+1}}</th>
                 <th>{{test.title}}</th>
-                <th>
-                    <button class="btn btn-link" (click)="downloadTest(test.id)">Pobierz</button>
-                </th>
-                <th>
-                    <button class="btn btn-success" [routerLink]="['update-test', test.id]">Zmień</button>
-                </th>
-                <th>
-                    <button class="btn btn-danger" (click)="deleteTest(test)">Usuń</button>
+                <th class="text-right">
+                  <button class="btn btn-primary mr-2" [ngbPopover]="assignPopover" triggers="manual"
+                          popoverTitle="Przypisz kandydata" #p="ngbPopover" autoClose="outside" (click)="toggleAssign(p, test.id, test.title)" popoverClass="assign-popover">Przypisz</button>
+                  <button class="btn btn-secondary mr-2" (click)="downloadTest(test.id)">Pobierz</button>
+                  <button class="btn btn-success mr-2" [routerLink]="['update-test', test.id]">Zmień</button>
+                  <button class="btn btn-danger" (click)="deleteTest(test)">Usuń</button>
                 </th>
             </tr>
         </tbody>
@@ -37,3 +33,17 @@
     <h5>Podgląd pliku</h5>
     <pre> {{fileContent}} </pre>
 </div>
+
+<ng-template #assignPopover let-id="id", let-title="title">
+  <form class="form-inline">
+    <input type="text" class="form-control" id="lastName" placeholder="Nazwisko" [(ngModel)]="searchLastName" [ngModelOptions]="{standalone: true}">
+    <button type="submit" class="btn btn-primary ml-2" (click)="searchApplicants()">Szukaj</button>
+  </form>
+  <ng-container *ngIf="applicantLoading || applicants">
+    <div class=" mt-2" *ngIf="applicants; else loading">
+      <button type="button" class="list-group-item list-group-item-action" *ngFor="let applicant of applicants" (click)="openAssignModal(id, title, applicant.id, applicant.firstName, applicant.lastName);">
+        {{applicant.firstName}} {{applicant.lastName}} ({{applicant.email}})
+      </button>
+    </div>
+  </ng-container>
+</ng-template>

@@ -37,12 +37,12 @@ for gateway in gatewaysID:
 print("Clearing S3 buckets...")
 # subprocess.call("aws s3 rm s3://applicant-photos --recursive", shell=True)
 subprocess.call(
-    "aws s3 rm s3://{}-kotec-lambda --recursive".format(accountID), shell=True)
+    "aws s3 rm s3://{0}-kotec-lambda-{0} --recursive".format(accountID), shell=True)
 
-print("Deleting S3 buckets...")
-# subprocess.call("aws s3api delete-bucket --bucket applicant-photos", shell=True)
-subprocess.call(
-    "aws s3api delete-bucket --bucket {}-kotec-lambda".format(accountID), shell=True)
+# print("Deleting S3 buckets...")
+# # subprocess.call("aws s3api delete-bucket --bucket applicant-photos", shell=True)
+# subprocess.call(
+#     "aws s3api delete-bucket --bucket {0}-kotec-lambda-{0}".format(accountID), shell=True)
 
 print("Deleting Cognito User Pools")
 pools = json.loads(subprocess.check_output(
@@ -69,9 +69,9 @@ arn = "arn:aws:iam::aws:policy/AmazonCognitoPowerUser"
 
 print("\tDetaching IAM policies...")
 subprocess.call("aws iam detach-role-policy --role-name Cognito_kotecAuth_Role --policy-arn {}".format(arn), shell=True)
-    
 
-subprocess.call("aws iam delete-role --role-name 'Cognito_kotecAuth_Role'", shell=True)
-subprocess.call("aws iam delete-role --role-name 'Cognito_kotecUnauth_Role'", shell=True)
+
+subprocess.call("aws iam delete-role --role-name Cognito_kotecAuth_Role", shell=True)
+subprocess.call("aws iam delete-role --role-name Cognito_kotecUnauth_Role", shell=True)
 
 print("Script finished.")

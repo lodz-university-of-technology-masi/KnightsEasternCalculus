@@ -11,6 +11,7 @@ import {FormsModule} from '@angular/forms';
 import { ConfirmCodeComponent } from './confirm-code/confirm-code.component';
 import {ChangePasswordComponent} from './change-password/change-password.component';
 import {FillInfoComponent} from './fill-info/fill-info.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [

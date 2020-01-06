@@ -51,7 +51,7 @@ gatewayID = json.loads(subprocess.check_output(
 
 # lambda names to automate permission granting
 lambdas = ["get-applicant", "get-applicants", "add-test",
-           "get-all-tests", "update-test", "delete-test", "get-test", "solve-test"]
+           "get-all-tests", "update-test", "delete-test", "get-test", "solve-test", "add-test-instance"]
 
 print("Granting lambda permissions...")
 for name in lambdas:
@@ -118,13 +118,13 @@ policy_template['Statement'][0]['Condition']['StringEquals']['cognito-identity.a
 policy_template['Statement'][0]['Condition']['ForAnyValue:StringLike']['cognito-identity.amazonaws.com:amr'] = 'authenticated'
 with open("policy.json", 'w') as f:
     json.dump(policy_template, f)
-subprocess.call("aws iam create-role --role-name 'Cognito_kotecAuth_Role' --assume-role-policy-document file://policy.json", shell=True)
+subprocess.call("aws iam create-role --role-name Cognito_kotecAuth_Role --assume-role-policy-document file://policy.json", shell=True)
 subprocess.call("aws iam attach-role-policy --role-name Cognito_kotecAuth_Role --policy-arn arn:aws:iam::aws:policy/AmazonCognitoPowerUser", shell=True)
 
 policy_template['Statement'][0]['Condition']['ForAnyValue:StringLike']['cognito-identity.amazonaws.com:amr'] = 'unauthenticated'
 with open("policy.json", 'w') as f:
     json.dump(policy_template, f)
-subprocess.call("aws iam create-role --role-name 'Cognito_kotecUnauth_Role' --assume-role-policy-document file://policy.json", shell=True)
+subprocess.call("aws iam create-role --role-name Cognito_kotecUnauth_Role --assume-role-policy-document file://policy.json", shell=True)
 
 auth_role = role_tmp.format(accountID, "Cognito_kotecAuth_Role")
 unauth_role = role_tmp.format(accountID, "Cognito_kotecUnauth_Role")
@@ -134,10 +134,13 @@ print("\tAdding test account...")
 subprocess.call("aws cognito-idp admin-create-user --user-pool-id {} --username admin@example.com --user-attributes=Name=email,Value=admin@example.com --temporary-password password --message-action SUPPRESS".format(pool_id), shell=True)
 subprocess.call("aws cognito-idp admin-add-user-to-group --user-pool-id {} --username admin@example.com --group-name recruiter".format(pool_id), shell=True)
 
+print("\tAdding tmp test...")
+subprocess.call("aws lambda invoke --function-name add-test-instance --payload fileb://{} dump".format(os.path.join("dummy-data", "test_instance.json")), shell=True)
 
 print("Generating constants file...")
 with open(os.path.join("web", "src", "app", "app-consts.ts"), "w+") as file:
     file.write("export const apiBaseUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/applicant';\n".format(gatewayID))
+    file.write("export const apiSolveUrl = 'https://" + gatewayID + ".execute-api.us-east-1.amazonaws.com/test/applicant/\{ID\}/tests';\n")
     file.write("export const apiTestUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/recruiter/tests';\n".format(gatewayID))
     file.write("export const userPoolId = '{}';\n".format(pool_id))
     file.write("export const clientId = '{}';\n".format(client["ClientId"]))

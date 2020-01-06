@@ -2,7 +2,7 @@ import {SolvableOpenQuestion} from './solvable-open-question';
 import {SolvableCloseQuestion} from './solvable-close-question';
 
 export class TestInstance {
-  applicantId: string;
+  applicantID: string;
   timestamp: number;
   title: string;
   status: TestStatus;
@@ -14,7 +14,7 @@ export class TestInstance {
 
   constructor(applicantId: string, timestamp: number, title: string, status: TestStatus, openQuestions: SolvableOpenQuestion[],
               closeQuestions: SolvableCloseQuestion[], maxScore: number, receivedScore: number) {
-    this.applicantId = applicantId;
+    this.applicantID = applicantId;
     this.timestamp = timestamp;
     this.title = title;
     this.status = status;

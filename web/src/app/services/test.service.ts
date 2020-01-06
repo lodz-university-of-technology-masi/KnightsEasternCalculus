@@ -6,7 +6,7 @@ import * as saveAs from 'file-saver';
 import {OpenQuestion} from '../model/open-question';
 import {CloseQuestion} from '../model/close-question';
 import {TestInstance, TestStatus} from '../model/test-instance';
-import {of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {SolvableOpenQuestion} from '../model/solvable-open-question';
 import {SolvableCloseQuestion} from '../model/solvable-close-question';
 import {map} from 'rxjs/operators';
@@ -121,16 +121,16 @@ export class TestService {
   public getAllUserTests(username: string) {
     return of([new TestInstance('2', 2, 'Computer Systems Comprehension I', TestStatus.NotSolved, [], [], 100, 0),
       new TestInstance('3', 1, 'Am I an idiot? Find the type of bread you are.', TestStatus.NotSolved,
-        [new SolvableOpenQuestion('What is a v table?', '', '', 10, 0),
-          new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', '', '',20, 15)],
-        [new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[];', 'int[5] i;', 'int i[] = new int[10];'],  [], [],20, 0),
-          new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning an array of int pointers'],  [], [],10, 0)],
+        [new SolvableOpenQuestion('What is a v table?', '', 10, 0, ''),
+          new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', '', 20, 15, '')],
+        [new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[];', 'int[5] i;', 'int i[] = new int[10];'],  [], 20, 0, []),
+          new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning an array of int pointers'],  [], 10, 0, [])],
         60, 15),
       new TestInstance('3', 0, 'C++ basic knowledge', TestStatus.Checked,
-        [new SolvableOpenQuestion('What is a v table?', 'A lookup table of functions used to resolve virtual function calls', 'I don\'t know, sorry', 10, 0),
-          new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', 'while(i++%14 != 0);', 'while(i % 14 != 0) {i+= 1;}', 20, 15)],
-        [new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[5];', 'int i[2] = {1};', 'int i[];', 'int[5] i;', 'int i[] = new int[10];'], [0, 1], [1, 3], 20, 0),
-          new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning a pointer to an array of ints', 'a function returning an array of int pointers'], [2], [1], 10, 0)],
+        [new SolvableOpenQuestion('What is a v table?', 'I don\'t know, sorry', 10, 0, 'A lookup table of functions used to resolve virtual function calls'),
+          new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', 'while(i % 14 != 0) {i+= 1;}', 20, 15, 'while(i++%14 != 0);')],
+        [new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[5];', 'int i[2] = {1};', 'int i[];', 'int[5] i;', 'int i[] = new int[10];'], [0, 1],  20, 0, [1, 3]),
+          new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning a pointer to an array of ints', 'a function returning an array of int pointers'], [2], 10, 0, [1])],
         60, 15)]);
   }
 
@@ -152,14 +152,17 @@ export class TestService {
   }
 
   public sendSolvedTest(test: TestInstance) {
-      // this.httpClient.post(Globals.apiSolveUrl.replace('\{ID\}', test.applicantId), httpOptions).subscribe( {
-      //   error: err => {
-      //     console.log(err);
-      //   },
-      //   next: value => {
-      //     console.log(value);
-      //   }
-      // });
-    console.log(JSON.stringify(test));
+      return new Observable( observer => {
+        this.httpClient.post<TestInstance>(Globals.apiSolveUrl.replace('\{ID\}', test.applicantID), test, httpOptions).subscribe( {
+          error: err => {
+            console.log(err);
+            observer.error(err);
+          },
+          next: value => {
+            observer.next(1);
+            observer.complete();
+          }
+        });
+      });
   }
 }

@@ -1,6 +1,7 @@
 package model.test;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.io.Serializable;
@@ -29,8 +30,6 @@ public class TestInstance implements Serializable {
         this.maxScore = maxScore;
         this.receivedScore = receivedScore;
         this.status = status;
-
-
     }
 
     @DynamoDBHashKey(attributeName = "applicantID")
@@ -42,7 +41,7 @@ public class TestInstance implements Serializable {
         this.applicantID = applicantID;
     }
 
-    @DynamoDBHashKey(attributeName = "timestamp")
+    @DynamoDBRangeKey(attributeName = "timestamp")
     public long getTimestamp() {
         return timestamp;
     }
@@ -102,5 +101,14 @@ public class TestInstance implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public void calculatePoints() {
+        for (SolvableClosedQuestion c : this.closeQuestions) {
+            this.receivedScore += c.getReceivedScore();
+        }
+        for (SolvableOpenQuestion c : this.openQuestions) {
+            this.receivedScore += c.getReceivedScore();
+        }
     }
 }

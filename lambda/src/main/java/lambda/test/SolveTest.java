@@ -1,8 +1,11 @@
 package lambda.test;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
+import model.test.SolvableClosedQuestion;
+import model.test.SolvableOpenQuestion;
 import model.test.TestInstance;
 import util.Response;
 
@@ -23,67 +26,67 @@ public class SolveTest extends Handler<TestInstance> {
                     break;
                 }
             }
-
-            if (test.getApplicantID() != null) {
-                ArrayList<Double> pointsClosed = checkClosed(input, test);
-                ArrayList<Double> pointsOpen = checkOpen(input, test);
-
-                int sum = 0;
-                for (Double i : pointsClosed){
-                    sum += i;
-                }
-                for (Double i : pointsOpen) {
-                    sum += i;
-                }
-
-                test.setReceivedScore(sum);
-
-                getMapper().save(test);
-
-                return new Response(200, test.getReceivedScore());
-            } else {
-                return new Response(500, "Test not found");
+            if (test.getApplicantID() == null) {
+                return new Response(500, "ApplicantID can't be null");
             }
-        } else {
-            return new Response(400, "Input can't be empty");
+
+
+            List<SolvableClosedQuestion> close = new ArrayList<>();
+            SolvableClosedQuestion c = null;
+            for (int i = 0; i < test.getCloseQuestions().size(); i++) {
+                c = test.getCloseQuestions().get(i);
+                c.setChosenAnswers(input.getCloseQuestions().get(i).getChosenAnswers());
+                close.add(c);
+            }
+            test.setCloseQuestions(close);
+
+            List<SolvableOpenQuestion> open = new ArrayList<>();
+            SolvableOpenQuestion o = null;
+            for (int i = 0; i < test.getOpenQuestions().size(); i++) {
+                o = test.getOpenQuestions().get(i);
+                o.setAnswer(input.getOpenQuestions().get(i).getAnswer());
+                open.add(o);
+            }
+            test.setOpenQuestions(open);
+
+            calculateClosed(test.getCloseQuestions());
+            calculateOpen(test.getOpenQuestions());
+            test.calculatePoints();
+
+            test.setStatus(2);
+
+            DynamoDBMapperConfig dynamoDBMapperConfig = new DynamoDBMapperConfig.Builder()
+                    .withConsistentReads(DynamoDBMapperConfig.ConsistentReads.CONSISTENT)
+                    .withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.UPDATE)
+                    .build();
+
+            getMapper().save(test, dynamoDBMapperConfig);
+            return new Response(200, "Test successfully saved");
+
         }
 
+        return new Response(400, "Input can't be empty");
     }
 
-    private ArrayList<Double> checkClosed(TestInstance sTest, TestInstance test) {
-//        ArrayList<Double> answers = new ArrayList<>();
-//        for (int i = 0; i < sTest.getCloseQuestions().size(); i++) {
-//            answers.add(0.0);
-//        }
-//
-//        for (int i = 0; i < sTest.getCloseQuestions().size() ; i++) {
-//            for (String answer : sTest.getCloseQuestions().get(i).getChosenAnswers()) {
-//                if (test.getCloseQuestions().get(i).getCorrectAnswers().contains(answer)) {
-//                    Double tmp = answers.get(i);
-//                    answers.set(i, tmp + (test.getCloseQuestions().get(i).getMaxScore() / test.getCloseQuestions().size()));
-//                }
-//            }
-//        }
-//
-//        return answers;
-        // TODO
-        return null;
+    private void calculateClosed(List<SolvableClosedQuestion> closed) {
+        float sum;
+        for (int i = 0; i < closed.size(); i++) {
+            sum = 0;
+            for (Integer j : closed.get(i).getChosenAnswers()) {
+                if (closed.get(i).getCorrectAnswers().contains(j)) {
+                    sum += (closed.get(i).getMaxScore() / (closed.get(i).getCorrectAnswers().size() * 1.0));
+                }
+            }
+            closed.get(i).setReceivedScore(sum);
+        }
     }
 
-    private ArrayList<Double> checkOpen(TestInstance sTest, TestInstance test) {
-//        ArrayList<Double> answers = new ArrayList<>();
-//        for (int i = 0; i < sTest.getOpenQuestions().size(); i++) {
-//            answers.add(0.0);
-//        }
-//
-//        for (int i = 0; i < sTest.getOpenQuestions().size(); i++) {
-//            if (sTest.getOpenQuestions().get(i).getAnswer().equals(test.getOpenQuestions().get(i).getCorrectAnswer())) {
-//                answers.set(i, (double) test.getOpenQuestions().get(i).getMaxScore());
-//            }
-//        }
-//
-//        return answers;
-        //TODO
-        return null;
+    private void calculateOpen(List<SolvableOpenQuestion> open) {
+        for (SolvableOpenQuestion a : open) {
+            if (a.getCorrectAnswer().equalsIgnoreCase(a.getAnswer())) {
+                a.setReceivedScore(a.getMaxScore());
+            }
+        }
+
     }
 }

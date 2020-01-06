@@ -1,14 +1,20 @@
 package model.test;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
+@DynamoDBDocument
 public class SolvableClosedQuestion implements Serializable {
 
     private String question;
     private ArrayList<String> answers;
-    private ArrayList<String> chosenAnswers;
+    private ArrayList<Integer> chosenAnswers;
+    private ArrayList<Integer> correctAnswers;
     private int maxScore;
+    private float receivedScore;
 
     public SolvableClosedQuestion() {
     }
@@ -18,7 +24,19 @@ public class SolvableClosedQuestion implements Serializable {
         this.maxScore = closeQuestion.getAnswerScore();
         this.answers = closeQuestion.getCorrectAnswers();
         this.answers.addAll(closeQuestion.getIncorrectAnswers());
-        this.chosenAnswers = new ArrayList<String>();
+        Collections.shuffle(this.answers);
+        this.correctAnswers = new ArrayList<>();
+        this.chosenAnswers = new ArrayList<Integer>();
+
+        selectCorrectAnswers(closeQuestion.getCorrectAnswers());
+    }
+
+    private void selectCorrectAnswers(ArrayList<String> answers) {
+        for (int i = 0; i < answers.size(); i++) {
+            if (answers.get(i).equals(this.answers.get(i))) {
+                this.correctAnswers.add(i);
+            }
+        }
     }
 
 
@@ -38,11 +56,11 @@ public class SolvableClosedQuestion implements Serializable {
         this.answers = answers;
     }
 
-    public ArrayList<String> getChosenAnswers() {
+    public ArrayList<Integer> getChosenAnswers() {
         return chosenAnswers;
     }
 
-    public void setChosenAnswers(ArrayList<String> chosenAnswers) {
+    public void setChosenAnswers(ArrayList<Integer> chosenAnswers) {
         this.chosenAnswers = chosenAnswers;
     }
 
@@ -52,5 +70,21 @@ public class SolvableClosedQuestion implements Serializable {
 
     public void setMaxScore(int maxScore) {
         this.maxScore = maxScore;
+    }
+
+    public ArrayList<Integer> getCorrectAnswers() {
+        return correctAnswers;
+    }
+
+    public void setCorrectAnswers(ArrayList<Integer> correctAnswers) {
+        this.correctAnswers = correctAnswers;
+    }
+
+    public float getReceivedScore() {
+        return receivedScore;
+    }
+
+    public void setReceivedScore(float receivedScore) {
+        this.receivedScore = receivedScore;
     }
 }

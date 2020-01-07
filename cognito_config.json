@@ -6,8 +6,7 @@
             "RequireUppercase": false,
             "RequireLowercase": false,
             "RequireNumbers": false,
-            "RequireSymbols": false,
-            "TemporaryPasswordValidityDays": 7
+            "RequireSymbols": false
         }
     },
     "AutoVerifiedAttributes": [

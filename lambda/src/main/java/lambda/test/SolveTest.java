@@ -23,6 +23,7 @@ public class SolveTest extends Handler<TestInstance> {
                 return new Response(400, "ApplicantID can't be null");
             }
 
+            test.setReceivedScore(0);
 
             List<SolvableClosedQuestion> close = new ArrayList<>();
             SolvableClosedQuestion c = null;

@@ -98,7 +98,7 @@ export class FillInfoComponent implements OnInit {
 
   //#region "Fill info"
   public fillInfo(): void {
-    this.nfSer.addPer(this.id, this.fi, this.la, this.da, this.ad, this.ci, this.po, this.em, this.nb, this.ex, this.un, this.ab, this.ph);
+    this.nfSer.addPer(this.id, this.fi, this.la.toLowerCase(), this.da, this.ad, this.ci, this.po, this.em, this.nb, this.ex, this.un, this.ab, this.ph);
   }
   //#endregion
 }

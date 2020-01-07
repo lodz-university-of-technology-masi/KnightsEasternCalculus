@@ -16,16 +16,8 @@ public class SolveTest extends Handler<TestInstance> {
     @Override
     public Response handleRequest(TestInstance input, Context context) {
         if (input != null) {
-            String appID = input.getApplicantID();
-            long time = input.getTimestamp();
-            List<TestInstance> tests = getMapper().scan(TestInstance.class, new DynamoDBScanExpression());
-            TestInstance test = new TestInstance();
-            for (TestInstance t : tests) {
-                if (t.getApplicantID().equals(appID) && t.getTimestamp() == time) {
-                    test = t;
-                    break;
-                }
-            }
+            TestInstance test = getMapper().load(TestInstance.class, input.getApplicantID(), input.getTimestamp());
+
             if (test.getApplicantID() == null) {
                 return new Response(500, "ApplicantID can't be null");
             }

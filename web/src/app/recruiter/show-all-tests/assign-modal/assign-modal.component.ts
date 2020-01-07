@@ -22,7 +22,10 @@ export class AssignModalComponent implements OnInit {
 
   confirm() {
     this.loading = true;
-    this.applicantService.assignApplicantToTest(this.testId, this.applicantId).subscribe(val => this.activeModal.close());
+    this.applicantService.assignApplicantToTest(this.testId, this.applicantId).subscribe(val => {
+      console.log(val);
+      this.activeModal.close();
+    });
   }
 
 }

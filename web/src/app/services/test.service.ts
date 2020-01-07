@@ -27,7 +27,7 @@ export class TestService {
   ) {
   }
 
-  private testUrl: string = Globals.apiTestUrl;
+  private testUrl: string = Globals.apiBaseUrl + '/recruiters/tests';
 
   public createTest(inputTestTitle, openQuestions, closeQuestions): void {
     var test = new Test('', inputTestTitle, openQuestions, closeQuestions);
@@ -153,7 +153,7 @@ export class TestService {
 
   public sendSolvedTest(test: TestInstance) {
       return new Observable( observer => {
-        this.httpClient.post<TestInstance>(Globals.apiSolveUrl.replace('\{ID\}', test.applicantID), test, httpOptions).subscribe( {
+        this.httpClient.post<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantID + '/tests', test, httpOptions).subscribe( {
           error: err => {
             console.log(err);
             observer.error(err);

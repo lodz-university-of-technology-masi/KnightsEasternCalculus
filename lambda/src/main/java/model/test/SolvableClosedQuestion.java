@@ -13,7 +13,7 @@ public class SolvableClosedQuestion implements Serializable {
     private ArrayList<String> answers;
     private ArrayList<Integer> chosenAnswers;
     private ArrayList<Integer> correctAnswers;
-    private int maxScore;
+    private int answerScore;
     private float receivedScore;
 
     public SolvableClosedQuestion() {
@@ -21,22 +21,14 @@ public class SolvableClosedQuestion implements Serializable {
 
     public SolvableClosedQuestion(CloseQuestion closeQuestion) {
         this.question = closeQuestion.getQuestion();
-        this.maxScore = closeQuestion.getAnswerScore();
-        this.answers = closeQuestion.getCorrectAnswers();
+        this.answers = new ArrayList<>();
+        this.answers.addAll(closeQuestion.getCorrectAnswers());
         this.answers.addAll(closeQuestion.getIncorrectAnswers());
         Collections.shuffle(this.answers);
         this.correctAnswers = new ArrayList<>();
         this.chosenAnswers = new ArrayList<Integer>();
-
-        selectCorrectAnswers(closeQuestion.getCorrectAnswers());
-    }
-
-    private void selectCorrectAnswers(ArrayList<String> answers) {
-        for (int i = 0; i < answers.size(); i++) {
-            if (answers.get(i).equals(this.answers.get(i))) {
-                this.correctAnswers.add(i);
-            }
-        }
+        closeQuestion.getCorrectAnswers().forEach(answer -> correctAnswers.add(this.answers.indexOf(answer)));
+        this.answerScore = closeQuestion.getAnswerScore();
     }
 
 
@@ -64,12 +56,12 @@ public class SolvableClosedQuestion implements Serializable {
         this.chosenAnswers = chosenAnswers;
     }
 
-    public int getMaxScore() {
-        return maxScore;
+    public int getAnswerScore() {
+        return answerScore;
     }
 
-    public void setMaxScore(int maxScore) {
-        this.maxScore = maxScore;
+    public void setAnswerScore(int answerScore) {
+        this.answerScore = answerScore;
     }
 
     public ArrayList<Integer> getCorrectAnswers() {

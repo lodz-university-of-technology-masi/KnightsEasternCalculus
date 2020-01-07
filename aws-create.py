@@ -31,7 +31,7 @@ print("Creating lambdas...")
 
 lambda_data = [("get-applicant", "lambda.applicant.GetApplicant"), ("get-applicants", "lambda.applicant.GetApplicants"), ("add-applicant", "lambda.applicant.AddApplicant"),
                ("get-all-tests", "lambda.test.GetAllTests"), ("add-test", "lambda.test.AddTest"), ("delete-test", "lambda.test.DeleteTest"), ("update-test", "lambda.test.UpdateTest"), ("get-test", "lambda.test.GetTest"),
-               ("solve-test", "lambda.test.SolveTest"), ("add-test-instance", "lambda.test.AddTestInstance")]
+               ("solve-test", "lambda.test.SolveTest"), ("add-test-instance", "lambda.test.AddTestInstance"), ("assign-applicant", "lambda.applicant.AssignApplicant")]
 
 for lam in lambda_data:
     print("\t"+lam[0])
@@ -51,7 +51,7 @@ gatewayID = json.loads(subprocess.check_output(
 
 # lambda names to automate permission granting
 lambdas = ["get-applicant", "get-applicants", "add-test",
-           "get-all-tests", "update-test", "delete-test", "get-test", "solve-test", "add-test-instance"]
+           "get-all-tests", "update-test", "delete-test", "get-test", "solve-test", "add-test-instance", "assign-applicant"]
 
 print("Granting lambda permissions...")
 for name in lambdas:
@@ -139,9 +139,7 @@ subprocess.call("aws lambda invoke --function-name add-test-instance --payload f
 
 print("Generating constants file...")
 with open(os.path.join("web", "src", "app", "app-consts.ts"), "w+") as file:
-    file.write("export const apiBaseUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/applicant';\n".format(gatewayID))
-    file.write("export const apiSolveUrl = 'https://" + gatewayID + ".execute-api.us-east-1.amazonaws.com/test/applicant/\{ID\}/tests';\n")
-    file.write("export const apiTestUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test/recruiter/tests';\n".format(gatewayID))
+    file.write("export const apiBaseUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test';\n".format(gatewayID))
     file.write("export const userPoolId = '{}';\n".format(pool_id))
     file.write("export const clientId = '{}';\n".format(client["ClientId"]))
     file.write("export const recruiterIdentityPoolId = '{}';\n".format(

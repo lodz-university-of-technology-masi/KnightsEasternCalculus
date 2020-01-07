@@ -12,7 +12,7 @@ import * as Globals from '../app-consts';
 export class ApplicantService {
 
   mockdata: Applicant[];
-  private apiUrl = Globals.apiBaseUrl;
+  private apiUrl = Globals.apiBaseUrl + '/applicants';
 
   constructor(private http: HttpClient) {
     this.mockdata = new Array(new Applicant('1', 'Marian', 'Kowal', new Date(1998, 2, 20), 'Betonowa 10', 'Łódź', '90-116', 'marek@lowcaSzparek.com', '999666333',
@@ -40,8 +40,8 @@ export class ApplicantService {
     return this.http.get<Applicant>(this.apiUrl + `/${id}`);
   }
 
-  assignApplicantToTest(testId: string, applicantId: string) {
-    return of(true);
+  assignApplicantToTest(_testId: string, applicantId: string) {
+    return this.http.post<string>(this.apiUrl + `/${applicantId}` + '/tests', {testId: _testId});
   }
 
 }

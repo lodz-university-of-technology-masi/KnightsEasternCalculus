@@ -50,7 +50,6 @@ public class SolveTest extends Handler<TestInstance> {
             test.setOpenQuestions(open);
 
             calculateClosed(test.getCloseQuestions());
-            calculateOpen(test.getOpenQuestions());
             test.calculatePoints();
 
             test.setStatus(2);
@@ -69,24 +68,12 @@ public class SolveTest extends Handler<TestInstance> {
     }
 
     private void calculateClosed(List<SolvableClosedQuestion> closed) {
-        float sum;
-        for (int i = 0; i < closed.size(); i++) {
-            sum = 0;
-            for (Integer j : closed.get(i).getChosenAnswers()) {
-                if (closed.get(i).getCorrectAnswers().contains(j)) {
-                    sum += (closed.get(i).getMaxScore() / (closed.get(i).getCorrectAnswers().size() * 1.0));
-                }
-            }
-            closed.get(i).setReceivedScore(sum);
-        }
+        closed.forEach(question -> {
+            question.setReceivedScore(question.getChosenAnswers().stream()
+                    .reduce(0, (sum, answer) -> sum + question.getAnswerScore() *
+                            (question.getCorrectAnswers().contains(answer) ? 1 : -1)));
+            if (question.getReceivedScore() < 0) question.setReceivedScore(0);
+        });
     }
 
-    private void calculateOpen(List<SolvableOpenQuestion> open) {
-        for (SolvableOpenQuestion a : open) {
-            if (a.getCorrectAnswer().equalsIgnoreCase(a.getAnswer())) {
-                a.setReceivedScore(a.getMaxScore());
-            }
-        }
-
-    }
 }

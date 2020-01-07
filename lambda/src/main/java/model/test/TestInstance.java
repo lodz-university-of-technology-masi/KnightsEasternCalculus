@@ -9,7 +9,6 @@ import java.util.List;
 
 @DynamoDBTable(tableName="TestInstances")
 public class TestInstance implements Serializable {
-
     private String applicantID;
     private long timestamp;
     private String title;
@@ -18,6 +17,7 @@ public class TestInstance implements Serializable {
     private float maxScore;
     private float receivedScore;
     private int status;
+    private String testId;
 
     public TestInstance(){}
 
@@ -101,6 +101,14 @@ public class TestInstance implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getTestId() {
+        return testId;
+    }
+
+    public void setTestId(String testId) {
+        this.testId = testId;
     }
 
     public void calculatePoints() {

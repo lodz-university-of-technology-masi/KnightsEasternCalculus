@@ -1,7 +1,6 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { TestService } from 'src/app/services/test.service';
 import { Test } from '../../model/test';
-import * as json2csv from 'json2csv';
 import * as saveAs from 'file-saver';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { stringify } from 'querystring';
@@ -46,7 +45,6 @@ export class ShowAllTestsComponent implements OnInit {
                 console.log(res.body);
                 this.testService.downloadTest(<Test>JSON.parse(JSON.stringify(res.body)));
             });
-
     }
 
     public loadTest(fileList: FileList): void {
@@ -79,10 +77,16 @@ export class ShowAllTestsComponent implements OnInit {
 
     public getAllTests(): void {
         this.testService.getAllTests()
-            .subscribe((res: Response) => {
-                console.log(res.body);
-                this.tests = <Test[]>JSON.parse(JSON.stringify(res.body));
-            });
+            .subscribe(
+                (res: Response) => {
+                    console.log(res.body);
+                    if(res.code != 404){
+                        this.tests = <Test[]>JSON.parse(JSON.stringify(res.body));
+                    } else {
+                        this.tests = [];
+                    }
+                }
+            );
     }
 
     public deleteTest(test: Test): void {

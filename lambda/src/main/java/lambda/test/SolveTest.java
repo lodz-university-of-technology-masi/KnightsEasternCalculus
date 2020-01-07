@@ -7,6 +7,7 @@ import lambda.Handler;
 import model.test.SolvableClosedQuestion;
 import model.test.SolvableOpenQuestion;
 import model.test.TestInstance;
+import model.test.TestStatus;
 import util.Response;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class SolveTest extends Handler<TestInstance> {
             TestInstance test = getMapper().load(TestInstance.class, input.getApplicantID(), input.getTimestamp());
 
             if (test.getApplicantID() == null) {
-                return new Response(500, "ApplicantID can't be null");
+                return new Response(400, "ApplicantID can't be null");
             }
 
 
@@ -44,7 +45,7 @@ public class SolveTest extends Handler<TestInstance> {
             calculateClosed(test.getCloseQuestions());
             test.calculatePoints();
 
-            test.setStatus(2);
+            test.setStatus(TestStatus.SOLVED.getValue());
 
             DynamoDBMapperConfig dynamoDBMapperConfig = new DynamoDBMapperConfig.Builder()
                     .withConsistentReads(DynamoDBMapperConfig.ConsistentReads.CONSISTENT)

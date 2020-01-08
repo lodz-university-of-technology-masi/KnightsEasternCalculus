@@ -5,6 +5,8 @@ import {ConfirmCodeComponent} from '../confirm-code/confirm-code.component';
 import {ChangePasswordComponent} from '../change-password/change-password.component';
 import {FillInfoComponent} from '../fill-info/fill-info.component';
 import {AuthGuardService} from '../services/auth-guard.service';
+import {RecruiterGuardService} from '../recruiter/recruiter-guard.service';
+import {DenyComponent} from '../deny/deny.component';
 
 const routes: Routes = [
   {
@@ -23,7 +25,7 @@ const routes: Routes = [
   {
     path: 'recruiter',
     loadChildren: () => import('../recruiter/recruiter.module').then(m => m.RecruiterModule),
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService, RecruiterGuardService]
   },
   {
     path: 'change-password',
@@ -32,6 +34,10 @@ const routes: Routes = [
   {
     path: 'register',
     component: FillInfoComponent
+  },
+  {
+    path: '404',
+    component: DenyComponent
   }
 ];
 

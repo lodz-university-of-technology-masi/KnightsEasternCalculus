@@ -13,6 +13,7 @@ import {ChangePasswordComponent} from './change-password/change-password.compone
 import {FillInfoComponent} from './fill-info/fill-info.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthGuardService} from './services/auth-guard.service';
+import { DenyComponent } from './deny/deny.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {AuthGuardService} from './services/auth-guard.service';
     LoginComponent,
     ConfirmCodeComponent,
     ChangePasswordComponent,
-    FillInfoComponent
+    FillInfoComponent,
+    DenyComponent
   ],
   imports: [
     BrowserModule,

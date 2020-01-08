@@ -17,7 +17,7 @@ export class FillInfoService {
     private httpClient: HttpClient
   ) { }
 
-  addApplicantUrl: string = "https://luznpx1mg3.execute-api.us-east-1.amazonaws.com/Test/tests"; // tu nwm co wstawić
+  addApplicantUrl: string = "https://luznpx1mg3.execute-api.us-east-1.amazonaws.com/Test/applicants";
   public addPer(id, firstName, lastName, date, address, city, postal, email, phone, experiences, univer, aboutMe, photoUrl): void {
     var applicant = new Applicant(id, firstName, lastName, date, address, city, postal, email, phone, experiences, univer, aboutMe, photoUrl);
     this.httpClient.post<Applicant>(this.addApplicantUrl, applicant, httpOptions).subscribe({

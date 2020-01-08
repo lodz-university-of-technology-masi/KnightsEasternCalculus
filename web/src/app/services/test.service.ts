@@ -153,7 +153,8 @@ export class TestService {
 
   public sendSolvedTest(test: TestInstance) {
       return new Observable( observer => {
-        this.httpClient.post<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantID + '/tests', test, httpOptions).subscribe( {
+        this.httpClient.patch<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantID + '/tests', test, httpOptions)
+          .subscribe( {
           error: err => {
             console.log(err);
             observer.error(err);

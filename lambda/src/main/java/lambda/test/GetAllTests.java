@@ -13,7 +13,7 @@ public class GetAllTests extends Handler<Object> {
     @Override
     public Response handleRequest(Object input, Context context) {
         List<Test> tests = getMapper().scan(Test.class, new DynamoDBScanExpression());
-        if (tests != null && tests.size() != 0) {
+        if (tests != null) {
             return new Response(200, tests);
         } else {
             return new Response(404, "Could not get all tests");

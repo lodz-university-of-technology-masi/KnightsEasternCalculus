@@ -5,10 +5,10 @@ import * as saveAs from 'file-saver';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { stringify } from 'querystring';
 import { checkServerIdentity } from 'tls';
-import {ApplicantService} from '../../services/applicant.service';
-import {Applicant} from '../../model/applicant';
-import {AssignModalComponent} from './assign-modal/assign-modal.component';
-import {NgbModal, NgbPopover} from '@ng-bootstrap/ng-bootstrap';
+import { ApplicantService } from '../../services/applicant.service';
+import { Applicant } from '../../model/applicant';
+import { AssignModalComponent } from './assign-modal/assign-modal.component';
+import { NgbModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'show-all-tests',
@@ -79,12 +79,8 @@ export class ShowAllTestsComponent implements OnInit {
         this.testService.getAllTests()
             .subscribe(
                 (res: Response) => {
-                    console.log(res.body);
-                    if(res.status != 404){
-                        this.tests = <Test[]>JSON.parse(JSON.stringify(res.body));
-                    } else {
-                        this.tests = [];
-                    }
+                    // console.log(res.body);
+                    this.tests = <Test[]>JSON.parse(JSON.stringify(res.body));
                 }
             );
     }
@@ -94,32 +90,32 @@ export class ShowAllTestsComponent implements OnInit {
         this.getAllTests();
     }
 
-  toggleAssign(popover, id: string, title: string) {
-    if (popover.isOpen()) {
-      popover.close();
-    } else {
-      this.applicantLoading = false;
-      this.applicants = null;
-      this.searchLastName = '';
-      this.popover = popover;
-      popover.open({id, title});
+    toggleAssign(popover, id: string, title: string) {
+        if (popover.isOpen()) {
+            popover.close();
+        } else {
+            this.applicantLoading = false;
+            this.applicants = null;
+            this.searchLastName = '';
+            this.popover = popover;
+            popover.open({ id, title });
+        }
     }
-  }
 
-  searchApplicants(): void {
-    this.applicantLoading = true;
-    this.applicants = null;
-    this.applicantService.getApplicants(this.searchLastName)
-      .subscribe(applicants => {this.applicants = applicants; this.applicantLoading = false;});
-  }
+    searchApplicants(): void {
+        this.applicantLoading = true;
+        this.applicants = null;
+        this.applicantService.getApplicants(this.searchLastName)
+            .subscribe(applicants => { this.applicants = applicants; this.applicantLoading = false; });
+    }
 
-  openAssignModal(testId: string, testName: string, applicantId: string, applicantFirstName: string, applicantLastName: string) {
-    this.popover.close();
-    const modalRef = this.modalService.open(AssignModalComponent, { centered: true });
-    modalRef.componentInstance.testId = testId;
-    modalRef.componentInstance.testName = testName;
-    modalRef.componentInstance.applicantId = applicantId;
-    modalRef.componentInstance.applicantFirstName = applicantFirstName;
-    modalRef.componentInstance.applicantLastName = applicantLastName;
-  }
+    openAssignModal(testId: string, testName: string, applicantId: string, applicantFirstName: string, applicantLastName: string) {
+        this.popover.close();
+        const modalRef = this.modalService.open(AssignModalComponent, { centered: true });
+        modalRef.componentInstance.testId = testId;
+        modalRef.componentInstance.testName = testName;
+        modalRef.componentInstance.applicantId = applicantId;
+        modalRef.componentInstance.applicantFirstName = applicantFirstName;
+        modalRef.componentInstance.applicantLastName = applicantLastName;
+    }
 }

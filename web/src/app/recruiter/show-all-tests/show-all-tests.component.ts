@@ -80,7 +80,7 @@ export class ShowAllTestsComponent implements OnInit {
             .subscribe(
                 (res: Response) => {
                     console.log(res.body);
-                    if(res.code != 404){
+                    if(res.status != 404){
                         this.tests = <Test[]>JSON.parse(JSON.stringify(res.body));
                     } else {
                         this.tests = [];

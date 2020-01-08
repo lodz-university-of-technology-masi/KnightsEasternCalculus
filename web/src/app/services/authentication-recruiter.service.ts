@@ -41,7 +41,6 @@ export class AuthenticationRecruiterService {
       this.cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: result => {
           sessionStorage.setItem('accessToken', result.getAccessToken().getJwtToken());
-          localStorage.setItem('refreshToken', result.getRefreshToken().getToken());
           localStorage.setItem('idToken', result.getIdToken().getJwtToken());
 
           observer.next(result);
@@ -69,12 +68,12 @@ export class AuthenticationRecruiterService {
 
       if (this.cognitoUser != null ) {
         this.cognitoUser.getSession( (err, session) => {
+          const refresh = session.getRefreshToken();
           console.log('session valid: ', session.isValid());
 
           const loginProvider = {};
-          console.log(session.getIdToken().getJwtToken());
           loginProvider[`cognito-idp.us-east-1.amazonaws.com/${Globals.userPoolId}`] = session.getIdToken().getJwtToken();
-          const creds = new AWS.CognitoIdentityCredentials({
+          let creds = new AWS.CognitoIdentityCredentials({
             IdentityPoolId: Globals.recruiterIdentityPoolId,
             Logins: loginProvider
           });
@@ -92,7 +91,29 @@ export class AuthenticationRecruiterService {
               if (e) {
                 observer.error(e);
               } else {
-                observer.next(data);
+                this.cognitoUser.refreshSession(refresh, (refreshErr, newSession) => {
+                  if (refreshErr) {
+                    console.log(refreshErr);
+                  } else {
+                    creds = new AWS.CognitoIdentityCredentials({
+                      IdentityPoolId: Globals.recruiterIdentityPoolId,
+                      Logins: {
+                        [`cognito-idp.us-east-1.amazonaws.com/${Globals.userPoolId}`]: newSession.getIdToken().getJwtToken()
+                      }
+                    });
+                    AWS.config.update({ credentials: creds});
+                    (AWS.config.credentials as AWS.Credentials).refresh( reErr => {
+                      if (reErr) {
+                        console.log(reErr);
+                      }
+
+                      localStorage.setItem('idToken', newSession.getIdToken().getJwtToken());
+                    })
+                  }
+                });
+
+
+                observer.next(session);
                 observer.complete();
               }
             });
@@ -124,7 +145,8 @@ export class AuthenticationRecruiterService {
             }
           });
 
-          this.addToGroup(username, 'client').subscribe(re => {
+          this.addToGroup(username, 'client').subscribe( (re: string) => {
+
             observer.next('success');
             observer.complete();
             });
@@ -185,10 +207,6 @@ export class AuthenticationRecruiterService {
     return sessionStorage.getItem('accessToken');
   }
 
-  getRefreshToken() {
-    return localStorage.getItem('refreshToken');
-  }
-
 
   getUsername() {
     return jwt_decode(localStorage.getItem('idToken')).email;
@@ -199,7 +217,7 @@ export class AuthenticationRecruiterService {
   }
 
   getIdToken() {
-    return localStorage.getItem('idToken');
+    return jwt_decode(localStorage.getItem('idToken'));
   }
 
   logOut() {

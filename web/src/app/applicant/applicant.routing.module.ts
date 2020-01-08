@@ -6,6 +6,8 @@ import {MyProfileComponent} from './my-profile/my-profile.component';
 import {TestListComponent} from './test-list/test-list.component';
 import {SolvedTestComponent} from './solved-test/solved-test.component';
 import {SolveTestComponent} from './solve-test/solve-test.component';
+import {ApplicantGuardService} from './applicant-guard.service';
+import { Applicant } from '../model/applicant';
 const routes: Routes = [
   {
     path: '', component: AppApplicantComponent, children: [
@@ -23,11 +25,15 @@ const routes: Routes = [
       },
       {
         path: 'tests/:id',
-        component: SolvedTestComponent
+        component: SolvedTestComponent,
+        canActivate: [ApplicantGuardService],
+        data: {id: ':id'}
       },
       {
         path: 'solve-test/:id',
-        component: SolveTestComponent
+        component: SolveTestComponent,
+        canActivate: [ApplicantGuardService],
+        data: {id: 'id'}
       }
     ]
   }

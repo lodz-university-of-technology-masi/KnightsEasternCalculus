@@ -7,6 +7,7 @@ import {FillInfoComponent} from '../fill-info/fill-info.component';
 import {AuthGuardService} from '../services/auth-guard.service';
 import {RecruiterGuardService} from '../recruiter/recruiter-guard.service';
 import {DenyComponent} from '../deny/deny.component';
+import {ApplicantGuardService} from '../applicant/applicant-guard.service';
 
 const routes: Routes = [
   {

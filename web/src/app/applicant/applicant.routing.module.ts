@@ -8,6 +8,7 @@ import {SolvedTestComponent} from './solved-test/solved-test.component';
 import {SolveTestComponent} from './solve-test/solve-test.component';
 import {ApplicantGuardService} from './applicant-guard.service';
 import { Applicant } from '../model/applicant';
+import { IdGuardService } from './id-guard.service';
 const routes: Routes = [
   {
     path: '', component: AppApplicantComponent, children: [
@@ -26,13 +27,13 @@ const routes: Routes = [
       {
         path: 'tests/:id',
         component: SolvedTestComponent,
-        canActivate: [ApplicantGuardService],
+        canActivate: [IdGuardService],
         data: {id: ':id'}
       },
       {
         path: 'solve-test/:id',
         component: SolveTestComponent,
-        canActivate: [ApplicantGuardService],
+        canActivate: [IdGuardService],
         data: {id: 'id'}
       }
     ]

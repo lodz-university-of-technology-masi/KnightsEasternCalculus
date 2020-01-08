@@ -13,7 +13,7 @@ const routes: Routes = [
   {
     path: 'applicant',
     loadChildren: () => import('../applicant/applicant.module').then(m => m.ApplicantModule),
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService, ApplicantGuardService]
   },
   {
     path: 'login',

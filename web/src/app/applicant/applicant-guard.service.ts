@@ -11,13 +11,20 @@ export class ApplicantGuardService implements CanActivate{
   constructor(private authService: AuthenticationRecruiterService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const token = this.authService.getIdToken();
-    if (token['cognito:username'] === route.data.id) {
-      return true;
-    }
+    const groups = this.authService.getIdToken()['cognito:groups'];
+    let flag = false;
+    groups.forEach(group => {
+      if (group === 'client') {
+        flag = true;
+      }
+    });
 
-    this.router.navigateByUrl('/applicant');
-    return false;
+    if (flag) {
+      return true;
+    } else {
+      this.router.navigateByUrl('/404');
+      return false;
+    }
   }
 
 }

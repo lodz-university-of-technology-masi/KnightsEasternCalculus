@@ -23,7 +23,11 @@ export class LoginComponent implements OnInit {
       if (result === 'newPass') {
         this.router.navigateByUrl('/change-password');
       } else {
-        this.router.navigateByUrl('/');
+        if (this.authService.getGroups()[0] === 'recruiter') {
+          this.router.navigateByUrl('/recruiter');
+        } else if (this.authService.getGroups()[0] === 'client') {
+          this.router.navigateByUrl('/applicant');
+        }
       }
     }, (err) => {
       console.log('err' + err.toString());

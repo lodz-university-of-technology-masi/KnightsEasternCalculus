@@ -3,6 +3,7 @@ import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserAttribu
 import {BehaviorSubject, Observable, Observer} from 'rxjs';
 import * as AWS from 'aws-sdk';
 import * as Globals from '../app-consts';
+import * as jwt_decode from 'jwt-decode';
 
 const poolData = {
   UserPoolId: Globals.userPoolId,
@@ -41,32 +42,7 @@ export class AuthenticationRecruiterService {
         onSuccess: result => {
           sessionStorage.setItem('accessToken', result.getAccessToken().getJwtToken());
           localStorage.setItem('refreshToken', result.getRefreshToken().getToken());
-
-
-          // AWS.config.region = 'us-east-1';
-          // const tmp = new AWS.CognitoIdentityCredentials({
-          //   IdentityPoolId: Globals.recruiterIdentityPoolId,
-          //   Logins: {
-          //     [`cognito-idp.us-east-1.amazonaws.com/${Globals.userPoolId}`]: result.getIdToken().getJwtToken()
-          //   }
-          // });
-          //
-          // // bullshit workaround for updating the credentials params
-          // AWS.config.update({credentials: tmp, region: 'us-east-1'});
-
-
-
-          this.cognitoUser.getUserAttributes( (err, res) => {
-            if (err) {
-              console.log('userattrs err: ', err);
-            }
-            this.sessionUserAttributes = res;
-            res.forEach( value => {
-              if (value.getName() === 'email') {
-                localStorage.setItem('email', value.getValue());
-              }
-            });
-          });
+          localStorage.setItem('idToken', result.getIdToken().getJwtToken());
 
           observer.next(result);
           observer.complete();
@@ -74,7 +50,6 @@ export class AuthenticationRecruiterService {
           console.log(err);
           observer.error(err);
         }, newPasswordRequired: ((userAttributes, requiredAttributes) => {
-          localStorage.setItem('email', userAttributes.email);
           delete userAttributes.email_verified;
           this.sessionUserAttributes = userAttributes;
           observer.next('newPass');
@@ -122,21 +97,6 @@ export class AuthenticationRecruiterService {
               }
             });
           });
-          // AWS.config.credentials.refresh( error => {
-          //   if (error) {
-          //     console.log(error);
-          //   }
-          // });
-          //
-          // const idProvider = new AWS.CognitoIdentityServiceProvider();
-          // idProvider.adminAddUserToGroup(params, (e, data) => {
-          //   if (e) {
-          //     observer.error(e);
-          //   } else {
-          //     observer.next(data);
-          //     observer.complete();
-          //   }
-          // });
         });
       }
 
@@ -200,6 +160,7 @@ export class AuthenticationRecruiterService {
         onSuccess: result => {
           sessionStorage.setItem('accessToken', result.getAccessToken().getJwtToken());
           localStorage.setItem('refreshToken', result.getRefreshToken().getToken());
+          localStorage.setItem('idToken', result.getIdToken().getJwtToken());
 
           observer.next(result);
           observer.complete();
@@ -230,7 +191,15 @@ export class AuthenticationRecruiterService {
 
 
   getUsername() {
-    return localStorage.getItem('email');
+    return jwt_decode(localStorage.getItem('idToken')).email;
+  }
+
+  getGroups() {
+    return jwt_decode(localStorage.getItem('idToken'))['cognito:groups'];
+  }
+
+  getIdToken() {
+    return localStorage.getItem('idToken');
   }
 
   logOut() {

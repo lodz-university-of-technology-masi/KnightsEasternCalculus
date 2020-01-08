@@ -12,6 +12,7 @@ import { ConfirmCodeComponent } from './confirm-code/confirm-code.component';
 import {ChangePasswordComponent} from './change-password/change-password.component';
 import {FillInfoComponent} from './fill-info/fill-info.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {AuthGuardService} from './services/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

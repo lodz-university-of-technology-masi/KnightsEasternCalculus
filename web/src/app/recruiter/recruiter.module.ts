@@ -13,7 +13,7 @@ import { ShowAllTestsComponent } from './show-all-tests/show-all-tests.component
 import { CommonComponentsModule } from '../common-components/common-components.module';
 import { ApplicantTestListComponent } from './applicant-test-list/applicant-test-list.component';
 import { UpdateTestComponent } from './update-test/update-test.component';
-import {NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule, NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap';
 import { AssignModalComponent } from './show-all-tests/assign-modal/assign-modal.component';
 import { GradeTestComponent } from './grade-test/grade-test.component';
 
@@ -39,7 +39,8 @@ import { GradeTestComponent } from './grade-test/grade-test.component';
     FormsModule,
     RecruiterRoutingModule,
     CommonComponentsModule,
-    NgbPopoverModule
+    NgbPopoverModule,
+    NgbDropdownModule
   ],
   bootstrap: [AssignModalComponent]
 })

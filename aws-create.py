@@ -31,7 +31,8 @@ print("Creating lambdas...")
 
 lambda_data = [("get-applicant", "lambda.applicant.GetApplicant"), ("get-applicants", "lambda.applicant.GetApplicants"), ("add-applicant", "lambda.applicant.AddApplicant"),
                ("get-all-tests", "lambda.test.GetAllTests"), ("add-test", "lambda.test.AddTest"), ("delete-test", "lambda.test.DeleteTest"), ("update-test", "lambda.test.UpdateTest"), ("get-test", "lambda.test.GetTest"),
-               ("solve-test", "lambda.test.SolveTest"), ("add-test-instance", "lambda.test.AddTestInstance"), ("assign-applicant", "lambda.applicant.AssignApplicant"), ("get-test-instances-for-user", "lambda.test.GetTestInstancesForUser"), ("get-test-instance", "lambda.test.GetTestInstance")]
+               ("solve-test", "lambda.test.SolveTest"), ("add-test-instance", "lambda.test.AddTestInstance"), ("assign-applicant", "lambda.applicant.AssignApplicant"),
+               ("get-test-instances-for-user", "lambda.test.GetTestInstancesForUser"), ("get-test-instance", "lambda.test.GetTestInstance")]
 
 for lam in lambda_data:
     print("\t"+lam[0])
@@ -50,13 +51,11 @@ gatewayID = json.loads(subprocess.check_output(
 
 
 # lambda names to automate permission granting
-lambdas = ["get-applicant", "get-applicants", "add-test",
-           "get-all-tests", "update-test", "delete-test", "get-test", "solve-test", "add-test-instance", "assign-applicant"]
 
 print("Granting lambda permissions...")
-for name in lambdas:
+for name in lambda_data:
     subprocess.call("aws lambda add-permission --function-name {0} --statement-id api-{0} --action lambda:InvokeFunction --principal apigateway.amazonaws.com --source-arn arn:aws:execute-api:us-east-1:{1}:{2}/*/**".format(
-        name, accountID, gatewayID), shell=True)
+        name[0], accountID, gatewayID), shell=True)
 
 print("Filling test data...")
 files = ["marian.txt", "zosia.txt", "anna.txt"]

@@ -39,6 +39,7 @@ public class SolveTest extends Handler<TestInstance> {
             for (int i = 0; i < test.getOpenQuestions().size(); i++) {
                 o = test.getOpenQuestions().get(i);
                 o.setAnswer(input.getOpenQuestions().get(i).getAnswer());
+                o.setReceivedScore(input.getOpenQuestions().get(i).getReceivedScore());
                 open.add(o);
             }
             test.setOpenQuestions(open);

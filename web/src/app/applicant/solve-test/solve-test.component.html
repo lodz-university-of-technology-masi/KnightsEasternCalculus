@@ -1,7 +1,7 @@
 <h2 class="mt-2">{{test.title}}</h2>
 <div *ngIf="test.closeQuestions.length != 0">
   <div class="card my-3" *ngFor="let closedQuestion of test.closeQuestions; let i = index">
-    <div class="card-header">Pytanie {{i+test.openQuestions.length+1}}</div>
+    <div class="card-header">Pytanie {{i+1}}</div>
     <div class="row no-gutters">
       <div class="col-md-auto">
         <div class="card-body text-center">{{closedQuestion.maxScore}}pkt.</div>
@@ -21,7 +21,7 @@
 <div>
   <div class="card my-3" *ngIf="test.openQuestions.length != 0">
     <div class="card my-3" *ngFor="let openQuestion of test.openQuestions; let k = index">
-      <div class="card-header">Pytanie {{k+1}}</div>
+      <div class="card-header">Pytanie {{k+test.closeQuestions.length+1}}</div>
       <div class="row no-gutters">
         <div class="col-md-auto">
           <div class="card-body text-center">{{openQuestion.maxScore}}pkt.</div>

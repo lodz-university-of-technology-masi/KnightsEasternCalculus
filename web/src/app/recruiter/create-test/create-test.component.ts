@@ -2,6 +2,8 @@ import { Component, OnInit, Injectable } from '@angular/core';
 import { CloseQuestion } from '../../model/close-question';
 import { OpenQuestion } from '../../model/open-question';
 import { TestService } from '../../services/test.service';
+import { Router } from '@angular/router';
+import { AuthenticationRecruiterService } from '../../services/authentication-recruiter.service';
 
 @Component({
   selector: 'app-create-test',
@@ -13,19 +15,23 @@ import { TestService } from '../../services/test.service';
 export class CreateTestComponent implements OnInit {
 
   constructor(
-    private testService: TestService
+
+    private testService: TestService,
+    private router: Router,
+    private authService: AuthenticationRecruiterService
   ) { }
 
 
   //#region "Init and choices beetween open and close question"
   ifOpen: boolean;
   ifClose: boolean;
-
+  
   ngOnInit() {
+    // this.getQuestions();
     this.ifOpen = false;
     this.ifClose = true;
   }
-
+  
   getIfOpen(): boolean {
     return this.ifOpen;
   }
@@ -57,30 +63,16 @@ export class CreateTestComponent implements OnInit {
 
   addCorrectCloseAnswer(): void {
     this.correctCloseAnswers.push(this.inputCorrectCloseAnswer);
-    this.inputCorrectCloseAnswer = null;
+    this.inputCorrectCloseAnswer = "";
   }
 
   addIncorrectCloseAnswer(): void {
     this.incorrectCloseAnswers.push(this.inputIncorrectCloseAnswer);
-    this.inputIncorrectCloseAnswer = null;
+    this.inputIncorrectCloseAnswer = "";
   }
 
-  addCloseQuestion(): void {
-    if (this.correctCloseAnswers.length != 0) {
-      this.closeQuestions.push(new CloseQuestion(this.inputCloseQuestion, this.correctCloseAnswers, this.incorrectCloseAnswers, this.inputMaxScoreClose));
-      this.inputCloseQuestion = null;
-      this.inputCorrectCloseAnswer = null;
-      this.correctCloseAnswers = null;
-      this.inputIncorrectCloseAnswer = null;
-      this.incorrectCloseAnswers = null;
-      this.inputMaxScoreClose = 1;
-    } else {
-      alert("Nie dodano pytania (brak poprawnej odpowiedzi)")
-    }
-  }
-
-  removeCloseQuestion(closeQuestion: CloseQuestion): void {
-    this.closeQuestions.splice(this.closeQuestions.indexOf(closeQuestion), 1);
+  addCloseQuestion(): void{
+    this.closeQuestions.push(new CloseQuestion(this.inputCloseQuestion, this.correctCloseAnswers, this.incorrectCloseAnswers, this.inputMaxScoreClose))
   }
 
   onSelectCloseQuestion(closeQuestion: CloseQuestion): void {
@@ -93,17 +85,10 @@ export class CreateTestComponent implements OnInit {
   inputOpenQuestion: string;
   inputCorrectOpenAnswer: string;
   selectedOpenQuestion: OpenQuestion;
-  inputMaxScoreOpen: number;
+  inputMaxScoreOpen; number;
 
   addOpenQuestion(): void {
     this.openQuestions.push(new OpenQuestion(this.inputOpenQuestion, this.inputCorrectOpenAnswer, this.inputMaxScoreOpen))
-    this.inputOpenQuestion = null;
-    this.inputCorrectOpenAnswer = null;
-    this.inputMaxScoreOpen = 1;
-  }
-
-  removeOpenQuestion(openQuestion: OpenQuestion): void {
-    this.openQuestions.splice(this.openQuestions.indexOf(openQuestion), 1);
   }
 
   onSelectOpenQuestion(openQuestion: OpenQuestion): void {
@@ -113,8 +98,14 @@ export class CreateTestComponent implements OnInit {
 
   //#region "Create Test"
   inputTestTitle: string = "";
+  inputLanguage: string = "pl";
   public createTest(): void {
-    this.testService.createTest(this.inputTestTitle, this.openQuestions, this.closeQuestions);
+    this.testService.createTest(this.inputTestTitle, this.inputLanguage, this.authService.getUsername(), this.openQuestions, this.closeQuestions).subscribe({
+      error: error => ({}),
+      complete: () => {
+        this.router.navigate(['/recruiter/show-all-tests']);
+      }
+    });
   }
   //#endregion
 }

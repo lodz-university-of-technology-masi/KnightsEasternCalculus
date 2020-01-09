@@ -17,8 +17,8 @@ public class AddTest extends Handler<Test> {
                 if (getMapper().load(Test.class, input.getId()) == null) {
                     getMapper().save(input);
                     return new Response(200, "Test added successfully");
-                } else return new Response(500, "Test was not added (such test exists)");
+                } else return new Response(404, "Test was not added (such test exists)");
             }
-        } else return new Response(500, "Test was not added");
+        } else return new Response(404, "Test was not added");
     }
 }

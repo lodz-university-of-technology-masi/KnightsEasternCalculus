@@ -4,6 +4,7 @@ import { TestService } from 'src/app/services/test.service';
 import { Test } from '../../model/test';
 import { CloseQuestion } from 'src/app/model/close-question';
 import { OpenQuestion } from 'src/app/model/open-question';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-update-test',
@@ -18,7 +19,8 @@ export class UpdateTestComponent implements OnInit {
 
   constructor(
     private testService: TestService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   //#region "Init and choices beetween open and close question"
@@ -118,14 +120,19 @@ export class UpdateTestComponent implements OnInit {
 
   //#region "Test Management"
   public updateTest(): void {
-    this.testService.updateTest(this.test.id, this.test.title, this.test.openQuestions, this.test.closeQuestions);
+    this.testService.updateTest(this.test.id, this.test.title, this.test.author, this.test.language, this.test.openQuestions, this.test.closeQuestions).subscribe({
+      error: error => ({}),
+      complete: () => {
+        this.router.navigate(['/recruiter/show-all-tests']);
+      }
+    });
   }
 
   getTest(id: string): void {
     this.testService.getTest(id)
       .subscribe((res: Response) => {
-        console.log(res.body);
-        this.test = <Test>JSON.parse(JSON.stringify(res.body));
+        console.log(res);
+        this.test = <Test>JSON.parse(JSON.stringify(res));
       });
   }
   //#endregion

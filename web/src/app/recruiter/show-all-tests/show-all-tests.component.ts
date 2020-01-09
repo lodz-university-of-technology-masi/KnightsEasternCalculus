@@ -32,18 +32,39 @@ export class ShowAllTestsComponent implements OnInit {
     popover: NgbPopover;
     fileName: string;
     fileContent: string = '';
+    selectedTest: Test;
+    languages: any;
+    currentLanguage: string = ""
 
-    constructor(private testService: TestService, private applicantService: ApplicantService, private modalService: NgbModal) { }
+    constructor(
+        private testService: TestService,
+        private applicantService: ApplicantService,
+        private modalService: NgbModal
+    ) { }
 
     ngOnInit(): void {
         this.getAllTests();
     }
 
+    public onSelect(test: Test) {
+        this.selectedTest = test;
+        this.currentLanguage = this.selectedTest.language.toUpperCase();
+    }
+
+    public translateTest() {
+        this.testService.translateTest(this.selectedTest, this.currentLanguage);
+        // this.testService.translateTest(this.selectedTest, this.currentLanguage).subscribe({
+        //     error: error => ({}),
+        //     complete: () => { }
+        // });
+
+    }
+
     public downloadTest(id: string): void {
         this.testService.getTest(id)
             .subscribe((res: Response) => {
-                console.log(res.body);
-                this.testService.downloadTest(<Test>JSON.parse(JSON.stringify(res.body)));
+                console.log(res);
+                this.testService.downloadTest(<Test>JSON.parse(JSON.stringify(res)));
             });
     }
 
@@ -70,8 +91,8 @@ export class ShowAllTestsComponent implements OnInit {
     public getTest(id: string): void {
         this.testService.getTest(id)
             .subscribe((res: Response) => {
-                this.test = <Test>JSON.parse(JSON.stringify(res.body));
-                console.log(res.body);
+                this.test = <Test>JSON.parse(JSON.stringify(res));
+                console.log(res);
             });
     }
 
@@ -79,15 +100,21 @@ export class ShowAllTestsComponent implements OnInit {
         this.testService.getAllTests()
             .subscribe(
                 (res: Response) => {
-                    // console.log(res.body);
-                    this.tests = <Test[]>JSON.parse(JSON.stringify(res.body));
+                    this.tests = <Test[]>JSON.parse(JSON.stringify(res));
                 }
             );
     }
 
     public deleteTest(test: Test): void {
-        this.testService.deleteTest(test);
-        this.getAllTests();
+        this.testService.deleteTest(test)
+        .subscribe({
+            error: () => {
+                console.log("Delete failed");
+            },
+            complete: () => {
+                this.getAllTests();
+            }
+        });
     }
 
     toggleAssign(popover, id: string, title: string) {

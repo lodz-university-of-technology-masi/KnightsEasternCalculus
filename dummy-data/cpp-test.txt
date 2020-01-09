@@ -8,7 +8,7 @@
       "incorrectAnswers": [
         "int i[];",
         "int[5] i;",
-	"int i[] = new int[10];"
+        "int i[] = new int[10];"
       ],
       "answerScore": 5,
       "question": "Choose the correct array declaration method."
@@ -20,7 +20,7 @@
       "incorrectAnswers": [
         "an array of functions returning int pointers",
         "an array of pointers to functions returning an int",
-	"a function returning an array of int pointers"
+        "a function returning an array of int pointers"
       ],
       "answerScore": 10,
       "question": "What does this pointer point to? int (*fpa())[]"
@@ -38,5 +38,7 @@
       "question": "Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value."
     }
   ],
-  "title": "C++ basic knowledge"
+  "title": "C++ basic knowledge",
+  "author": "Jan Kowalski",
+  "language": "pl"
 }

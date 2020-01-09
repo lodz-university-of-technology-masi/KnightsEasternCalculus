@@ -19,12 +19,9 @@ public class GetTestInstancesForUser extends Handler<String> {
     public Response handleRequest(String input, Context context) {
         Map<String, AttributeValue> attributeValues = new HashMap<>();
         attributeValues.put(":id", new AttributeValue().withS(input));
-        Map<String, String> attributeNames = new HashMap<>();
-        attributeNames.put("#id", "applicantId");
 
         DynamoDBQueryExpression<TestInstance> query = new DynamoDBQueryExpression<TestInstance>()
-                .withKeyConditionExpression("#id = :id")
-                .withExpressionAttributeNames(attributeNames)
+                .withKeyConditionExpression("applicantID = :id")
                 .withExpressionAttributeValues(attributeValues);
 
         List<TestInstance> tab = getMapper().query(TestInstance.class, query);

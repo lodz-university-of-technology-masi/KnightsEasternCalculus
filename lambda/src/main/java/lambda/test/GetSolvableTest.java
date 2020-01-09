@@ -12,7 +12,8 @@ import java.util.ArrayList;
 public class GetSolvableTest extends Handler<String> {
     @Override
     public Response handleRequest(String input, Context context) {
-        TestInstance test = getMapper().load(TestInstance.class, input);
+        String[] index = input.split("=");
+        TestInstance test = getMapper().load(TestInstance.class, index[0], index[1]);
         if (test == null) {
             return new Response(404, "Test not found");
         } else {

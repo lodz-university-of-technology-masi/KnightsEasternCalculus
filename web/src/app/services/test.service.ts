@@ -135,7 +135,7 @@ export class TestService {
   }
 
   public getTestInstances(id: string) {
-    return this.httpClient.get<TestInstance[]>(Globals.apiBaseUrl + '/applicants/' + id + '/tests');
+    return this.httpClient.get(Globals.apiBaseUrl + '/applicants/' + id + '/tests');
   }
 
   public getUserTest(username: string, timestamp: number) {

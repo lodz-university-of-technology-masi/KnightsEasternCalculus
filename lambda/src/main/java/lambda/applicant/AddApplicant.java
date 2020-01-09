@@ -9,8 +9,7 @@ public class AddApplicant extends Handler<Applicant> {
 
     @Override
     public Response handleRequest(Applicant input, Context context) {
-        String low = input.getLastName().toLowerCase();
-        input.setLastName(low);
+        input.setLastName(input.getLastName().toLowerCase());
         getMapper().save(input);
         return new Response(200, input);
     }

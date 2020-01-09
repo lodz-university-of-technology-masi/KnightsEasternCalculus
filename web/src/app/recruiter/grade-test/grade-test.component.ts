@@ -27,4 +27,10 @@ export class GradeTestComponent implements OnInit {
     });
   }
 
+  grade() {
+    this.testService.sendSolvedTest(this.test).subscribe( result => {
+      console.log(result);
+    });
+  }
+
 }

@@ -138,6 +138,10 @@ export class TestService {
     return this.httpClient.get(Globals.apiBaseUrl + '/applicants/' + id + '/tests');
   }
 
+  public getTestInstance(id: string, timestamp: string) {
+    return this.httpClient.get(Globals.apiBaseUrl + '/applicants/' + id + '/tests/' + timestamp);
+  }
+
   public getUserTest(username: string, timestamp: number) {
     return this.getAllUserTests(username).pipe(map(tests => tests.find(test => test.timestamp === timestamp)));
   }

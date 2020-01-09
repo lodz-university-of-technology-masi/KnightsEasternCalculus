@@ -17,13 +17,15 @@
 <!--      Jeszcze inny-->
 <!--      <span class="badge badge-danger">USUNIĘTY</span>-->
 <!--    </li>-->
-    <li class="list-group-item d-flex justify-content-between align-items-center" *ngIf="test.status != 1">
+    <li class="list-group-item d-flex justify-content-between align-items-center" *ngIf="test.status != 0">
       {{test.title}}
       <span class="badge badge-success" *ngIf="test.status == 2">OCENIONY</span>
-      <span class="badge badge-warning" *ngIf="test.status == 1">OCEŃ</span>
       <span class="badge badge-danger" *ngIf="test.status == 0">NIE ROZWIĄZANY</span>
     </li>
-    <a CLASS="list-group-item d-flex justify-content-between align-items-cener list-group-item-action text-dark" [routerLink]="" *ngIf="test.status == 1"></a>
+    <a CLASS="list-group-item d-flex justify-content-between align-items-cener list-group-item-action text-dark" routerLink="test/{{test.timestamp}}" *ngIf="test.status == 0">
+      {{test.title}}
+      <span class="badge badge-warning">OCEŃ</span>
+    </a>
   </ul>
 </ng-container>
 <ng-template #noEntries><span>(brak)</span></ng-template>

@@ -8,6 +8,7 @@ import { CreateTestComponent } from './create-test/create-test.component';
 import { ShowAllTestsComponent } from './show-all-tests/show-all-tests.component';
 import { AppRecruiterComponent } from './app-recruiter/app-recruiter.component';
 import { UpdateTestComponent } from './update-test/update-test.component';
+import {GradeTestComponent} from './grade-test/grade-test.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,10 @@ const routes: Routes = [
       {
         path: 'applicant/:id',
         component: RecruiterApplicantProfileComponent
+      },
+      {
+        path: 'applicant/:id/test/:timestamp',
+        component: GradeTestComponent
       }
     ]
   }

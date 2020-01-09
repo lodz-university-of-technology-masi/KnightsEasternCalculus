@@ -31,7 +31,7 @@ print("Creating lambdas...")
 
 lambda_data = [("get-applicant", "lambda.applicant.GetApplicant"), ("get-applicants", "lambda.applicant.GetApplicants"), ("add-applicant", "lambda.applicant.AddApplicant"),
                ("get-all-tests", "lambda.test.GetAllTests"), ("add-test", "lambda.test.AddTest"), ("delete-test", "lambda.test.DeleteTest"), ("update-test", "lambda.test.UpdateTest"), ("get-test", "lambda.test.GetTest"),
-               ("solve-test", "lambda.test.SolveTest"), ("add-test-instance", "lambda.test.AddTestInstance"), ("assign-applicant", "lambda.applicant.AssignApplicant"), ("get-test-instances-for-user", "lambda.test.GetTestInstancesForUser")]
+               ("solve-test", "lambda.test.SolveTest"), ("add-test-instance", "lambda.test.AddTestInstance"), ("assign-applicant", "lambda.applicant.AssignApplicant"), ("get-test-instances-for-user", "lambda.test.GetTestInstancesForUser"), ("get-test-instance", "lambda.test.GetTestInstance")]
 
 for lam in lambda_data:
     print("\t"+lam[0])
@@ -65,6 +65,14 @@ print("\tFilling dynamodb")
 for file in files:
     subprocess.call("aws lambda invoke --function-name add-applicant --payload fileb://{} dump".format(
         os.path.join("dummy-data", file)), shell=True)
+    if file == "anna.txt":
+        with open("dump", 'r') as f:
+            anka_id = json.loads(f.read())['body']['id']
+        with open(os.path.join("dummy-data", "testInst_template"), 'r') as f:
+            test_instance = json.loads(f.read())
+        test_instance['applicantID'] = anka_id
+        with open(os.path.join("dummy-data", "test_instance.json"), 'w') as f:
+            json.dump(test_instance, f)
 
 print("\tAdding mock test")
 subprocess.call("aws lambda invoke --function-name add-test --payload fileb://{} dump".format(

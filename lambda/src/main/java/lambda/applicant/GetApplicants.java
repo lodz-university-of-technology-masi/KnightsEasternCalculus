@@ -6,6 +6,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
 import model.applicant.ApplicantListItem;
 import util.Response;
+import util.Utils;
 
 import java.util.*;
 
@@ -30,6 +31,7 @@ public class GetApplicants extends Handler<String> {
 
         List<ApplicantListItem> queryList = new ArrayList<>(getMapper().scan(ApplicantListItem.class,scanExpression));
         queryList.sort(Comparator.comparing(ApplicantListItem::getLastName));
+        queryList.forEach(replicant -> replicant.setLastName(Utils.capitalize(replicant.getLastName())));
         return new Response(200, queryList);
     }
 

@@ -3,8 +3,10 @@ import { Applicant} from '../model/applicant';
 import {Experience} from '../model/experience';
 import {University} from '../model/university';
 import { Observable, of } from 'rxjs';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpParams, HttpResponse} from '@angular/common/http';
 import * as Globals from '../app-consts';
+import 'rxjs-compat/add/operator/catch';
+import {catchError, map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -40,8 +42,8 @@ export class ApplicantService {
     return this.http.get<Applicant>(this.apiUrl + `/${id}`);
   }
 
-  assignApplicantToTest(_testId: string, applicantId: string) {
-    return this.http.post<string>(this.apiUrl + `/${applicantId}` + '/tests', {testId: _testId});
+  assignApplicantToTest(_testId: string, applicantId: string, confirm: boolean) {
+    return this.http.post<string>(this.apiUrl + `/${applicantId}` + '/tests', {testId: _testId, force: confirm}, {observe: 'response'});
   }
 
 }

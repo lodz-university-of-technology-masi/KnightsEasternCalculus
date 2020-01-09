@@ -6,12 +6,19 @@
 </div>
 <div class="modal-body">
   <p>Czy na pewno chcesz przypisać {{applicantFirstName}} {{applicantLastName}} do testu {{testName}}?</p>
+  <ng-template [ngIf]="needsConfirmation">
+    <p class="mb-2">Ten aplikant ma już przypisane testy o tym id:</p>
+    <ng-container *ngFor="let test of existingTests">
+      <a href="#">{{test}}</a><br />
+    </ng-container>
+    <p class="mt-4 font-weight-bold">Czy na pewno chcesz przypisać kolejną instancję tego testu?</p>
+  </ng-template>
   <ng-template [ngIf]="loading">
     <div class="spinner-grow spinner-grow-sm" role="status"></div>
   </ng-template>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="confirm()" [disabled]="loading">Przypisz</button>
+  <button type="button" class="btn btn-primary" (click)="confirm()" [disabled]="loading" [ngClass]="{'btn-danger': needsConfirmation}">{{needsConfirmation ? "Przypisz kolejny" : "Przypisz"}}</button>
   <button type="button" class="btn btn-secondary"(click)="activeModal.close('Close click')" [disabled]="loading">Anuluj</button>
 </div>
 

@@ -11,6 +11,8 @@ export class LoginComponent implements OnInit {
 
   username = '';
   password = '';
+  loading = false;
+  userUnknown = false;
 
   constructor(private router: Router, private authService: AuthenticationRecruiterService) { }
 
@@ -19,6 +21,8 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    this.loading = true;
+    this.userUnknown = false;
     this.authService.signIn(this.username, this.password).subscribe(result => {
       if (result === 'newPass') {
         this.router.navigateByUrl('/change-password');
@@ -31,6 +35,10 @@ export class LoginComponent implements OnInit {
       }
     }, (err) => {
       console.log('err' + err.toString());
+      if(err.code === 'UserNotFoundException') {
+        this.userUnknown = true;
+      }
+      this.loading = false;
     });
   }
 

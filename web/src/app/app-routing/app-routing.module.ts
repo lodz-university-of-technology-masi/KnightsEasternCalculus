@@ -8,8 +8,15 @@ import {AuthGuardService} from '../services/auth-guard.service';
 import {RecruiterGuardService} from '../recruiter/recruiter-guard.service';
 import {DenyComponent} from '../deny/deny.component';
 import {ApplicantGuardService} from '../applicant/applicant-guard.service';
+import {RootGuard} from '../services/root-guard.service';
+import {AppComponent} from "../app.component";
 
 const routes: Routes = [
+  {
+    path: '',
+    canActivate: [RootGuard],
+    component: AppComponent
+  },
   {
     path: 'applicant',
     loadChildren: () => import('../applicant/applicant.module').then(m => m.ApplicantModule),

@@ -11,6 +11,9 @@ print("The account id is {}".format(accountID))
 
 role_tmp = "arn:aws:iam::{}:role/{}"
 
+print("Building lambda project...")
+subprocess.call("{} buildZip".format("gradlew"), shell=True, cwd="lambda")
+
 print("Creating lambda bucket...")
 subprocess.call(
     "aws s3api create-bucket --bucket {}-kotec-lambda-{}".format(accountID, accountID), shell=True)

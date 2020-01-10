@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {TestInstance} from '../../model/test-instance';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {TestService} from '../../services/test.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 
@@ -16,7 +16,7 @@ export class GradeTestComponent implements OnInit {
   private timestamp;
   private valid = true;
 
-  constructor(private route: ActivatedRoute, private testService: TestService) { }
+  constructor(private route: ActivatedRoute, private testService: TestService, private router: Router) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe( value => {
@@ -25,6 +25,7 @@ export class GradeTestComponent implements OnInit {
 
       this.testService.getTestInstance(this.applicantID, this.timestamp).subscribe( (result: Response) => {
         this.test = JSON.parse(JSON.stringify(result.body)) as TestInstance;
+        console.log(this.test);
       });
     });
   }
@@ -32,7 +33,7 @@ export class GradeTestComponent implements OnInit {
   grade() {
     if (this.validate()) {
       this.testService.sendSolvedTest(this.test).subscribe(result => {
-        console.log(result);
+        this.router.navigateByUrl('/recruiter/applicant/' + this.applicantID);
       });
     }
   }

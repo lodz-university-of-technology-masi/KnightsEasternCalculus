@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {ApplicantService} from '../../../services/applicant.service';
-import {TestInstance} from '../../../model/test-instance';
+import {ApplicantService} from '../../services/applicant.service';
+import {TestInstance} from '../../model/test-instance';
 import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({

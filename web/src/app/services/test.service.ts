@@ -49,6 +49,7 @@ export class TestService {
   //  & lang=<translation direction>
   public async translateTest(test: Test, language: string) {
     var yandexKey = 'trnsl.1.1.20200108T191910Z.fe657624420b3a8c.9b1c3b15e8688d96a425d4596dfc2c6321f04ee2';
+    var translateUrl = 'https://translate.yandex.net/api/v1.5/tr.json/translate?key=';
     var lang = ''
     var result = new Test('', '', '', '', [], []);
     if (language == 'pl') {
@@ -57,21 +58,37 @@ export class TestService {
       lang = '&lang=pl-en';
     }
 
-    result.title = (await axios.post('https://translate.yandex.net/api/v1.5/tr.json/translate?key=' + yandexKey + '&text=' + test.title + lang)).data.text[0];
+    result.title = (await axios.post(translateUrl + yandexKey + '&text=' + test.title + lang)).data.text[0];
     result.author = test.author;
     result.language = language;
 
-    test.closeQuestions.forEach(async function (value) {
-      var txt = (await axios.post('https://translate.yandex.net/api/v1.5/tr.json/translate?key=' + yandexKey + '&text=' + value + lang)).data.text[0];
-      console.log(txt);
-      result.closeQuestions.push();
-    });
+    for (let i = 0; i < test.closeQuestions.length; i++) {
+      // question: string, correctAnswers: string[], incorrectAnswers: string[], answerScore: number
+      var closeQuestion = new CloseQuestion('', [], [], 0);
+      closeQuestion.question = (await axios.post(translateUrl + yandexKey + '&text=' + test.closeQuestions[i].question + lang)).data.text[0];
+      closeQuestion.answerScore = test.closeQuestions[i].answerScore;
 
-    test.openQuestions.forEach(async function (value) {
-      var txt = (await axios.post('https://translate.yandex.net/api/v1.5/tr.json/translate?key=' + yandexKey + '&text=' + value + lang)).data.text[0];
-      console.log(txt);
-      result.openQuestions.push(txt);
-    })
+      for (let j = 0; j < test.closeQuestions[i].correctAnswers.length; j++) {
+        closeQuestion.correctAnswers.push((await axios.post(translateUrl + yandexKey + '&text=' + test.closeQuestions[i].correctAnswers[j] + lang)).data.text[0])
+      }
+
+      for (let j = 0; j < test.closeQuestions[i].incorrectAnswers.length; j++) {
+        closeQuestion.incorrectAnswers.push((await axios.post(translateUrl + yandexKey + '&text=' + test.closeQuestions[i].incorrectAnswers[j] + lang)).data.text[0])
+      }
+
+      console.log(closeQuestion);
+      result.closeQuestions.push(closeQuestion);
+    }
+
+    for(let i = 0; i < test.openQuestions.length; i++){
+      // question: string, correctAnswer: string, maxScore: number
+      result.openQuestions.push(new OpenQuestion(
+        (await axios.post(translateUrl + yandexKey + '&text=' + test.openQuestions[i].question + lang)).data.text[0],
+        (await axios.post(translateUrl + yandexKey + '&text=' + test.openQuestions[i].correctAnswer + lang)).data.text[0],
+        test.openQuestions[i].maxScore));
+    }
+
+    console.log(result.openQuestions);
     return this.httpClient.post<Test>(this.testUrl, result, httpOptions);
   }
 

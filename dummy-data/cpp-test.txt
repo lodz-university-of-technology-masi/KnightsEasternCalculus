@@ -40,5 +40,5 @@
   ],
   "title": "C++ basic knowledge",
   "author": "Jan Kowalski",
-  "language": "pl"
+  "language": "en"
 }

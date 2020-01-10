@@ -17,7 +17,7 @@ public class GetTestInstance extends Handler<String> {
         if (test == null) {
             return new Response(404, "Test not found");
         } else {
-            if (test.getStatus() != 2) {
+            if (test.getStatus() == 0) {
                 for (SolvableClosedQuestion q : test.getCloseQuestions()) {
                     q.setCorrectAnswers(new ArrayList<>());
                 }

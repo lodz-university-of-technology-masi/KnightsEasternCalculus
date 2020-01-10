@@ -31,15 +31,30 @@
         <label class="card-title h6 mb-4">{{openQuestion.question}}</label>
         <div class="row">
           <div class="col-10">
-            <textarea class="form-control" disabled [(ngModel)]="openQuestion.answer"></textarea>
+            <textarea class="form-control" disabled [ngModel]="openQuestion.answer"></textarea>
           </div>
           <div class="col">
-            <input type="number" class="form-control form-control-sm" [(ngModel)]="openQuestion.receivedScore">
+            <input type="number" id="score" name="score" class="form-control form-control-sm"
+                   [(ngModel)]="openQuestion.receivedScore" required min="0" max="{{openQuestion.maxScore}}" #score="ngModel">
           </div>
           <div clas="col">/{{openQuestion.maxScore}}</div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-2">
+            Correct answer:
+          </div>
+          <div class="col">
+            <textarea class="form-control" disabled [ngModel]="openQuestion.correctAnswer"></textarea>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 <button type="button" class="btn btn-primary" (click)="grade()">Oceń</button>
+<div class="alert alert-danger my-3" *ngIf="!valid">Błędne oceny</div>

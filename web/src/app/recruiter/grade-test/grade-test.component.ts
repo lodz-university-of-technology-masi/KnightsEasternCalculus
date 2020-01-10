@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {TestInstance} from '../../model/test-instance';
 import {ActivatedRoute} from '@angular/router';
 import {TestService} from '../../services/test.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-grade-test',
@@ -13,6 +14,7 @@ export class GradeTestComponent implements OnInit {
   private test: TestInstance;
   private applicantID;
   private timestamp;
+  private valid = true;
 
   constructor(private route: ActivatedRoute, private testService: TestService) { }
 
@@ -28,9 +30,22 @@ export class GradeTestComponent implements OnInit {
   }
 
   grade() {
-    this.testService.sendSolvedTest(this.test).subscribe( result => {
-      console.log(result);
+    if (this.validate()) {
+      this.testService.sendSolvedTest(this.test).subscribe(result => {
+        console.log(result);
+      });
+    }
+  }
+
+  validate(): boolean {
+    this.test.openQuestions.forEach( question => {
+      if (question.receivedScore < 0 || question.receivedScore > question.maxScore) {
+        this.valid = false;
+        return false;
+      }
     });
+
+    return true;
   }
 
 }

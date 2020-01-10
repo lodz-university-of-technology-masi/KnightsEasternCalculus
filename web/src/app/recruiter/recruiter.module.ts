@@ -18,7 +18,6 @@ import { AssignModalComponent } from './show-all-tests/assign-modal/assign-modal
 import { GradeTestComponent } from './grade-test/grade-test.component';
 
 
-
 @NgModule({
   declarations: [
     HomePageComponent,
@@ -42,6 +41,6 @@ import { GradeTestComponent } from './grade-test/grade-test.component';
     NgbPopoverModule,
     NgbDropdownModule
   ],
-  bootstrap: [AssignModalComponent]
+  bootstrap: [AssignModalComponent],
 })
 export class RecruiterModule { }

@@ -24,6 +24,13 @@ public class GetTestInstance extends Handler<String> {
                 for (SolvableOpenQuestion q : test.getOpenQuestions()) {
                     q.setCorrectAnswer("");
                 }
+            } else if (test.getStatus() == 1) {
+                for (SolvableClosedQuestion q : test.getCloseQuestions()) {
+                    q.setReceivedScore(0);
+                }
+                for (SolvableOpenQuestion q : test.getOpenQuestions()) {
+                    q.setReceivedScore(0);
+                }
             }
             return new Response(200, test);
         }

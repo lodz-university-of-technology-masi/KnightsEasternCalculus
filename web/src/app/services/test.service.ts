@@ -92,10 +92,6 @@ export class TestService {
     return this.httpClient.post<Test>(this.testUrl, result, httpOptions);
   }
 
-  public detectLanguage(txt: string) {
-
-  }
-
   public downloadTest(test: Test): void {
     var csv = '';
     csv += 'T' + ';' + btoa(unescape(encodeURIComponent(test.title))) + '\n';

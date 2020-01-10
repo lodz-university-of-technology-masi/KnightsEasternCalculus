@@ -8,9 +8,9 @@ import {AuthenticationRecruiterService} from '../services/authentication-recruit
   styleUrls: ['./change-password.component.scss']
 })
 export class ChangePasswordComponent implements OnInit {
-  private password; string;
-  private name: string;
-  private surname: string;
+  private password: string;
+  private passwordRepeat: string;
+  private passwordMatch = false;
 
   constructor(private router: Router, private authService: AuthenticationRecruiterService) { }
 
@@ -18,6 +18,10 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   changePassword() {
+    if(this.password !== this.passwordRepeat) {
+      this.passwordMatch = true;
+      return;
+    }
     this.authService.setNewPassword(this.password).subscribe( result => {
       this.router.navigateByUrl('/');
     }, error => {

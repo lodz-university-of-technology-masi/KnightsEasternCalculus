@@ -14,9 +14,8 @@ import { CommonComponentsModule } from '../common-components/common-components.m
 import { ApplicantTestListComponent } from './applicant-test-list/applicant-test-list.component';
 import { UpdateTestComponent } from './update-test/update-test.component';
 import {NgbDropdownModule, NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap';
-import { AssignModalComponent } from './show-all-tests/assign-modal/assign-modal.component';
+import { AssignModalComponent } from '../common-components/assign-modal/assign-modal.component';
 import { GradeTestComponent } from './grade-test/grade-test.component';
-
 
 
 @NgModule({
@@ -42,6 +41,6 @@ import { GradeTestComponent } from './grade-test/grade-test.component';
     NgbPopoverModule,
     NgbDropdownModule
   ],
-  bootstrap: [AssignModalComponent]
+  bootstrap: [AssignModalComponent],
 })
 export class RecruiterModule { }

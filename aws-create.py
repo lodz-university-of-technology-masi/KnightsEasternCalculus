@@ -11,6 +11,9 @@ print("The account id is {}".format(accountID))
 
 role_tmp = "arn:aws:iam::{}:role/{}"
 
+print("Building lambda project...")
+subprocess.call("{} buildZip".format("gradlew"), shell=True, cwd="lambda")
+
 print("Creating lambda bucket...")
 subprocess.call(
     "aws s3api create-bucket --bucket {}-kotec-lambda-{}".format(accountID, accountID), shell=True)
@@ -32,7 +35,7 @@ print("Creating lambdas...")
 lambda_data = [("get-applicant", "lambda.applicant.GetApplicant"), ("get-applicants", "lambda.applicant.GetApplicants"), ("add-applicant", "lambda.applicant.AddApplicant"),
                ("get-all-tests", "lambda.test.GetAllTests"), ("add-test", "lambda.test.AddTest"), ("delete-test", "lambda.test.DeleteTest"), ("update-test", "lambda.test.UpdateTest"), ("get-test", "lambda.test.GetTest"),
                ("solve-test", "lambda.test.SolveTest"), ("add-test-instance", "lambda.test.AddTestInstance"), ("assign-applicant", "lambda.applicant.AssignApplicant"),
-               ("get-test-instances-for-user", "lambda.test.GetTestInstancesForUser"), ("get-test-instance", "lambda.test.GetTestInstance")]
+               ("get-test-instances-for-user", "lambda.test.GetTestInstancesForUser"), ("get-test-instance", "lambda.test.GetTestInstance"), ("grade-test", "lambda.test.GradeTest")]
 
 for lam in lambda_data:
     print("\t"+lam[0])

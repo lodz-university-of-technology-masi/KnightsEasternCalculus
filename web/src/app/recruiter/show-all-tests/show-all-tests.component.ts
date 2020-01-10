@@ -7,7 +7,7 @@ import { stringify } from 'querystring';
 import { checkServerIdentity } from 'tls';
 import { ApplicantService } from '../../services/applicant.service';
 import { Applicant } from '../../model/applicant';
-import { AssignModalComponent } from './assign-modal/assign-modal.component';
+import { AssignModalComponent } from '../../common-components/assign-modal/assign-modal.component';
 import { NgbModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

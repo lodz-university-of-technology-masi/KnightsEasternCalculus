@@ -11,6 +11,8 @@ export class ChangePasswordComponent implements OnInit {
   private password: string;
   private passwordRepeat: string;
   private passwordMatch = false;
+  private loading = false;
+  private invalidPassword = false;
 
   constructor(private router: Router, private authService: AuthenticationRecruiterService) { }
 
@@ -18,15 +20,22 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   changePassword() {
-    if(this.password !== this.passwordRepeat) {
+    this.loading = true;
+    this.invalidPassword = false;
+    if (this.password !== this.passwordRepeat) {
       this.passwordMatch = true;
+      this.loading = false;
       return;
     }
     this.authService.setNewPassword(this.password).subscribe( result => {
       this.router.navigateByUrl('/');
     }, error => {
-      alert('Error: ' + error.toString());
-      console.log(error);
+      if (error.code === 'InvalidPasswordException') {
+        this.invalidPassword = true;
+      } else {
+        console.log(error);
+      }
+      this.loading = false;
     });
   }
 }

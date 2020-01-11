@@ -1,9 +1,14 @@
-<main class="container">
-  <div class="shadow bg-white rounded p-4 my-3 d-flex flex-column text-center">
-    <h1 class="mb-5">Generator linków rejestrujących</h1>
-    <div class="col-5 align-self-center d-flex flex-column">
-      <input class="form-control form-control-lg" type="text" name="username" placeholder="Adres e-mail" [(ngModel)]="mail"><br>
-      <button class="btn btn-primary align-self-end btn-lg" type="button" (click)="send()">Wyślij link</button>
-    </div>
-  </div>
-</main>
+<h1 class="mb-5">Dodaj kandydata</h1>
+<div class="alert alert-success" *ngIf="success">
+  Pomyślnie dodano replikanta.
+</div>
+<div class="alert alert-danger" *ngIf="userExists">
+  Replikant z tym adresem już istnieje.
+</div>
+<div class="col-5 mx-auto">
+  <form class="form-group" (ngSubmit)="send()">
+    <input class="form-control form-control-lg" type="text" name="username" placeholder="Adres e-mail" [(ngModel)]="mail"><br>
+    <button class="btn btn-primary float-right btn-lg " type="submit" [disabled]="loading">Wyślij link</button><div *ngIf="loading" class="float-right spinner-grow mr-3 mt-2"></div>
+  </form>
+  <div class="clearfix"></div>
+</div>

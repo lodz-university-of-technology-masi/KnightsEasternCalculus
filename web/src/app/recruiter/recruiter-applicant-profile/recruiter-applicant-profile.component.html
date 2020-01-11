@@ -1,4 +1,9 @@
-<ng-container *ngIf="replicant">
+<ng-container *ngIf="replicant; else loading">
   <app-applicant-profile [applicantId]="replicant.id"></app-applicant-profile>
   <app-applicant-test-list [replicant]="replicant"></app-applicant-test-list>
 </ng-container>
+<ng-template #loading>
+  <div class="text-center">
+    <div class="spinner-grow" role="status"></div>
+  </div>
+</ng-template>

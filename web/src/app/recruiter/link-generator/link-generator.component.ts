@@ -9,7 +9,9 @@ import {AuthenticationRecruiterService} from '../../services/authentication-recr
 })
 export class LinkGeneratorComponent implements OnInit {
   private mail: string;
-  private password: string;
+  private loading = false;
+  private userExists = false;
+  private success = false;
 
   constructor(private router: Router, private authService: AuthenticationRecruiterService) { }
 
@@ -17,11 +19,20 @@ export class LinkGeneratorComponent implements OnInit {
   }
 
   send() {
+    this.loading = true;
+    this.userExists = false;
+    this.success = false;
     this.authService.sendMail(this.mail).subscribe(result => {
-      console.log('link-get');
-      this.router.navigateByUrl('/recruiter');
+      this.success = true;
+      this.loading = false;
+      this.mail = '';
     }, err => {
-      console.log('error', err);
+      if (err.code === 'UsernameExistsException') {
+        this.userExists = true;
+      } else {
+        console.log('error', err);
+      }
+      this.loading = false;
     });
   }
 }

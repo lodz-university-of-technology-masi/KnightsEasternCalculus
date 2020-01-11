@@ -17,6 +17,7 @@ public class Test implements Serializable {
     private String language;
     private List<CloseQuestion> closeQuestions;
     private List<OpenQuestion> openQuestions;
+    private List<ValueQuestion> valueQuestions;
 
     public Test() {
     }
@@ -30,6 +31,7 @@ public class Test implements Serializable {
         this.language = test.language;
         this.closeQuestions = test.closeQuestions;
         this.openQuestions = test.openQuestions;
+        this.valueQuestions = test.valueQuestions;
     }
 
     @DynamoDBHashKey(attributeName = "id")
@@ -58,6 +60,15 @@ public class Test implements Serializable {
 
     public void setOpenQuestions(List<OpenQuestion> openQuestions) {
         this.openQuestions = openQuestions;
+    }
+
+    @DynamoDBAttribute(attributeName = "valueQuestions")
+    public List<ValueQuestion> getValueQuestions() {
+        return valueQuestions;
+    }
+
+    public void setValueQuestions(List<ValueQuestion> valueQuestions) {
+        this.valueQuestions = valueQuestions;
     }
 
     @DynamoDBAttribute(attributeName = "author")

@@ -38,6 +38,13 @@
       "question": "Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value."
     }
   ],
+"valueQuestions": [
+    {
+      "correctAnswer": 18,
+      "maxScore": 10,
+      "question": "How old are you?"
+    }
+  ],
   "title": "C++ basic knowledge",
   "author": "Jan Kowalski",
   "language": "en"

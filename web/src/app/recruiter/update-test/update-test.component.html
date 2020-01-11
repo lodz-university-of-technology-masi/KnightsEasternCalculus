@@ -1,6 +1,6 @@
 <!-- TOP -->
-<h2 class="mt-2">Edycja testu</h2>
 <ng-container *ngIf="test; else loading">
+    <h2 class="mt-2">Edycja testu</h2>
     <div>
         <h5 class="mt-2">Tytuł testu:</h5>
 
@@ -42,18 +42,18 @@
             </table>
         </div>
         <!-- created VALUE questions -->
-        <div class="card-body" *ngIf="valueQuestions.length != 0">
+        <div class="card-body" *ngIf="test.valueQuestions.length != 0">
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Pytanie liczbowe</th>
                         <th>Odpowiedź</th>
-                        <th>Max pkt.</th>
+                        <th>Pkt.</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let valueQuestion of valueQuestions" (click)="onSelectValueQuestion(valueQuestion)"
+                    <tr *ngFor="let valueQuestion of test.valueQuestions" (click)="onSelectValueQuestion(valueQuestion)"
                         [class.selected]="valueQuestion === selectedValueQuestion">
                         <td>{{ valueQuestion.question }}</td>
                         <td>{{ valueQuestion.correctAnswer }}</td>
@@ -73,7 +73,7 @@
                         <th>Pytanie zamknięte</th>
                         <th>Poprawne odpowiedzi</th>
                         <th>Niepoprawne odpowiedzi</th>
-                        <th>Max pkt.</th>
+                        <th>Pkt.</th>
                         <th></th>
                     </tr>
                 </thead>

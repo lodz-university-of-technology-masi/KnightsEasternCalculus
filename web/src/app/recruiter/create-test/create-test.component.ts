@@ -89,8 +89,15 @@ export class CreateTestComponent implements OnInit {
   }
 
   addCloseQuestion(): void {
-    this.closeQuestions.push(new CloseQuestion(this.inputCloseQuestion, this.correctCloseAnswers, this.incorrectCloseAnswers, this.inputMaxScore))
-    this.inputMaxScore = 1;
+    if (this.correctCloseAnswers.length != 0) {
+      this.closeQuestions.push(new CloseQuestion(this.inputCloseQuestion, this.correctCloseAnswers, this.incorrectCloseAnswers, this.inputMaxScore))
+      this.inputCloseQuestion = null;
+      this.correctCloseAnswers = [];
+      this.incorrectCloseAnswers = [];
+      this.inputMaxScore = 1;
+    } else {
+      alert("Nie dodano pytania (brak poprawnej odpowiedzi)")
+    }
   }
 
   onSelectCloseQuestion(closeQuestion: CloseQuestion): void {
@@ -109,7 +116,9 @@ export class CreateTestComponent implements OnInit {
   selectedOpenQuestion: OpenQuestion;
 
   addOpenQuestion(): void {
-    this.openQuestions.push(new OpenQuestion(this.inputOpenQuestion, this.inputCorrectOpenAnswer, this.inputMaxScore))
+    this.openQuestions.push(new OpenQuestion(this.inputOpenQuestion, this.inputCorrectOpenAnswer,this.inputMaxScore));
+    this.inputOpenQuestion = null;
+    this.inputCorrectOpenAnswer = null;
     this.inputMaxScore = 1;
   }
 
@@ -128,9 +137,10 @@ export class CreateTestComponent implements OnInit {
   inputCorrectValueAnswer;
   selectedValueQuestion: ValueQuestion;
 
-
   addValueQuestion(): void {
     this.valueQuestions.push(new ValueQuestion(this.inputValueQuestion, this.inputCorrectValueAnswer, this.inputMaxScore))
+    this.inputValueQuestion = null;
+    this.inputCorrectValueAnswer = null;
     this.inputMaxScore = 1;
   }
 
@@ -146,7 +156,7 @@ export class CreateTestComponent implements OnInit {
   //#region "Create Test"
   inputTestTitle: string = "";
   public createTest(): void {
-    this.testService.createTest(this.inputTestTitle, this.currentLanguage, this.authService.getUsername(), this.openQuestions, this.closeQuestions, this.valueQuestions).subscribe({
+    this.testService.createTest(this.inputTestTitle, this.authService.getUsername(), this.currentLanguage, this.openQuestions, this.closeQuestions, this.valueQuestions).subscribe({
       error: error => ({}),
       complete: () => {
         this.router.navigate(['/recruiter/show-all-tests']);

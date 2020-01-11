@@ -17,6 +17,7 @@ import { ValueQuestion } from 'src/app/model/value-question';
 export class UpdateTestComponent implements OnInit {
   testId: string;
   test: Test;
+  inputMaxScore: number;
 
   constructor(
     private testService: TestService,
@@ -24,13 +25,13 @@ export class UpdateTestComponent implements OnInit {
     private router: Router
   ) { }
 
-  inputMaxScore: number;
-
   //#region "Init and choices beetween open and close question"
   public questionType: number;
 
   ngOnInit() {
     this.questionType = 0;
+    this.route.paramMap.subscribe(value => this.testId = value.get('id'));
+    this.getTest(this.testId);
   }
 
   getQuestionType(): number {
@@ -92,9 +93,9 @@ export class UpdateTestComponent implements OnInit {
       this.test.closeQuestions.push(new CloseQuestion(this.inputCloseQuestion, this.correctCloseAnswers, this.incorrectCloseAnswers, this.inputMaxScore));
       this.inputCloseQuestion = null;
       this.inputCorrectCloseAnswer = null;
-      this.correctCloseAnswers = null;
+      this.correctCloseAnswers = [];
       this.inputIncorrectCloseAnswer = null;
-      this.incorrectCloseAnswers = null;
+      this.incorrectCloseAnswers = [];
       this.inputMaxScore = 1;
     } else {
       alert("Nie dodano pytania (brak poprawnej odpowiedzi)")
@@ -138,7 +139,9 @@ export class UpdateTestComponent implements OnInit {
   selectedValueQuestion: ValueQuestion;
 
   addValueQuestion(): void {
-    this.valueQuestions.push(new ValueQuestion(this.inputValueQuestion, this.inputCorrectValueAnswer, this.inputMaxScore))
+    this.test.valueQuestions.push(new ValueQuestion(this.inputValueQuestion, this.inputCorrectValueAnswer, this.inputMaxScore))
+    this.inputValueQuestion = null;
+    this.inputCorrectValueAnswer = null;
     this.inputMaxScore = 1;
   }
 
@@ -147,7 +150,7 @@ export class UpdateTestComponent implements OnInit {
   }
 
   removeValueQuestion(valueQuestion: ValueQuestion): void {
-    this.valueQuestions.splice(this.valueQuestions.indexOf(valueQuestion), 1);
+    this.test.valueQuestions.splice(this.valueQuestions.indexOf(valueQuestion), 1);
   }
   //#endregion
 

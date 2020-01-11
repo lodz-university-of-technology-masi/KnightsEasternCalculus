@@ -12,6 +12,7 @@ import java.util.List;
 public class Test implements Serializable {
     private String id;
     private String title;
+    private String searchTitle;
     private String author;
     private String language;
     private List<CloseQuestion> closeQuestions;
@@ -84,5 +85,14 @@ public class Test implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @DynamoDBAttribute(attributeName = "searchTitle")
+    public String getSearchTitle() {
+        return searchTitle;
+    }
+
+    public void setSearchTitle(String searchTitle) {
+        this.searchTitle = searchTitle;
     }
 }

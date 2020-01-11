@@ -99,8 +99,8 @@ export class ShowAllTestsComponent implements OnInit {
     public getAllTests(): void {
         this.testService.getAllTests()
             .subscribe(
-                (res: Response) => {
-                    this.tests = <Test[]>JSON.parse(JSON.stringify(res));
+                res => {
+                    this.tests = JSON.parse(JSON.stringify(res));
                 }
             );
     }

@@ -1,8 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {ApplicantService} from '../../services/applicant.service';
 import {TestInstance} from '../../model/test-instance';
 import {HttpErrorResponse} from '@angular/common/http';
+import {Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-assign-modal',
@@ -15,6 +16,7 @@ export class AssignModalComponent implements OnInit {
   @Input() applicantId;
   @Input() applicantFirstName;
   @Input() applicantLastName;
+  @Output() onClose: EventEmitter<any> = new EventEmitter();
   loading = false;
   needsConfirmation = false;
   existingTests: string[];
@@ -30,10 +32,11 @@ export class AssignModalComponent implements OnInit {
     this.applicantService.assignApplicantToTest(this.testId, this.applicantId, this.needsConfirmation).subscribe(
       res => {
         this.activeModal.close();
+        this.onClose.emit(this.testName);
       },
       (error: HttpErrorResponse) => {
         this.loading = false;
-        if(error.status === 409) {
+        if (error.status === 409) {
           this.needsConfirmation = true;
           this.existingTests = error.error;
         }

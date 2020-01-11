@@ -38,7 +38,7 @@
 
 <div class="btn-group mt-3" role="group" aria-label="Button group with nested dropdown">
   <button type="button" class="btn btn-secondary" (click)=translateTest()>Generuj test w nowym języku</button>
-  <div class="btn-group dropdown" (mouseover)="openFirstDropDown=true" (mouseout)="openFirstDropDown=false" (click)="openFirstDropDown=false" [ngClass]="{'open': openFirstDropDown, 'show': openFirstDropDown}">
+  <div class="btn-group dropdown" (click)="openFirstDropDown=false">
     <a class="btn btn-secondary dropdown-toggle" href="#" id="navbarDropdownLink1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       {{currentLanguage}}
     </a>
@@ -49,11 +49,11 @@
   </div>
 </div>
 
-<div class="mt-3">
+<!-- <div class="mt-3">
   <h5>Podgląd pliku</h5>
-  <!-- <pre> {{fileContent}} </pre> -->
+  <pre> {{fileContent}} </pre>
   <pre> {{langs}} </pre>
-</div>
+</div> -->
 
 <ng-template #assignPopover let-id="id" , let-title="title">
   <form class="form-inline">

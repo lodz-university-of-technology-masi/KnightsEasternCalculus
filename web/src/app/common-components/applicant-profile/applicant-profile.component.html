@@ -4,7 +4,8 @@
   <div class="container">
     <div class="row justify-content-md-center my-auto">
       <div class="col col-5">
-        <img src="{{applicant.photoUrl}}" class="mx-auto d-block applicant-picture img-thumbnail" alt="Zdjęcie kandydata" #applicantPicture [style.height.px]="applicantPicture.width"/>
+        <img src="{{applicant.photoUrl}}" class="mx-auto d-block applicant-picture img-thumbnail" alt="Zdjęcie kandydata"
+             #applicantPicture [style.height.px]="applicantPicture.width"/>
       </div>
       <div class="col col-7">
         <div class="row border-bottom mt-5">
@@ -72,4 +73,8 @@
   </ng-container>
   <ng-template #noEntries><span>(brak)</span></ng-template>
 </ng-container>
-<ng-template #loading><span>Ładowanie...</span></ng-template>
+<ng-template #loading>
+  <div class="text-center">
+    <div class="spinner-grow" role="status"></div>
+  </div>
+</ng-template>

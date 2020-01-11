@@ -6,6 +6,7 @@ import {Test} from '../../model/test';
 import {AssignModalComponent} from '../../common-components/assign-modal/assign-modal.component';
 import {NgbModal, NgbPopover} from '@ng-bootstrap/ng-bootstrap';
 import {Applicant} from '../../model/applicant';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-applicant-test-list',
@@ -18,6 +19,8 @@ export class ApplicantTestListComponent implements OnInit {
   private assignableTests: Test[];
   private testTitle: string;
   private testLoading = false;
+  private deleteInProgress = false;
+  private deleteTestTimestamp: string;
   popover: NgbPopover;
 
   constructor(private testService: TestService, private route: ActivatedRoute, private modalService: NgbModal) { }
@@ -44,12 +47,7 @@ export class ApplicantTestListComponent implements OnInit {
     modalRef.componentInstance.applicantId = this.replicant.id;
     modalRef.componentInstance.applicantFirstName = this.replicant.firstName;
     modalRef.componentInstance.applicantLastName = this.replicant.lastName;
-    modalRef.componentInstance.onClose.subscribe(val => {
-      const t = new TestInstance();
-      t.status = TestStatus.NotSolved;
-      t.title = val;
-      this.tests.push(t);
-    });
+    modalRef.componentInstance.onClose.subscribe(val => this.tests.push(val));
   }
 
   toggleAssign(popover) {
@@ -62,6 +60,25 @@ export class ApplicantTestListComponent implements OnInit {
       this.popover = popover;
       popover.open();
     }
+  }
+
+  open(content, testTimestamp) {
+    this.deleteTestTimestamp = testTimestamp;
+    this.modalService.open(content);
+  }
+
+  deleteTest() {
+    this.deleteInProgress = true;
+    this.testService.deleteTestInstance(this.replicant.id, this.deleteTestTimestamp).subscribe(
+      res => {
+        this.modalService.dismissAll();
+        const timestamp = parseInt(this.deleteTestTimestamp, 10);
+        this.tests = this.tests.filter(test => test.timestamp !== timestamp);
+      },
+      (error: HttpErrorResponse) => {
+        this.deleteInProgress = false;
+        console.log(error);
+      });
   }
 
 

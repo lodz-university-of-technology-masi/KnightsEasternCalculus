@@ -33,11 +33,11 @@ public class AssignApplicant extends Handler<AssignApplicant.AssignRequest> {
                     .withProjectionExpression("#t")
                     .withExpressionAttributeNames(attributeNames);
 
-            List<TestInstance> queryList = new ArrayList<>(getMapper().query(TestInstance.class, queryExpression));
+            List<TestInstance> queryList = new ArrayList<TestInstance>(getMapper().query(TestInstance.class, queryExpression));
 
             if (!queryList.isEmpty()) {
                 return new Response(409, queryList.stream()
-                        .map(test -> test.getTimestamp()).collect(Collectors.toList()));
+                        .map(TestInstance::getTimestamp).collect(Collectors.toList()));
             }
         }
 
@@ -57,9 +57,9 @@ public class AssignApplicant extends Handler<AssignApplicant.AssignRequest> {
         testInstance.setTimestamp(new Date().getTime());
         testInstance.setTitle(test.getTitle());
         testInstance.setCloseQuestions(test.getCloseQuestions().stream()
-                .map(question -> new SolvableClosedQuestion(question)).collect(Collectors.toList()));
+                .map(SolvableClosedQuestion::new).collect(Collectors.toList()));
         testInstance.setOpenQuestions(test.getOpenQuestions().stream()
-                .map(question -> new SolvableOpenQuestion(question)).collect(Collectors.toList()));
+                .map(SolvableOpenQuestion::new).collect(Collectors.toList()));
         testInstance.setMaxScore(testInstance.getCloseQuestions().stream()
                 .reduce(0F, (sum, question) -> sum + question.getAnswerScore()*question.getCorrectAnswers().size(), Float::sum));
         testInstance.setMaxScore(testInstance.getOpenQuestions().stream()
@@ -69,7 +69,7 @@ public class AssignApplicant extends Handler<AssignApplicant.AssignRequest> {
 
         getMapper().save(testInstance);
 
-        return new Response(200, "The test was added successfully");
+        return new Response(200, testInstance);
     }
 
     public static class AssignRequest {

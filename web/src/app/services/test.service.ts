@@ -93,7 +93,7 @@ export class TestService {
       // question: string, correctAnswer: number, maxScore: number
       result.valueQuestions.push(new ValueQuestion(
         (await axios.post(translateUrl + yandexKey + '&text=' + test.valueQuestions[i].question + lang)).data.text[0],
-        (await axios.post(translateUrl + yandexKey + '&text=' + test.valueQuestions[i].correctAnswer + lang)).data.text[0],
+        test.valueQuestions[i].correctAnswer,
         test.valueQuestions[i].maxScore));
     }
 

@@ -1,0 +1,54 @@
+{
+  "author": "admin@example.com",
+  "closeQuestions": [
+    {
+      "answerScore": 1,
+      "correctAnswers": [
+        "One thousand nine hundred fourteen"
+      ],
+      "incorrectAnswers": [
+        "One thousand nine hundred eighteen",
+        "Two thousand nineteen"
+      ],
+      "question": "When the first world war?"
+    },
+    {
+      "answerScore": 1,
+      "correctAnswers": [
+        "One thousand nine hundred thirty-nine"
+      ],
+      "incorrectAnswers": [
+        "One thousand nine hundred forty-five"
+      ],
+      "question": "When the second world war?"
+    }
+  ],
+  "id": "83ff9db7-17c1-418f-bebd-e47e9ec13bfb",
+  "language": "en",
+  "openQuestions": [
+    {
+      "correctAnswer": "USSR",
+      "maxScore": 1000,
+      "question": "What nation is the best in World of Tanks?"
+    },
+    {
+      "correctAnswer": "E100",
+      "maxScore": 1,
+      "question": "What is the tank in WOT?"
+    }
+  ],
+  "searchTitle": "test wot",
+  "title": "Test WOT",
+  "valueQuestions": [
+    {
+      "correctAnswer": 198,
+      "maxScore": 1,
+      "question": "What is the weight of the Maus?"
+    },
+    {
+      "correctAnswer": 10,
+      "maxScore": 1,
+      "question": "How old were you when you were 10 years old?"
+    }
+  ]
+}

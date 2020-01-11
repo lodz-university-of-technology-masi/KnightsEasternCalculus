@@ -31,7 +31,6 @@ public class SolvableOpenQuestion implements Serializable {
         this.question = question;
     }
 
-
     public int getMaxScore() {
         return maxScore;
     }

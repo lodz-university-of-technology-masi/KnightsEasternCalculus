@@ -185,8 +185,8 @@
             <h5 class="mt-2">Maksymalna ilość punktów:</h5>
             <div class="input-group">
                 <input id="maxScore" name="maxScore" class="form-control" type="number" min="1" required
-                    [(ngModel)]="inputMaxScoreClose" #maxScore="ngModel"
-                    (input)="inputMaxScoreClose=$event.target.value"
+                    [(ngModel)]="inputMaxScore" #maxScore="ngModel"
+                    (input)="inputMaxScore=$event.target.value"
                     pattern="^[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*$">
             </div>
             <div *ngIf="maxScore.invalid && (maxScore.dirty || maxScore.touched)" class="alert alert-danger mt-2">
@@ -239,7 +239,7 @@
             <h5 class="mt-2">Maksymalna ilość punktów:</h5>
             <div class="input-group">
                 <input id="maxScore" name="maxScore" class="form-control" type="number" min="1" required
-                    [(ngModel)]="inputMaxScoreClose" #maxScore="ngModel" (input)="inputMaxScoreOpen=$event.target.value"
+                    [(ngModel)]="inputMaxScore" #maxScore="ngModel" (input)="inputMaxScore=$event.target.value"
                     pattern="^[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*$">
             </div>
             <div *ngIf="maxScore.invalid && (maxScore.dirty || maxScore.touched)" class="alert alert-danger mt-2">

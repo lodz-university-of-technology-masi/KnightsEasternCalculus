@@ -7,26 +7,29 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import java.io.Serializable;
 import java.util.List;
 
-@DynamoDBTable(tableName="TestInstances")
+@DynamoDBTable(tableName = "TestInstances")
 public class TestInstance implements Serializable {
     private String applicantID;
     private long timestamp;
     private String title;
     private List<SolvableClosedQuestion> closeQuestions;
     private List<SolvableOpenQuestion> openQuestions;
+    private List<SolvableValueQuestion> valueQuestions;
     private float maxScore;
     private float receivedScore;
     private int status;
     private String testId;
 
-    public TestInstance(){}
+    public TestInstance() {
+    }
 
-    public TestInstance(String applicantID, long timestamp, String title, List<SolvableClosedQuestion> closeQuestions, List<SolvableOpenQuestion> openQuestions, float maxScore, float receivedScore, int status) {
+    public TestInstance(String applicantID, long timestamp, String title, List<SolvableClosedQuestion> closeQuestions, List<SolvableOpenQuestion> openQuestions, List<SolvableValueQuestion> valueQuestions, float maxScore, float receivedScore, int status) {
         this.applicantID = applicantID;
         this.timestamp = timestamp;
         this.title = title;
         this.closeQuestions = closeQuestions;
         this.openQuestions = openQuestions;
+        this.valueQuestions = valueQuestions;
         this.maxScore = maxScore;
         this.receivedScore = receivedScore;
         this.status = status;
@@ -77,6 +80,15 @@ public class TestInstance implements Serializable {
     }
 
 
+    public List<SolvableValueQuestion> getValueQuestions() {
+        return valueQuestions;
+    }
+
+    public void setValueQuestions(List<SolvableValueQuestion> valueQuestions) {
+        this.valueQuestions = valueQuestions;
+    }
+
+
     public float getMaxScore() {
         return maxScore;
     }
@@ -115,7 +127,12 @@ public class TestInstance implements Serializable {
         for (SolvableClosedQuestion c : this.closeQuestions) {
             this.receivedScore += c.getReceivedScore();
         }
+
         for (SolvableOpenQuestion c : this.openQuestions) {
+            this.receivedScore += c.getReceivedScore();
+        }
+
+        for (SolvableValueQuestion c: this.valueQuestions){
             this.receivedScore += c.getReceivedScore();
         }
     }

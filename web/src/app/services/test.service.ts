@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Test } from '../model/test';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as Globals from '../app-consts';
 import * as saveAs from 'file-saver';
 import { OpenQuestion } from '../model/open-question';
@@ -11,8 +11,9 @@ import { SolvableOpenQuestion } from '../model/solvable-open-question';
 import { SolvableCloseQuestion } from '../model/solvable-close-question';
 import { map } from 'rxjs/operators';
 import axios from "axios";
-import {CustomHttpParamEncoder} from './encoder';
+import { CustomHttpParamEncoder } from './encoder';
 import { ValueQuestion } from '../model/value-question';
+import { SolvableValueQuestion } from '../model/solvable-value-question';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -27,12 +28,9 @@ const httpOptions = {
 export class TestService {
   constructor(
     private httpClient: HttpClient
-  ) {
-  }
+  ) {}
 
   private testUrl: string = Globals.apiBaseUrl + '/recruiters/tests';
-  // private yandexKey: string = 'trnsl.1.1.20200108T191910Z.fe657624420b3a8c.9b1c3b15e8688d96a425d4596dfc2c6321f04ee2';
-
 
   public createTest(inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions) {
     var test = new Test('', inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions);
@@ -44,11 +42,11 @@ export class TestService {
     return this.httpClient.patch(this.testUrl, test, httpOptions);
   }
 
+  public async translateTest(test: Test, language: string) {
   //  https://translate.yandex.net/api/v1.5/tr.json/translate
   //  ? key=<API key>
   //  & text=<text to translate>
   //  & lang=<translation direction>
-  public async translateTest(test: Test, language: string) {
     var yandexKey = 'trnsl.1.1.20200108T191910Z.fe657624420b3a8c.9b1c3b15e8688d96a425d4596dfc2c6321f04ee2';
     var translateUrl = 'https://translate.yandex.net/api/v1.5/tr.json/translate?key=';
     var lang = ''
@@ -81,7 +79,7 @@ export class TestService {
       result.closeQuestions.push(closeQuestion);
     }
 
-    for(let i = 0; i < test.openQuestions.length; i++){
+    for (let i = 0; i < test.openQuestions.length; i++) {
       // question: string, correctAnswer: string, maxScore: number
       result.openQuestions.push(new OpenQuestion(
         (await axios.post(translateUrl + yandexKey + '&text=' + test.openQuestions[i].question + lang)).data.text[0],
@@ -89,7 +87,7 @@ export class TestService {
         test.openQuestions[i].maxScore));
     }
 
-    for(let i = 0; i < test.valueQuestions.length; i++){
+    for (let i = 0; i < test.valueQuestions.length; i++) {
       // question: string, correctAnswer: number, maxScore: number
       result.valueQuestions.push(new ValueQuestion(
         (await axios.post(translateUrl + yandexKey + '&text=' + test.valueQuestions[i].question + lang)).data.text[0],
@@ -171,23 +169,41 @@ export class TestService {
 
   public getAllTests(title: string = ''): Observable<Test[]> {
     const params = new HttpParams({ encoder: new CustomHttpParamEncoder() }).set('title', title);
-    return this.httpClient.get<Test[]>(this.testUrl, {params});
+    return this.httpClient.get<Test[]>(this.testUrl, { params });
   }
 
   public getAllUserTests(username: string) {
-    return of([new TestInstance('2', 2, 'Computer Systems Comprehension I', TestStatus.NotSolved, [], [], 100, 0),
-    new TestInstance('3', 1, 'Am I an idiot? Find the type of bread you are.', TestStatus.NotSolved,
-      [new SolvableOpenQuestion('What is a v table?', '', 10, 0, ''),
-      new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', '', 20, 15, '')],
-      [new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[];', 'int[5] i;', 'int i[] = new int[10];'], [], 20, 0, []),
-      new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning an array of int pointers'], [], 10, 0, [])],
-      60, 15),
-    new TestInstance('3', 0, 'C++ basic knowledge', TestStatus.Checked,
-      [new SolvableOpenQuestion('What is a v table?', 'I don\'t know, sorry', 10, 0, 'A lookup table of functions used to resolve virtual function calls'),
-      new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', 'while(i % 14 != 0) {i+= 1;}', 20, 15, 'while(i++%14 != 0);')],
-      [new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[5];', 'int i[2] = {1};', 'int i[];', 'int[5] i;', 'int i[] = new int[10];'], [0, 1], 20, 0, [1, 3]),
-      new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning a pointer to an array of ints', 'a function returning an array of int pointers'], [2], 10, 0, [1])],
-      60, 15)]);
+    return of([
+      new TestInstance('2', 2, 'Computer Systems Comprehension I', TestStatus.NotSolved, [], [], [], 100, 0),
+      new TestInstance('3', 1, 'Am I an idiot? Find the type of bread you are.', TestStatus.NotSolved,
+        [
+          new SolvableOpenQuestion('What is a v table?', '', 10, 0, ''),
+          new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', '', 20, 15, '')
+        ],
+        [
+          new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[];', 'int[5] i;', 'int i[] = new int[10];'], [], 20, 0, []),
+          new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning an array of int pointers'], [], 10, 0, [])
+        ],
+        [
+          // question: string, answer: number, maxScore: number, receivedScore: number, correctAnswer: number
+          new SolvableValueQuestion('What is a value of x (x = 5)?', 5, 1, 1, 5),
+          new SolvableValueQuestion('What is a value of y (y = - 1 + 8 + 1)', 8, 1, 0, 5)
+        ],
+          60, 15),
+      new TestInstance('3', 0, 'C++ basic knowledge', TestStatus.Checked,
+        [
+          new SolvableOpenQuestion('What is a v table?', 'I don\'t know, sorry', 10, 0, 'A lookup table of functions used to resolve virtual function calls'),
+          new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', 'while(i % 14 != 0) {i+= 1;}', 20, 15, 'while(i++%14 != 0);')
+        ],
+        [
+          new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[5];', 'int i[2] = {1};', 'int i[];', 'int[5] i;', 'int i[] = new int[10];'], [0, 1], 20, 0, [1, 3]),
+          new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning a pointer to an array of ints', 'a function returning an array of int pointers'], [2], 10, 0, [1])
+        ],
+        [
+          new SolvableValueQuestion('What is a value of x (x = 5)?', 5, 1, 1, 5),
+          new SolvableValueQuestion('What is a value of y (y = - 1 + 8 + 1)', 8, 1, 0, 5)
+        ],
+        60, 15)]);
   }
 
   public getTestInstances(id: string) {
@@ -214,7 +230,7 @@ export class TestService {
   }
 
   public deleteTestInstance(applicantId: string, timestamp: string) {
-    return this.httpClient.delete( `${Globals.apiBaseUrl}/applicants/${applicantId}/tests/${timestamp}`, {observe: 'response'});
+    return this.httpClient.delete(`${Globals.apiBaseUrl}/applicants/${applicantId}/tests/${timestamp}`, { observe: 'response' });
   }
 
   public sendSolvedTest(test: TestInstance) {

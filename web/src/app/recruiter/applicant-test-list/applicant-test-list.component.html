@@ -2,7 +2,7 @@
   <h5 class="d-inline">Testy</h5>
   <button type="button" class="btn btn-outline-primary btn-sm ml-2 mb-2"  [ngbPopover]="assignPopover" triggers="manual"
           popoverTitle="Przypisz test" #p="ngbPopover" autoClose="outside"
-          (click)="toggleAssign(p)" popoverClass="assign-popover">Przypisz</button>
+          (click)="toggleAssign(p)" popoverClass="assign-popover" [disabled]="tests == null">Przypisz</button>
   <div class="clearfix"></div>
 </div>
 <ng-container *ngIf="tests; else loading">
@@ -10,10 +10,18 @@
     <ul class="list-group" *ngFor="let test of tests">
       <li class="list-group-item d-flex justify-content-between align-items-center" *ngIf="test.status != 1">
         {{test.title}}
-        <span class="badge badge-success" *ngIf="test.status == 2">OCENIONY</span>
-        <span class="badge badge-danger" *ngIf="test.status == 0">NIE ROZWIĄZANY</span>
+        <div>
+          <span class="badge badge-success" *ngIf="test.status == 2">OCENIONY</span>
+          <span class="badge badge-danger" *ngIf="test.status == 0">NIE ROZWIĄZANY</span>
+          <div ngbDropdown placement="top-right" class="d-inline-block">
+            <button class="btn " ngbDropdownToggle></button>
+            <div ngbDropdownMenu>
+              <button ngbDropdownItem class="text-danger" (click)="open(deleteModal, test.timestamp)">Usuń</button>
+            </div>
+          </div>
+        </div>
       </li>
-      <a CLASS="list-group-item d-flex justify-content-between align-items-cener list-group-item-action text-dark" routerLink="test/{{test.timestamp}}" *ngIf="test.status == 1">
+      <a class="list-group-item d-flex justify-content-between align-items-cener list-group-item-action text-dark" routerLink="test/{{test.timestamp}}" *ngIf="test.status == 1">
         {{test.title}}
         <span class="badge badge-warning">OCEŃ</span>
       </a>
@@ -41,4 +49,22 @@
       </button>
     </div>
   </ng-container>
+</ng-template>
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Usuń dostęp do testu</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Czy na pewno chcesz usunąć użytkownikowi dostęp do tego testu?</p>
+    <p>Jeżeli test został rozwiązany, spowoduje to usunięcie wszystkich odpowiedzi i komentarzy.</p>
+  </div>
+  <div class="modal-footer">
+    <div *ngIf="deleteInProgress"><ng-container *ngTemplateOutlet="loading"></ng-container></div>
+    <button type="button" class="btn btn-danger" (click)="deleteTest(1)" [disabled]="deleteInProgress">Usuń</button>
+    <button type="button" class="btn btn-primary"(click)="modal.close('Close click')" [disabled]="deleteInProgress">Anuluj</button>
+  </div>
 </ng-template>

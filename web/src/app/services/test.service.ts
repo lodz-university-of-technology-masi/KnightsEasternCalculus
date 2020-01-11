@@ -205,6 +205,10 @@ export class TestService {
     return this.httpClient.delete(this.testUrl, httpOptions);
   }
 
+  public deleteTestInstance(applicantId: string, timestamp: string) {
+    return this.httpClient.delete( `${Globals.apiBaseUrl}/applicants/${applicantId}/tests/${timestamp}`, {observe: 'response'});
+  }
+
   public sendSolvedTest(test: TestInstance) {
     return new Observable(observer => {
       this.httpClient.put<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantID + '/tests', test, httpOptions)

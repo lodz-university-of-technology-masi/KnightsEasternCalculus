@@ -51,13 +51,16 @@ export class ShowAllTestsComponent implements OnInit {
         this.currentLanguage = this.selectedTest.language.toUpperCase();
     }
 
-    public translateTest() {
-        this.testService.translateTest(this.selectedTest, this.currentLanguage);
-        // this.testService.translateTest(this.selectedTest, this.currentLanguage).subscribe({
-        //     error: error => ({}),
-        //     complete: () => { }
-        // });
-
+    public async translateTest() {
+        if (this.currentLanguage != null && this.selectedTest != null && this.currentLanguage != this.selectedTest.language) {
+            (await this.testService.translateTest(this.selectedTest, this.currentLanguage.toLowerCase()))
+                .subscribe({
+                    error: error => ({}),
+                    complete: () => {
+                        this.getAllTests();
+                    }
+                });
+        }
     }
 
     public downloadTest(id: string): void {
@@ -107,14 +110,14 @@ export class ShowAllTestsComponent implements OnInit {
 
     public deleteTest(test: Test): void {
         this.testService.deleteTest(test)
-        .subscribe({
-            error: () => {
-                console.log("Delete failed");
-            },
-            complete: () => {
-                this.getAllTests();
-            }
-        });
+            .subscribe({
+                error: () => {
+                    console.log("Delete failed");
+                },
+                complete: () => {
+                    this.getAllTests();
+                }
+            });
     }
 
     toggleAssign(popover, id: string, title: string) {

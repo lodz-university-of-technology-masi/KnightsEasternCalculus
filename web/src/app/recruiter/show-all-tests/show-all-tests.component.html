@@ -31,14 +31,14 @@
 <ng-template #loading>
   <div class="spinner-grow spinner-grow-sm" role="status"></div>
 </ng-template>
-<div>
+<div>  
   <input type="file" (change)="loadTest($event.target.files)">
   <button class="btn btn-success" (click)="importTest()">Importuj</button>
 </div>
 
 <div class="btn-group mt-3" role="group" aria-label="Button group with nested dropdown">
   <button type="button" class="btn btn-secondary" (click)=translateTest()>Generuj test w nowym języku</button>
-  <div class="btn-group dropdown" (click)="openFirstDropDown=false">
+  <div class="btn-group dropdown" (mouseover)="openFirstDropDown=true" (mouseout)="openFirstDropDown=false" (click)="openFirstDropDown=false">
     <a class="btn btn-secondary dropdown-toggle" href="#" id="navbarDropdownLink1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       {{currentLanguage}}
     </a>
@@ -55,7 +55,7 @@
   <pre> {{langs}} </pre>
 </div> -->
 
-<ng-template #assignPopover let-id="id" let-title="title">
+<ng-template #assignPopover let-id="id" , let-title="title">
   <form class="form-inline">
     <input type="text" class="form-control" id="lastName" placeholder="Nazwisko" [(ngModel)]="searchLastName"
       [ngModelOptions]="{standalone: true}">

@@ -82,13 +82,13 @@ export class ShowAllTestsComponent implements OnInit {
     }
 
     public importTest(): void {
-        if (this.fileContent != "")
-            this.testService.importTest(this.fileContent).subscribe({
-                error: error => ({}),
-                complete: () => {
-                    this.getAllTests();
-                }
-            });
+        // if (this.fileContent != "")
+        //     this.testService.importTest(this.fileContent).subscribe({
+        //         error: error => ({}),
+        //         complete: () => {
+        //             this.getAllTests();
+        //         }
+        //     });
     }
 
     public getTest(id: string): void {

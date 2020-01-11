@@ -1,5 +1,6 @@
 import { OpenQuestion } from './open-question';
 import { CloseQuestion } from './close-question';
+import { ValueQuestion } from './value-question';
 
 export class Test {
     id: string;
@@ -8,8 +9,9 @@ export class Test {
     language: string;
     openQuestions: OpenQuestion[] = [];
     closeQuestions: CloseQuestion[] = [];
+    valueQuestions: ValueQuestion[] = []
 
-    constructor(id: string, title: string, author: string, language: string, openQuestions: OpenQuestion[], closeQuestions: CloseQuestion[]) {
+    constructor(id: string, title: string, author: string, language: string, openQuestions: OpenQuestion[], closeQuestions: CloseQuestion[], valueQuestions: ValueQuestion[]) {
         if (id != "") {
             this.id = id;
         }
@@ -18,5 +20,6 @@ export class Test {
         this.language = language;
         this.openQuestions = openQuestions;
         this.closeQuestions = closeQuestions;
+        this.valueQuestions = valueQuestions;
     }
 }

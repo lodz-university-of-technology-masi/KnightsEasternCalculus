@@ -11,8 +11,8 @@ import { SolvableOpenQuestion } from '../model/solvable-open-question';
 import { SolvableCloseQuestion } from '../model/solvable-close-question';
 import { map } from 'rxjs/operators';
 import axios from "axios";
-import { KeyValue } from '@angular/common';
 import {CustomHttpParamEncoder} from './encoder';
+import { ValueQuestion } from '../model/value-question';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -34,13 +34,13 @@ export class TestService {
   // private yandexKey: string = 'trnsl.1.1.20200108T191910Z.fe657624420b3a8c.9b1c3b15e8688d96a425d4596dfc2c6321f04ee2';
 
 
-  public createTest(inputTestTitle, author, language, openQuestions, closeQuestions) {
-    var test = new Test('', inputTestTitle, author, language, openQuestions, closeQuestions);
+  public createTest(inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions) {
+    var test = new Test('', inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions);
     return this.httpClient.post<Test>(this.testUrl, test, httpOptions);
   }
 
-  public updateTest(id, inputTestTitle, author, language, openQuestions, closeQuestions) {
-    var test = new Test(id, inputTestTitle, author, language, openQuestions, closeQuestions);
+  public updateTest(id, inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions) {
+    var test = new Test(id, inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions);
     return this.httpClient.patch(this.testUrl, test, httpOptions);
   }
 
@@ -52,7 +52,7 @@ export class TestService {
     var yandexKey = 'trnsl.1.1.20200108T191910Z.fe657624420b3a8c.9b1c3b15e8688d96a425d4596dfc2c6321f04ee2';
     var translateUrl = 'https://translate.yandex.net/api/v1.5/tr.json/translate?key=';
     var lang = ''
-    var result = new Test('', '', '', '', [], []);
+    var result = new Test('', '', '', '', [], [], []);
     if (language == 'pl') {
       lang = '&lang=en-pl';
     } else {
@@ -89,67 +89,75 @@ export class TestService {
         test.openQuestions[i].maxScore));
     }
 
+    for(let i = 0; i < test.valueQuestions.length; i++){
+      // question: string, correctAnswer: number, maxScore: number
+      result.valueQuestions.push(new ValueQuestion(
+        (await axios.post(translateUrl + yandexKey + '&text=' + test.valueQuestions[i].question + lang)).data.text[0],
+        (await axios.post(translateUrl + yandexKey + '&text=' + test.valueQuestions[i].correctAnswer + lang)).data.text[0],
+        test.valueQuestions[i].maxScore));
+    }
+
     console.log(result.openQuestions);
     return this.httpClient.post<Test>(this.testUrl, result, httpOptions);
   }
 
   public downloadTest(test: Test): void {
-    var csv = '';
-    csv += 'T' + ';' + btoa(unescape(encodeURIComponent(test.title))) + '\n';
-    csv += 'A' + ';' + btoa(unescape(encodeURIComponent(test.author))) + '\n';
-    csv += 'L' + ';' + btoa(unescape(encodeURIComponent(test.language))) + '\n';
+    // var csv = '';
+    // csv += 'T' + ';' + btoa(unescape(encodeURIComponent(test.title))) + '\n';
+    // csv += 'A' + ';' + btoa(unescape(encodeURIComponent(test.author))) + '\n';
+    // csv += 'L' + ';' + btoa(unescape(encodeURIComponent(test.language))) + '\n';
 
-    csv += 'type;question;correctAnswers;incorrectAnswers;answerScore' + '\n';
+    // csv += 'type;question;correctAnswers;incorrectAnswers;answerScore' + '\n';
 
-    test.closeQuestions.forEach(function (value) {
-      csv += 'C' + ';' + btoa(unescape(encodeURIComponent(value.question))) + ';';
-      csv += btoa(unescape(encodeURIComponent(value.correctAnswers.toString()))) + ';';
-      csv += btoa(unescape(encodeURIComponent(value.incorrectAnswers.toString()))) + ';';
-      csv += btoa(unescape(encodeURIComponent(value.answerScore.toString())));
-      csv += '\n';
-    });
+    // test.closeQuestions.forEach(function (value) {
+    //   csv += 'C' + ';' + btoa(unescape(encodeURIComponent(value.question))) + ';';
+    //   csv += btoa(unescape(encodeURIComponent(value.correctAnswers.toString()))) + ';';
+    //   csv += btoa(unescape(encodeURIComponent(value.incorrectAnswers.toString()))) + ';';
+    //   csv += btoa(unescape(encodeURIComponent(value.answerScore.toString())));
+    //   csv += '\n';
+    // });
 
-    csv += 'type;question;correctAnswer;maxScore' + '\n';
+    // csv += 'type;question;correctAnswer;maxScore' + '\n';
 
-    test.openQuestions.forEach(function (value) {
-      csv += 'O' + ';' + btoa(unescape(encodeURIComponent(value.question))) + ';';
-      csv += btoa(unescape(encodeURIComponent(value.correctAnswer))) + ';';
-      csv += btoa(unescape(encodeURIComponent(value.maxScore.toString())));
-      csv += '\n';
-    });
+    // test.openQuestions.forEach(function (value) {
+    //   csv += 'O' + ';' + btoa(unescape(encodeURIComponent(value.question))) + ';';
+    //   csv += btoa(unescape(encodeURIComponent(value.correctAnswer))) + ';';
+    //   csv += btoa(unescape(encodeURIComponent(value.maxScore.toString())));
+    //   csv += '\n';
+    // });
 
-    console.log(csv);
+    // console.log(csv);
 
-    let file = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-    saveAs(file, test.title + '-' + test.id + '.csv');
+    // let file = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    // saveAs(file, test.title + '-' + test.id + '.csv');
   }
 
   public importTest(file: string) {
-    var splitFile = file.split('\n');
+    // var splitFile = file.split('\n');
 
-    var title: string, author: string, language: string, openQuestions: OpenQuestion[] = [], closeQuestions: CloseQuestion[] = [];
+    // var title: string, author: string, language: string, openQuestions: OpenQuestion[] = [], closeQuestions: CloseQuestion[] = [];
 
-    splitFile.forEach(function (value) {
-      if (value.split(';')[0] == 'T') {
-        title = atob(unescape(encodeURIComponent(value.split(';')[1])));
-      } else if (value.split(';')[0] == 'A') {
-        author = atob(unescape(encodeURIComponent(value.split(';')[1])));
-      } else if (value.split(';')[0] == 'L') {
-        language = atob(unescape(encodeURIComponent(value.split(';')[1])));
-      } else if (value.split(';')[0] == 'O') {
-        var splitValue = value.split(';');
-        // question: string, correctAnswer: string, maxScore: number
-        openQuestions.push(new OpenQuestion(atob(unescape(encodeURIComponent(splitValue[1]))), atob(unescape(encodeURIComponent(splitValue[2]))), parseInt(atob(unescape(encodeURIComponent(splitValue[3]))))));
-      } else if (value.split(';')[0] == 'C') {
-        var splitValue = value.split(';');
-        // question: string, correctAnswers: string[], incorrectAnswers: string[], maxScore: number
-        closeQuestions.push(new CloseQuestion(atob(unescape(encodeURIComponent(splitValue[1]))), atob(unescape(encodeURIComponent(splitValue[2]))).split(','), atob(unescape(encodeURIComponent(splitValue[3]))).split(','), parseInt(atob(unescape(encodeURIComponent(splitValue[4]))))));
-      }
-    });
+    // splitFile.forEach(function (value) {
+    //   if (value.split(';')[0] == 'T') {
+    //     title = atob(unescape(encodeURIComponent(value.split(';')[1])));
+    //   } else if (value.split(';')[0] == 'A') {
+    //     author = atob(unescape(encodeURIComponent(value.split(';')[1])));
+    //   } else if (value.split(';')[0] == 'L') {
+    //     language = atob(unescape(encodeURIComponent(value.split(';')[1])));
+    //   } else if (value.split(';')[0] == 'O') {
+    //     var splitValue = value.split(';');
+    //     // question: string, correctAnswer: string, maxScore: number
+    //     openQuestions.push(new OpenQuestion(atob(unescape(encodeURIComponent(splitValue[1]))), atob(unescape(encodeURIComponent(splitValue[2]))), parseInt(atob(unescape(encodeURIComponent(splitValue[3]))))));
+    //   } else if (value.split(';')[0] == 'C') {
+    //     var splitValue = value.split(';');
+    //     // question: string, correctAnswers: string[], incorrectAnswers: string[], maxScore: number
+    //     closeQuestions.push(new CloseQuestion(atob(unescape(encodeURIComponent(splitValue[1]))), atob(unescape(encodeURIComponent(splitValue[2]))).split(','), atob(unescape(encodeURIComponent(splitValue[3]))).split(','), parseInt(atob(unescape(encodeURIComponent(splitValue[4]))))));
+    //   }
+    // });
 
-    var test = new Test('', title, author, language, openQuestions, closeQuestions);
-    return this.httpClient.post<Test>(this.testUrl, test, httpOptions);
-    // this.createTest(title, openQuestions, closeQuestions);
+    // var test = new Test('', title, author, language, openQuestions, closeQuestions);
+    // return this.httpClient.post<Test>(this.testUrl, test, httpOptions);
+    // // this.createTest(title, openQuestions, closeQuestions);
   }
 
   public getTest(id: string) {

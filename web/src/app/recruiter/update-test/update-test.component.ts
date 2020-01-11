@@ -5,6 +5,7 @@ import { Test } from '../../model/test';
 import { CloseQuestion } from 'src/app/model/close-question';
 import { OpenQuestion } from 'src/app/model/open-question';
 import { Router } from '@angular/router';
+import { ValueQuestion } from 'src/app/model/value-question';
 
 @Component({
   selector: 'app-update-test',
@@ -23,34 +24,48 @@ export class UpdateTestComponent implements OnInit {
     private router: Router
   ) { }
 
+  inputMaxScore: number;
+
   //#region "Init and choices beetween open and close question"
-  ifOpen: boolean;
-  ifClose: boolean;
+  public questionType: number;
 
   ngOnInit() {
-    this.ifOpen = false;
-    this.ifClose = true;
+    this.questionType = 0;
+  }
 
-    this.route.paramMap.subscribe(value => this.testId = value.get('id'));
-    this.getTest(this.testId);
+  getQuestionType(): number {
+    return this.questionType;
+  }
+
+  setQuestionType(type: number): void {
+    this.questionType = type;
   }
 
   getIfOpen(): boolean {
-    return this.ifOpen;
+    if (this.questionType == 0) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
   getIfClose(): boolean {
-    return this.ifClose;
+    if (this.questionType == 1) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
-  selectOpenType(): void {
-    this.ifClose = false;
-    this.ifOpen = true;
-  }
-
-  selectCloseType(): void {
-    this.ifOpen = false;
-    this.ifClose = true;
+  getIfValue(): boolean {
+    if (this.questionType == 2) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
   //#endregion
 
@@ -60,7 +75,6 @@ export class UpdateTestComponent implements OnInit {
   incorrectCloseAnswers: string[] = [];
   inputCorrectCloseAnswer: string;
   inputIncorrectCloseAnswer: string;
-  inputMaxScoreClose: number;
   selectedCloseQuestion: CloseQuestion;
 
   addCorrectCloseAnswer(): void {
@@ -75,13 +89,13 @@ export class UpdateTestComponent implements OnInit {
 
   addCloseQuestion(): void {
     if (this.correctCloseAnswers.length != 0) {
-      this.test.closeQuestions.push(new CloseQuestion(this.inputCloseQuestion, this.correctCloseAnswers, this.incorrectCloseAnswers, this.inputMaxScoreClose));
+      this.test.closeQuestions.push(new CloseQuestion(this.inputCloseQuestion, this.correctCloseAnswers, this.incorrectCloseAnswers, this.inputMaxScore));
       this.inputCloseQuestion = null;
       this.inputCorrectCloseAnswer = null;
       this.correctCloseAnswers = null;
       this.inputIncorrectCloseAnswer = null;
       this.incorrectCloseAnswers = null;
-      this.inputMaxScoreClose = 1;
+      this.inputMaxScore = 1;
     } else {
       alert("Nie dodano pytania (brak poprawnej odpowiedzi)")
     }
@@ -100,13 +114,12 @@ export class UpdateTestComponent implements OnInit {
   inputOpenQuestion: string;
   inputCorrectOpenAnswer: string;
   selectedOpenQuestion: OpenQuestion;
-  inputMaxScoreOpen: number;
 
   addOpenQuestion(): void {
-    this.test.openQuestions.push(new OpenQuestion(this.inputOpenQuestion, this.inputCorrectOpenAnswer, this.inputMaxScoreOpen))
+    this.test.openQuestions.push(new OpenQuestion(this.inputOpenQuestion, this.inputCorrectOpenAnswer, this.inputMaxScore))
     this.inputOpenQuestion = null;
     this.inputCorrectOpenAnswer = null;
-    this.inputMaxScoreOpen = 1;
+    this.inputMaxScore = 1;
   }
 
   removeOpenQuestion(openQuestion: OpenQuestion): void {
@@ -117,10 +130,30 @@ export class UpdateTestComponent implements OnInit {
     this.selectedOpenQuestion = openQuestion;
   }
   //#endregion
+  
+  //#region "Value Question"
+  valueQuestions: ValueQuestion[] = [];
+  inputValueQuestion: string;
+  inputCorrectValueAnswer;
+  selectedValueQuestion: ValueQuestion;
+
+  addValueQuestion(): void {
+    this.valueQuestions.push(new ValueQuestion(this.inputValueQuestion, this.inputCorrectValueAnswer, this.inputMaxScore))
+    this.inputMaxScore = 1;
+  }
+
+  onSelectValueQuestion(valueQuestion: ValueQuestion): void {
+    this.selectedValueQuestion = valueQuestion;
+  }
+
+  removeValueQuestion(valueQuestion: ValueQuestion): void {
+    this.valueQuestions.splice(this.valueQuestions.indexOf(valueQuestion), 1);
+  }
+  //#endregion
 
   //#region "Test Management"
   public updateTest(): void {
-    this.testService.updateTest(this.test.id, this.test.title, this.test.author, this.test.language, this.test.openQuestions, this.test.closeQuestions).subscribe({
+    this.testService.updateTest(this.test.id, this.test.title, this.test.author, this.test.language, this.test.openQuestions, this.test.closeQuestions, this.test.valueQuestions).subscribe({
       error: error => ({}),
       complete: () => {
         this.router.navigate(['/recruiter/show-all-tests']);

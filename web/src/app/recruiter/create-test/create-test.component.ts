@@ -1,9 +1,11 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { CloseQuestion } from '../../model/close-question';
 import { OpenQuestion } from '../../model/open-question';
+import { ValueQuestion } from '../../model/value-question';
 import { TestService } from '../../services/test.service';
 import { Router } from '@angular/router';
 import { AuthenticationRecruiterService } from '../../services/authentication-recruiter.service';
+import { runInThisContext } from 'vm';
 
 @Component({
   selector: 'app-create-test',
@@ -21,33 +23,49 @@ export class CreateTestComponent implements OnInit {
     private authService: AuthenticationRecruiterService
   ) { }
 
+  currentLanguage: string = "PL";
+  inputMaxScore: number;
 
   //#region "Init and choices beetween open and close question"
-  ifOpen: boolean;
-  ifClose: boolean;
-  
+  public questionType: number;
+
   ngOnInit() {
-    // this.getQuestions();
-    this.ifOpen = false;
-    this.ifClose = true;
+    this.questionType = 0;
   }
-  
+
+  getQuestionType(): number {
+    return this.questionType;
+  }
+
+  setQuestionType(type: number): void {
+    this.questionType = type;
+  }
+
   getIfOpen(): boolean {
-    return this.ifOpen;
+    if (this.questionType == 0) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
   getIfClose(): boolean {
-    return this.ifClose;
+    if (this.questionType == 1) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
-  selectOpenType(): void {
-    this.ifClose = false;
-    this.ifOpen = true;
-  }
-
-  selectCloseType(): void {
-    this.ifOpen = false;
-    this.ifClose = true;
+  getIfValue(): boolean {
+    if (this.questionType == 2) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
   //#endregion
 
@@ -58,7 +76,6 @@ export class CreateTestComponent implements OnInit {
   incorrectCloseAnswers: string[] = [];
   inputCorrectCloseAnswer: string;
   inputIncorrectCloseAnswer: string;
-  inputMaxScoreClose: number;
   selectedCloseQuestion: CloseQuestion;
 
   addCorrectCloseAnswer(): void {
@@ -71,12 +88,17 @@ export class CreateTestComponent implements OnInit {
     this.inputIncorrectCloseAnswer = "";
   }
 
-  addCloseQuestion(): void{
-    this.closeQuestions.push(new CloseQuestion(this.inputCloseQuestion, this.correctCloseAnswers, this.incorrectCloseAnswers, this.inputMaxScoreClose))
+  addCloseQuestion(): void {
+    this.closeQuestions.push(new CloseQuestion(this.inputCloseQuestion, this.correctCloseAnswers, this.incorrectCloseAnswers, this.inputMaxScore))
+    this.inputMaxScore = 1;
   }
 
   onSelectCloseQuestion(closeQuestion: CloseQuestion): void {
     this.selectedCloseQuestion = closeQuestion;
+  }
+
+  removeCloseQuestion(closeQuestion: CloseQuestion): void {
+    this.closeQuestions.splice(this.closeQuestions.indexOf(closeQuestion), 1);
   }
   //#endregion
 
@@ -85,22 +107,46 @@ export class CreateTestComponent implements OnInit {
   inputOpenQuestion: string;
   inputCorrectOpenAnswer: string;
   selectedOpenQuestion: OpenQuestion;
-  inputMaxScoreOpen; number;
 
   addOpenQuestion(): void {
-    this.openQuestions.push(new OpenQuestion(this.inputOpenQuestion, this.inputCorrectOpenAnswer, this.inputMaxScoreOpen))
+    this.openQuestions.push(new OpenQuestion(this.inputOpenQuestion, this.inputCorrectOpenAnswer, this.inputMaxScore))
+    this.inputMaxScore = 1;
   }
 
   onSelectOpenQuestion(openQuestion: OpenQuestion): void {
     this.selectedOpenQuestion = openQuestion;
   }
+
+  removeOpenQuestion(openQuestion: OpenQuestion): void {
+    this.openQuestions.splice(this.openQuestions.indexOf(openQuestion), 1);
+  }
+  //#endregion
+
+  //#region "Value Question"
+  valueQuestions: ValueQuestion[] = [];
+  inputValueQuestion: string;
+  inputCorrectValueAnswer;
+  selectedValueQuestion: ValueQuestion;
+
+
+  addValueQuestion(): void {
+    this.valueQuestions.push(new ValueQuestion(this.inputValueQuestion, this.inputCorrectValueAnswer, this.inputMaxScore))
+    this.inputMaxScore = 1;
+  }
+
+  onSelectValueQuestion(valueQuestion: ValueQuestion): void {
+    this.selectedValueQuestion = valueQuestion;
+  }
+
+  removeValueQuestion(valueQuestion: ValueQuestion): void {
+    this.valueQuestions.splice(this.valueQuestions.indexOf(valueQuestion), 1);
+  }
   //#endregion
 
   //#region "Create Test"
   inputTestTitle: string = "";
-  inputLanguage: string = "pl";
   public createTest(): void {
-    this.testService.createTest(this.inputTestTitle, this.inputLanguage, this.authService.getUsername(), this.openQuestions, this.closeQuestions).subscribe({
+    this.testService.createTest(this.inputTestTitle, this.currentLanguage, this.authService.getUsername(), this.openQuestions, this.closeQuestions, this.valueQuestions).subscribe({
       error: error => ({}),
       complete: () => {
         this.router.navigate(['/recruiter/show-all-tests']);

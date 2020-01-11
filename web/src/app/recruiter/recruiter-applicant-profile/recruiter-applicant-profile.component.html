@@ -1,2 +1,4 @@
-<app-applicant-profile [applicantId]="applicantId"></app-applicant-profile>
-<app-applicant-test-list></app-applicant-test-list>
+<ng-container *ngIf="replicant">
+  <app-applicant-profile [applicantId]="replicant.id"></app-applicant-profile>
+  <app-applicant-test-list [replicant]="replicant"></app-applicant-test-list>
+</ng-container>

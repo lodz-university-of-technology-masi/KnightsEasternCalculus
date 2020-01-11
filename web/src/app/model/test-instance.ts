@@ -11,9 +11,11 @@ export class TestInstance {
   maxScore: number;
   receivedScore: number;
 
-
+  constructor();
   constructor(applicantId: string, timestamp: number, title: string, status: TestStatus, openQuestions: SolvableOpenQuestion[],
-              closeQuestions: SolvableCloseQuestion[], maxScore: number, receivedScore: number) {
+              closeQuestions: SolvableCloseQuestion[], maxScore: number, receivedScore: number);
+  constructor(applicantId?: string, timestamp?: number, title?: string, status?: TestStatus, openQuestions?: SolvableOpenQuestion[],
+              closeQuestions?: SolvableCloseQuestion[], maxScore?: number, receivedScore?: number) {
     this.applicantID = applicantId;
     this.timestamp = timestamp;
     this.title = title;

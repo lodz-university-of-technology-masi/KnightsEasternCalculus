@@ -1,8 +1,22 @@
 import subprocess
 import json
 import os
-import fileinput
 import re
+from datetime import datetime
+import sys
+
+print("Checking for credentials_config.json file...")
+if os.path.exists("credentials_config.json"):
+    with open("credentials_config.json", 'r') as f:
+        credentials_config = json.load(f)
+        secondsPassed = (datetime.now() - datetime.fromtimestamp(credentials_config["timestamp"])).total_seconds()
+        if (secondsPassed / 60 / 60) > 2.8:
+            print("Credentials will soon expire. Generating new ones.")
+            subprocess.run([sys.executable, 'get-credentials.py'])
+        else:
+            print("Credentials have not expired. Continuing...")
+else:
+    print("\tThe file does not exist. Skipping credentials check.")
 
 print("Fetching account info...")
 accountID = json.loads(subprocess.check_output(
@@ -12,7 +26,7 @@ print("The account id is {}".format(accountID))
 role_tmp = "arn:aws:iam::{}:role/{}"
 
 print("Building lambda project...")
-subprocess.call("{} buildZip".format("gradlew"), shell=True, cwd="lambda")
+subprocess.call("gradlew buildZip", shell=True, cwd="lambda")
 
 print("Creating lambda bucket...")
 subprocess.call(

@@ -1,22 +1,12 @@
 <div class="mt-4">
   <h5 class="d-inline">Testy</h5>
-  <button type="button" class="btn btn-outline-primary btn-sm ml-2 mb-2">Przypisz</button>
+  <button type="button" class="btn btn-outline-primary btn-sm ml-2 mb-2"  [ngbPopover]="assignPopover" triggers="manual"
+          popoverTitle="Przypisz test" #p="ngbPopover" autoClose="outside"
+          (click)="toggleAssign(p)" popoverClass="assign-popover">Przypisz</button>
   <div class="clearfix"></div>
 </div>
 <ng-container *ngIf="true; else noEntries">
   <ul class="list-group" *ngFor="let test of tests">
-<!--    <a class="list-group-item d-flex justify-content-between align-items-center list-group-item-action text-dark" [routerLink]="test">-->
-<!--      Jakiś test-->
-<!--      <span class="badge badge-success">ROZWIĄZANY</span>-->
-<!--    </a>-->
-<!--    <li class="list-group-item d-flex justify-content-between align-items-center">-->
-<!--      Inny test-->
-<!--      <span class="badge badge-warning">OCZEKUJE</span>-->
-<!--    </li>-->
-<!--    <li class="list-group-item d-flex justify-content-between align-items-center">-->
-<!--      Jeszcze inny-->
-<!--      <span class="badge badge-danger">USUNIĘTY</span>-->
-<!--    </li>-->
     <li class="list-group-item d-flex justify-content-between align-items-center" *ngIf="test.status != 1">
       {{test.title}}
       <span class="badge badge-success" *ngIf="test.status == 2">OCENIONY</span>
@@ -29,4 +19,20 @@
   </ul>
 </ng-container>
 <ng-template #noEntries><span>(brak)</span></ng-template>
-<ng-template #loading><span>Ładowanie...</span></ng-template>
+<ng-template #loading><div class="spinner-grow spinner-grow-sm" role="status"></div></ng-template>
+
+<ng-template #assignPopover>
+  <form class="form-inline">
+    <input type="text" class="form-control" placeholder="Nazwa testu" [(ngModel)]="testTitle"
+           [ngModelOptions]="{standalone: true}">
+    <button type="submit" class="btn btn-primary mt-2" (click)="searchTests()">Szukaj</button>
+  </form>
+  <ng-container *ngIf="testLoading || assignableTests">
+    <div class="mt-2" *ngIf="assignableTests; else loading">
+      <button type="button" class="list-group-item list-group-item-action" *ngFor="let test of assignableTests"
+              (click)="openAssignModal(test.id, test.title);">
+        {{test.title}}
+      </button>
+    </div>
+  </ng-container>
+</ng-template>

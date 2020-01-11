@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Test } from '../model/test';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import * as Globals from '../app-consts';
 import * as saveAs from 'file-saver';
 import { OpenQuestion } from '../model/open-question';
@@ -12,6 +12,7 @@ import { SolvableCloseQuestion } from '../model/solvable-close-question';
 import { map } from 'rxjs/operators';
 import axios from "axios";
 import { KeyValue } from '@angular/common';
+import {CustomHttpParamEncoder} from './encoder';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -160,13 +161,9 @@ export class TestService {
     return this.httpClient.get(this.testUrl + `/${id}`, httpOptions);
   }
 
-  public getAllTests() {
-    var httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.httpClient.get(this.testUrl, httpOptions);
+  public getAllTests(title: string = ''): Observable<Test[]> {
+    const params = new HttpParams({ encoder: new CustomHttpParamEncoder() }).set('title', title);
+    return this.httpClient.get<Test[]>(this.testUrl, {params});
   }
 
   public getAllUserTests(username: string) {

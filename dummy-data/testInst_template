@@ -2,7 +2,7 @@
     "applicantID": "--",
     "timestamp": 1,
     "title": "Am I an idiot? Find the type of bread you are.",
-    "status": 0,
+    "status": 1,
     "openQuestions": [
         {
             "question": "What is a v table?",

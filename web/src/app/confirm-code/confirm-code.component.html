@@ -12,10 +12,12 @@
 <main class="container">
   <div class="shadow bg-white rounded p-4 my-3 d-flex flex-column text-center">
     <h1 class="mb-5">Weryfikacja</h1>
-    <div class="col-5 align-self-center d-flex flex-column">
-      <input class="form-control form-control-lg" type="text" name="username" placeholder="Nazwa użytkownika" [(ngModel)]="email"><br>
-      <input class="form-control form-control-lg" type="password" name="password" placeholder="Hasło" [(ngModel)]="password"><br>
-      <button class="btn btn-primary align-self-end btn-lg" type="button" (click)="confirmCode()">Potwierdź</button>
-    </div>
+      <div class="col-5 align-self-center d-flex flex-column">
+        <form (ngSubmit)="confirmCode()" clas="sform-group">
+          <input class="form-control form-control-lg" type="text" name="username" placeholder="Nazwa użytkownika" [(ngModel)]="email"><br>
+          <input class="form-control form-control-lg" type="password" name="password" placeholder="Hasło" [(ngModel)]="password"><br>
+          <button class="float-right btn btn-primary btn-lg" type="submit"[disabled]="loading">Zaloguj</button><div *ngIf="loading" class="float-right spinner-grow mr-3 mt-2"></div>
+        </form>
+      </div>
   </div>
 </main>

@@ -36,5 +36,22 @@
     </div>
   </div>
 </div>
-
+<div>
+  <div class="card my-3" *ngIf="test.valueQuestions.length != 0">
+    <div class="card my-3" *ngFor="let valueQuestion of test.valueQuestions; let k = index">
+      <div class="card-header">Pytanie {{k+test.closeQuestions.length+test.valueQuestions.length+1}}</div>
+      <div class="row no-gutters">
+        <div class="col-md-auto">
+          <div class="card-body text-center">{{valueQuestion.maxScore}}pkt.</div>
+        </div>
+      </div>
+      <div class="col-md-10">
+        <div class="card-body form-group">
+          <label class="card-title h6 mb-4">{{valueQuestion.question}}</label>
+          <input type="number" class="form-control" [(ngModel)]="valueQuestion.answer">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <button type="button" class="btn" (click)="send()">Wyślij</button>

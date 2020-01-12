@@ -18,7 +18,7 @@ export class RootGuard implements CanActivate {
       if(this.authService.getGroups().includes('recruiter')) {
         this.router.navigateByUrl('/recruiter');
         return true;
-      } else if(this.authService.getGroups().includes('applicant')) {
+      } else if(this.authService.getGroups().includes('client')) {
         this.router.navigateByUrl('/applicant');
         return true;
       }

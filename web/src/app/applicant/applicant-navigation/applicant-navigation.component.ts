@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthenticationRecruiterService} from '../../services/authentication-recruiter.service';
 
 @Component({
   selector: 'app-applicant-navigation',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ApplicantNavigationComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthenticationRecruiterService) { }
 
   ngOnInit() {
   }

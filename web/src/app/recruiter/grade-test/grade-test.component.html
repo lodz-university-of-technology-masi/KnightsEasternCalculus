@@ -36,8 +36,8 @@
               <textarea class="form-control" disabled [ngModel]="openQuestion.answer"></textarea>
             </div>
             <div class="col">
-              <input type="number" id="score" name="score" class="form-control form-control-sm"
-                     [(ngModel)]="openQuestion.receivedScore" required min="0" max="{{openQuestion.maxScore}}" #score="ngModel">
+              <input type="number" id="scoreOpen" name="score" class="form-control form-control-sm"
+                     [(ngModel)]="openQuestion.receivedScore" required min="0" max="{{openQuestion.maxScore}}" #scoreOpen="ngModel">
             </div>
             <div clas="col">/{{openQuestion.maxScore}}</div>
           </div>
@@ -52,6 +52,44 @@
             </div>
             <div class="col">
               <textarea class="form-control" disabled [ngModel]="openQuestion.correctAnswer"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card my-3" *ngIf="test.valueQuestions.length != 0">
+    <div class="card my-3" *ngFor="let valueQuestion of test.valueQuestions; let k = index">
+      <div class="card-header">Pytanie {{k+test.openQuestions.length+test.closeQuestions+1}}</div>
+      <div class="row no-gutters">
+        <div class="col-md-auto">
+          <div class="card-body text-center">{{valueQuestion.maxScore}}.pkt</div>
+        </div>
+      </div>
+      <div class="container col-md-10">
+        <div class="card-body form-group">
+          <label class="card-title h6 mb-4">{{valueQuestion.question}}</label>
+          <div class="row">
+            <div class="col-10">
+              <textarea class="form-control" disabled [ngModel]="valueQuestion.answer"></textarea>
+            </div>
+            <div class="col">
+              <input type="number" id="scoreValue" name="score" class="form-control form-control-sm"
+                     [(ngModel)]="valueQuestion.receivedScore" required min="0" max="{{valueQuestion.maxScore}}" #scoreValue="ngModel">
+            </div>
+            <div class="col">/{{valueQuestion.maxScore}}</div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              Correct answer:
+            </div>
+            <div class="col">
+              <textarea class="form-control" disabled [ngModel]="valueQuestion.correctAnswer"></textarea>
             </div>
           </div>
         </div>

@@ -3,10 +3,7 @@ package lambda.test;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
-import model.test.SolvableClosedQuestion;
-import model.test.SolvableOpenQuestion;
-import model.test.TestInstance;
-import model.test.TestStatus;
+import model.test.*;
 import util.Response;
 
 import java.util.ArrayList;
@@ -34,6 +31,18 @@ public class GradeTest extends Handler<TestInstance> {
                 o.setCorrectAnswer(input.getOpenQuestions().get(i).getCorrectAnswer());
                 open.add(o);
             }
+
+            List<SolvableValueQuestion> value = new ArrayList<>();
+            SolvableValueQuestion v = null;
+            for (int i = 0; i < test.getValueQuestions().size(); i++) {
+                v = test.getValueQuestions().get(i);
+                v.setAnswer(input.getValueQuestions().get(i).getAnswer());
+                v.setReceivedScore(input.getValueQuestions().get(i).getReceivedScore());
+                v.setCorrectAnswer(input.getValueQuestions().get(i).getCorrectAnswer());
+                value.add(v);
+            }
+
+            test.setValueQuestions(value);
             test.setOpenQuestions(open);
 
             test.calculatePoints();

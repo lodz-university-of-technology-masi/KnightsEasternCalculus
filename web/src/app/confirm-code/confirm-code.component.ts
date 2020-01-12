@@ -12,6 +12,7 @@ export class ConfirmCodeComponent implements OnInit {
   private code: string;
   private password: string;
   private email: string;
+  loading = false;
 
   constructor(private router: Router, private authService: AuthenticationRecruiterService, private route: ActivatedRoute) {
   }
@@ -21,6 +22,7 @@ export class ConfirmCodeComponent implements OnInit {
   }
 
   confirmCode() {
+    this.loading = true;
     this.authService.confirmCode(this.email, this.code, this.password).subscribe( result => {
       if (result === 'success') {
         this.router.navigateByUrl('/');

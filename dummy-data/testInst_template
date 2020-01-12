@@ -1,32 +1,33 @@
 {
     "applicantID": "--",
     "timestamp": 1,
-    "title": "C++ basic knowledge",
+    "title": "Am I an idiot? Find the type of bread you are.",
     "status": 0,
     "openQuestions": [
         {
             "question": "What is a v table?",
-            "correctAnswer": "a table",
+            "correctAnswer": "",
             "answer": "",
             "maxScore": 10,
             "receivedScore": 0
         },
         {
             "question": "Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.",
-            "correctAnswer": "loop",
+            "correctAnswer": "",
             "answer": "",
             "maxScore": 20,
-            "receivedScore": 0
+            "receivedScore": 15
         }
     ],
     "closeQuestions": [
         {
             "question": "Choose the correct array declaration method.",
             "answers": [
-                "int i[5];",
-                "int i[2] = {1};"
+                "int i[];",
+                "int[5] i;",
+                "int i[] = new int[10];"
             ],
-            "correctAnswers": [1],
+            "correctAnswers": [],
             "chosenAnswers": [],
             "maxScore": 20,
             "receivedScore": 0
@@ -38,12 +39,28 @@
                 "an array of pointers to functions returning an int",
                 "a function returning an array of int pointers"
             ],
-            "correctAnswers": [0],
+            "correctAnswers": [],
             "chosenAnswers": [],
             "maxScore": 10,
             "receivedScore": 0
         }
     ],
+    "valueQuestions": [
+        {
+            "question": "What is a value of x (x = 5)?",
+            "correctAnswer": 5,
+            "answer": 5,
+            "maxScore": 1,
+            "receivedScore": 1
+        },
+        {
+            "question": "What is a value of y (y = - 1 + 8 + 1)",
+            "correctAnswer": 5,
+            "answer": 8,
+            "maxScore": 1,
+            "receivedScore": 0
+        }
+    ],
     "maxScore": 60,
-    "receivedScore": 0
+    "receivedScore": 15
 }

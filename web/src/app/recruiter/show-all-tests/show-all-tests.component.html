@@ -31,7 +31,7 @@
 <ng-template #loading>
   <div class="spinner-grow spinner-grow-sm" role="status"></div>
 </ng-template>
-<div>  
+<div>
   <input type="file" (change)="loadTest($event.target.files)">
   <button class="btn btn-success" (click)="importTest()">Importuj</button>
 </div>

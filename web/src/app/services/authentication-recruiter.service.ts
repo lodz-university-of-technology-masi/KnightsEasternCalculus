@@ -147,8 +147,10 @@ export class AuthenticationRecruiterService {
 
           this.addToGroup(username, 'client').subscribe( (re: string) => {
 
-            observer.next('success');
-            observer.complete();
+            this.signIn(username, password).subscribe( r => {
+              observer.next('success');
+              observer.complete();
+            });
             });
           });
         });

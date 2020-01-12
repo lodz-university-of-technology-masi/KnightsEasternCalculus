@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Applicant} from '../../model/applicant';
-import {ApplicantService} from '../../services/applicant.service';
+import { Applicant } from '../../model/applicant';
+import { ApplicantService } from '../../services/applicant.service';
 
 @Component({
   selector: 'app-applicant-list',
@@ -18,7 +18,7 @@ export class ApplicantListComponent implements OnInit {
   }
 
   getInitialApplicants(): void {
-    this.applicantService.getAllApplicants().subscribe(applicants => {this.applicants = applicants; console.log(JSON.stringify(applicants)); });
+    this.applicantService.getAllApplicants().subscribe(applicants => { this.applicants = applicants; console.log(JSON.stringify(applicants)); });
   }
 
   searchApplicants(): void {

@@ -64,11 +64,11 @@ export class ShowAllTestsComponent implements OnInit {
     }
 
     public downloadTest(id: string): void {
-        this.testService.getTest(id)
-            .subscribe((res: Response) => {
-                console.log(res);
-                this.testService.downloadTest(<Test>JSON.parse(JSON.stringify(res)));
-            });
+        // this.testService.getTest(id)
+        //     .subscribe((res: Response) => {
+        //         console.log(res);
+        //         this.testService.downloadTest(<Test>JSON.parse(JSON.stringify(res)));
+        //     });
     }
 
     public loadTest(fileList: FileList): void {

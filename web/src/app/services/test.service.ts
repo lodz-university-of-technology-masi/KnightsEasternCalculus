@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Test } from '../model/test';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as Globals from '../app-consts';
-import * as saveAs from 'file-saver';
 import { OpenQuestion } from '../model/open-question';
 import { CloseQuestion } from '../model/close-question';
 import { TestInstance, TestStatus } from '../model/test-instance';
@@ -28,7 +27,7 @@ const httpOptions = {
 export class TestService {
   constructor(
     private httpClient: HttpClient
-  ) {}
+  ) { }
 
   private testUrl: string = Globals.apiBaseUrl + '/recruiters/tests';
 
@@ -43,10 +42,10 @@ export class TestService {
   }
 
   public async translateTest(test: Test, language: string) {
-  //  https://translate.yandex.net/api/v1.5/tr.json/translate
-  //  ? key=<API key>
-  //  & text=<text to translate>
-  //  & lang=<translation direction>
+    //  https://translate.yandex.net/api/v1.5/tr.json/translate
+    //  ? key=<API key>
+    //  & text=<text to translate>
+    //  & lang=<translation direction>
     var yandexKey = 'trnsl.1.1.20200108T191910Z.fe657624420b3a8c.9b1c3b15e8688d96a425d4596dfc2c6321f04ee2';
     var translateUrl = 'https://translate.yandex.net/api/v1.5/tr.json/translate?key=';
     var lang = ''
@@ -189,7 +188,7 @@ export class TestService {
           new SolvableValueQuestion('What is a value of x (x = 5)?', 5, 1, 1, 5),
           new SolvableValueQuestion('What is a value of y (y = - 1 + 8 + 1)', 8, 1, 0, 5)
         ],
-          60, 15),
+        60, 15),
       new TestInstance('3', 0, 'C++ basic knowledge', TestStatus.Checked,
         [
           new SolvableOpenQuestion('What is a v table?', 'I don\'t know, sorry', 10, 0, 'A lookup table of functions used to resolve virtual function calls'),

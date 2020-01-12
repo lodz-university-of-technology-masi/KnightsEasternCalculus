@@ -123,6 +123,7 @@ public class TestInstance implements Serializable {
         this.testId = testId;
     }
 
+
     public void calculatePoints() {
         for (SolvableClosedQuestion c : this.closeQuestions) {
             this.receivedScore += c.getReceivedScore();

@@ -2,6 +2,7 @@ import { Component, OnInit, Injectable } from '@angular/core';
 import { FillInfoService } from '../services/fill-info.service';
 import {Experience} from '../model/experience';
 import {University} from '../model/university';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-fill-info',
@@ -13,7 +14,8 @@ import {University} from '../model/university';
 export class FillInfoComponent implements OnInit {
 
   constructor(
-    private nfSer: FillInfoService
+    private nfSer: FillInfoService,
+    private router: Router
   ) { }
   id: string;                     // id
   fi: string;                     // firstName
@@ -32,52 +34,44 @@ export class FillInfoComponent implements OnInit {
   ph: string;                     // photoUrl
   selectedExperience: Experience;
   selectedUniversity: University;
-  ename: string;
-  eposition: string;
-  eyears: string;
-  uname: string;
-  umajor: string;
-  uyears: string;
-  udegree: string;
 
 
-  inId: string = "";
-  inFirstName: string = "";
-  inLastName: string = "";
-  inDateOfBirth: string = "";
-  inAddress: string = "";
-  inCity: string = "";
-  inPostalCode: string = "";
-  inEmail: string = "";
-  inPhoneNumber: string = "";
-  inAboutMe: string = "";
-  inPhotoUrl: string = "";
-  inEname: string = "";
-  inEposition: string = "";
-  inEyears: string = "";
-  inUname: string = "";
-  inUmajor: string = "";
-  inUyears: string = "";
-  inUdegree: string = "";
+  inFirstName: string;
+  inLastName: string;
+  inDateOfBirth: string;
+  inAddress: string;
+  inCity: string;
+  inPostalCode: string;
+  inEmail: string;
+  inPhoneNumber: string;
+  inAboutMe: string;
+  inPhotoUrl: string;
+  inEname: string;
+  inEposition: string;
+  inEyears: string;
+  inUname: string;
+  inUmajor: string;
+  inUyears: string;
+  inUdegree: string;
 
   ngOnInit() {}
   addExperience(): void {
-    this.ename = this.inEname;
-    this.eposition = this.inEposition;
-    this.eyears = this.inEyears;
-    this.inputExperience = new Experience(this.ename, this.eposition, this.eyears);
+    this.inputExperience = new Experience(this.inEname, this.inEposition, this.inEyears);
     this.ex.push(this.inputExperience);
     this.inputExperience = null;
+    this.inEname = null;
+    this.inEposition = null;
+    this.inEyears = null;
   }
 
   addUniversity(): void {
-    this.uname = this.inUname;
-    this.umajor = this.inUmajor;
-    this.uyears = this.inUyears;
-    this.udegree = this.inUdegree;
-    this.inputUniversity = new University(this.uname, this.umajor, this.uyears, this.udegree);
+    this.inputUniversity = new University(this.inUname, this.inUmajor, this.inUyears, this.inUdegree);
     this.un.push(this.inputUniversity);
     this.inputUniversity = null;
+    this.inUname = null;
+    this.inUmajor = null;
+    this.inUyears = null;
+    this.inUdegree = null;
   }
 
   removeExperience(experience: Experience): void {
@@ -98,7 +92,12 @@ export class FillInfoComponent implements OnInit {
 
   //#region "Fill info"
   public fillInfo(): void {
-    this.nfSer.addPer(this.id, this.fi, this.la.toLowerCase(), this.da, this.ad, this.ci, this.po, this.em, this.nb, this.ex, this.un, this.ab, this.ph);
+    this.nfSer.addPer(this.inFirstName, this.inLastName.toLowerCase(), this.inDateOfBirth, this.inAddress, this.inCity, this.inPostalCode, this.inEmail, this.inPhoneNumber, this.ex, this.un, this.inAboutMe, this.inPhotoUrl).subscribe({
+      error: error => ({}),
+      complete: () => {
+        this.router.navigate(['/login']);
+      }
+    });
   }
   //#endregion
 }

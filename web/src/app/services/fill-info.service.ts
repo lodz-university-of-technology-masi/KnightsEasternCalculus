@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Applicant} from '../model/applicant';
+import * as Globals from '../app-consts';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -17,12 +18,9 @@ export class FillInfoService {
     private httpClient: HttpClient
   ) { }
 
-  addApplicantUrl: string = "https://luznpx1mg3.execute-api.us-east-1.amazonaws.com/Test/applicants";
-  public addPer(id, firstName, lastName, date, address, city, postal, email, phone, experiences, univer, aboutMe, photoUrl): void {
-    var applicant = new Applicant(id, firstName, lastName, date, address, city, postal, email, phone, experiences, univer, aboutMe, photoUrl);
-    this.httpClient.post<Applicant>(this.addApplicantUrl, applicant, httpOptions).subscribe({
-      error: error => ({}),
-      complete: () => { }
-    });
+  addApplicantUrl: string = Globals.apiBaseUrl + '/applicants';
+  public addPer(firstName, lastName, date, address, city, postal, email, phone, exper, univers, aboutMe, photoUrl) {
+    var applicant = new Applicant(null, firstName, lastName, date, address, city, postal, email, phone, exper, univers, aboutMe, photoUrl);
+    return this.httpClient.post<Applicant>(this.addApplicantUrl, applicant, httpOptions);
   }
 }

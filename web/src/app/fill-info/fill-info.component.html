@@ -2,18 +2,6 @@
 <h2 class="mt-2" align="center">Rejestracja użytkownika</h2>
 <div class="card-body">
   <div>
-    <h5 class="mt-2">Identyfikator:</h5>
-    <input id="id" name="id" class="form-control" type="text" required
-           [(ngModel)]="inId" #id="ngModel"
-           (input)="inId=$event.target.value">
-    <div *ngIf="id.invalid && (id.dirty || id.touched)" class="alert alert-danger mt-2">
-      <div *ngIf="id.errors.required">
-        Identyfikator jest wymagany.
-      </div>
-    </div>
-  </div>
-
-  <div>
     <h5 class="mt-2">Imię:</h5>
     <input id="firstName" name="firstName" class="form-control" type="text" required
            [(ngModel)]="inFirstName" #firstName="ngModel"
@@ -237,11 +225,11 @@
       </table>
   </div>
 </div>
+</div>
 
 <!-- BOTTOM -->
 <div>
-  <button class="btn btn-success full-button" (click)="fillInfo()" routerLink="/">
+  <button class="btn btn-success full-button" (click)="fillInfo()">
     Zarejestruj
   </button>
-</div>
 </div>

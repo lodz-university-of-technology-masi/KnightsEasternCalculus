@@ -6,6 +6,7 @@ import { CloseQuestion } from 'src/app/model/close-question';
 import { OpenQuestion } from 'src/app/model/open-question';
 import { Router } from '@angular/router';
 import { ValueQuestion } from 'src/app/model/value-question';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-update-test',
@@ -131,7 +132,7 @@ export class UpdateTestComponent implements OnInit {
     this.selectedOpenQuestion = openQuestion;
   }
   //#endregion
-  
+
   //#region "Value Question"
   valueQuestions: ValueQuestion[] = [];
   inputValueQuestion: string;
@@ -165,10 +166,16 @@ export class UpdateTestComponent implements OnInit {
   }
 
   getTest(id: string): void {
-    this.testService.getTest(id)
-      .subscribe((res: Response) => {
-        console.log(res);
+    this.testService.getTest(id).subscribe(
+      // .subscribe((res: Response) => {
+      //   console.log(res);
+      //   this.test = <Test>JSON.parse(JSON.stringify(res));
+      // });
+      res => {
         this.test = <Test>JSON.parse(JSON.stringify(res));
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
       });
   }
   //#endregion

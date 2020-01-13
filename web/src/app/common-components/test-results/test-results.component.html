@@ -13,8 +13,8 @@ Anna Fafińska
   <div class="card-header">Pytanie {{j+1}}</div>
   <div class="row no-gutters">
     <div class="col-md-auto">
-      <div class="card-body text-center" [ngClass]="{'text-success': question.receivedScore === question.maxScore, 'text-danger': question.receivedScore === 0}">
-      {{question.receivedScore}} / {{question.maxScore}} pkt
+      <div class="card-body text-center" [ngClass]="{'text-success': question.receivedScore === question.answerScore, 'text-danger': question.receivedScore === 0}">
+      {{question.receivedScore}} / {{question.answerScore}} pkt
       </div>
     </div>
     <div class="col-md-10">

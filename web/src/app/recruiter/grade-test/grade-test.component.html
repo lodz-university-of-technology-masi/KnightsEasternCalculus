@@ -2,11 +2,13 @@
   <h2 class="mt-2">{{test.title}}</h2>
   <div *ngIf="test.closeQuestions.length != 0">
     <div class="card my-3" *ngFor="let closedQuestion of test.closeQuestions; let i = index">
-      <div class="card-header">Pytanie {{i+1}}</div>
-      <div class="row no-gutters">
-        <div class="col-md-auto">
-          <div class="card-body text-center">{{closedQuestion.maxScore}}pkt.</div>
+      <div class="card-header">
+        <div class="row">
+        <div class="col-10">Pytanie {{i+1}}</div>
+        <div class="col">{{closedQuestion.receivedScore}}/{{closedQuestion.maxScore}}</div>
         </div>
+      </div>
+      <div class="row no-gutters">
         <div class="col-md-10">
           <div class="card-body">
             <label class="card-title h6">{{closedQuestion.question}}</label>
@@ -60,7 +62,7 @@
   </div>
   <div class="card my-3" *ngIf="test.valueQuestions.length != 0">
     <div class="card my-3" *ngFor="let valueQuestion of test.valueQuestions; let k = index">
-      <div class="card-header">Pytanie {{k+test.openQuestions.length+test.closeQuestions+1}}</div>
+      <div class="card-header">Pytanie {{k+test.openQuestions.length+test.closeQuestions.length+1}}</div>
       <div class="row no-gutters">
         <div class="col-md-auto">
           <div class="card-body text-center">{{valueQuestion.maxScore}}.pkt</div>
@@ -73,11 +75,7 @@
             <div class="col-10">
               <textarea class="form-control" disabled [ngModel]="valueQuestion.answer"></textarea>
             </div>
-            <div class="col">
-              <input type="number" id="scoreValue" name="score" class="form-control form-control-sm"
-                     [(ngModel)]="valueQuestion.receivedScore" required min="0" max="{{valueQuestion.maxScore}}" #scoreValue="ngModel">
-            </div>
-            <div class="col">/{{valueQuestion.maxScore}}</div>
+            <div class="col">{{valueQuestion.receivedScore}}/{{valueQuestion.maxScore}}</div>
           </div>
           <div class="row">
             <div class="col">

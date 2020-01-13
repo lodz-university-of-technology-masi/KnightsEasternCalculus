@@ -26,7 +26,7 @@ print("The account id is {}".format(accountID))
 role_tmp = "arn:aws:iam::{}:role/{}"
 
 print("Building lambda project...")
-subprocess.call("gradlew buildZip", shell=True, cwd="lambda")
+subprocess.call(os.path.join('.', "gradlew buildZip"), shell=True, cwd="lambda")
 
 print("Creating lambda bucket...")
 subprocess.call(

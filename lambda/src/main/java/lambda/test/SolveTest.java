@@ -52,6 +52,7 @@ public class SolveTest extends Handler<TestInstance> {
             test.setValueQuestions(value);
 
             calculateClosed(test.getCloseQuestions());
+            calculateValue(test.getValueQuestions());
             test.calculatePoints();
 
             test.setStatus(TestStatus.SOLVED.getValue());
@@ -75,6 +76,13 @@ public class SolveTest extends Handler<TestInstance> {
                     .reduce(0, (sum, answer) -> sum + question.getAnswerScore() *
                             (question.getCorrectAnswers().contains(answer) ? 1 : -1)));
             if (question.getReceivedScore() < 0) question.setReceivedScore(0);
+        });
+    }
+
+    private void calculateValue(List<SolvableValueQuestion> value) {
+        value.forEach( question -> {
+            question.setReceivedScore((Math.abs(question.getAnswer() - question.getCorrectAnswer()) < 0.01
+                    ? question.getMaxScore() : 0));
         });
     }
 

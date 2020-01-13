@@ -9,6 +9,7 @@ import { ApplicantService } from '../../services/applicant.service';
 import { Applicant } from '../../model/applicant';
 import { AssignModalComponent } from '../../common-components/assign-modal/assign-modal.component';
 import { NgbModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import {AuthenticationRecruiterService} from '../../services/authentication-recruiter.service';
 
 @Component({
     selector: 'show-all-tests',
@@ -39,7 +40,8 @@ export class ShowAllTestsComponent implements OnInit {
     constructor(
         private testService: TestService,
         private applicantService: ApplicantService,
-        private modalService: NgbModal
+        private modalService: NgbModal,
+        private authService: AuthenticationRecruiterService
     ) { }
 
     ngOnInit(): void {

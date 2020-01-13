@@ -156,7 +156,7 @@ export class CreateTestComponent implements OnInit {
   //#region "Create Test"
   inputTestTitle: string = "";
   public createTest(): void {
-    this.testService.createTest(this.inputTestTitle, this.authService.getUsername(), this.currentLanguage, this.openQuestions, this.closeQuestions, this.valueQuestions).subscribe({
+    this.testService.createTest(this.inputTestTitle, this.authService.getUser().getUsername(), this.currentLanguage, this.openQuestions, this.closeQuestions, this.valueQuestions).subscribe({
       error: error => ({}),
       complete: () => {
         this.router.navigate(['/recruiter/show-all-tests']);

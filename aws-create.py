@@ -91,9 +91,6 @@ for file in files:
         with open(os.path.join("dummy-data", "test_instance.json"), 'w') as f:
             json.dump(test_instance, f)
 
-print("\tAdding mock test")
-subprocess.call("aws lambda invoke --function-name add-test --payload fileb://{} dump".format(
-    os.path.join("dummy-data", "cpp-test.txt")), shell=True)
 
 print("\tFilling S3...")
 subprocess.call(
@@ -156,11 +153,21 @@ unauth_role = role_tmp.format(accountID, "Cognito_kotecUnauth_Role")
 subprocess.call("aws cognito-identity set-identity-pool-roles --identity-pool-id {} --roles unauthenticated={},authenticated={}".format(identity_pool_id, unauth_role, auth_role), shell=True)
 
 print("\tAdding test account...")
-subprocess.call("aws cognito-idp admin-create-user --user-pool-id {} --username admin@example.com --user-attributes=Name=email,Value=admin@example.com --temporary-password password --message-action SUPPRESS".format(pool_id), shell=True)
+admin_id = json.loads(subprocess.check_output("aws cognito-idp admin-create-user --user-pool-id {} --username admin@example.com --user-attributes=Name=email,Value=admin@example.com --temporary-password password --message-action SUPPRESS".format(pool_id), shell=True).decode('utf-8'))["User"]["Username"]
 subprocess.call("aws cognito-idp admin-add-user-to-group --user-pool-id {} --username admin@example.com --group-name recruiter".format(pool_id), shell=True)
 
 print("\tAdding tmp test...")
 subprocess.call("aws lambda invoke --function-name add-test-instance --payload fileb://{} dump".format(os.path.join("dummy-data", "test_instance.json")), shell=True)
+
+print("\tAdding mock test")
+with open(os.path.join("dummy-data", "cpp-test_template")) as f:
+    cpp_test = json.loads(f.read())
+    cpp_test["author"] = admin_id
+with open(os.path.join("dummy-data", "cpp-test.json"), 'w') as f:
+    json.dump(cpp_test, f)
+    
+subprocess.call("aws lambda invoke --function-name add-test --payload fileb://{} dump".format(
+    os.path.join("dummy-data", "cpp-test.json")), shell=True)
 
 print("Generating constants file...")
 with open(os.path.join("web", "src", "app", "app-consts.ts"), "w+") as file:

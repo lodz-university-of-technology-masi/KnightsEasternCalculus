@@ -11,6 +11,7 @@ public class GetTest extends Handler<String> {
         Test test = getMapper().load(Test.class, input);
         if(test == null)
             return new Response(404, "Test was not found");
+
         else
             return new Response(200, test);
     }

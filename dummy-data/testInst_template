@@ -6,15 +6,15 @@
     "openQuestions": [
         {
             "question": "What is a v table?",
-            "correctAnswer": "",
-            "answer": "",
+            "correctAnswer": "table",
+            "answer": "what?",
             "maxScore": 10,
             "receivedScore": 0
         },
         {
             "question": "Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.",
-            "correctAnswer": "",
-            "answer": "",
+            "correctAnswer": "for (int i = 0; i < -123; i*i);",
+            "answer": "while",
             "maxScore": 20,
             "receivedScore": 15
         }
@@ -27,9 +27,9 @@
                 "int[5] i;",
                 "int i[] = new int[10];"
             ],
-            "correctAnswers": [],
-            "chosenAnswers": [],
-            "maxScore": 20,
+            "correctAnswers": [0, 2],
+            "chosenAnswers": [1],
+            "answerScore": 20,
             "receivedScore": 0
         },
         {
@@ -39,9 +39,9 @@
                 "an array of pointers to functions returning an int",
                 "a function returning an array of int pointers"
             ],
-            "correctAnswers": [],
+            "correctAnswers": [2],
             "chosenAnswers": [],
-            "maxScore": 10,
+            "answerScore": 10,
             "receivedScore": 0
         }
     ],

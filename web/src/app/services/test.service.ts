@@ -157,13 +157,13 @@ export class TestService {
     // // this.createTest(title, openQuestions, closeQuestions);
   }
 
-  public getTest(id: string) {
+  public getTest(testID: string) {
     var httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     };
-    return this.httpClient.get(this.testUrl + `/${id}`, httpOptions);
+    return this.httpClient.get(this.testUrl + `/${testID}`, httpOptions);
   }
 
   public getAllTests(title: string = ''): Observable<Test[]> {

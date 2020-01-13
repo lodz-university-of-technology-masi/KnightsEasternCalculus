@@ -3,6 +3,7 @@ import {TestInstance} from '../../model/test-instance';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TestService} from '../../services/test.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-grade-test',
@@ -31,22 +32,31 @@ export class GradeTestComponent implements OnInit {
   }
 
   grade() {
-    if (this.validate()) {
-      this.testService.sendSolvedTest(this.test).subscribe(result => {
-        this.router.navigateByUrl('/recruiter/applicant/' + this.applicantID);
-      });
-    }
-  }
-
-  validate(): boolean {
-    this.test.openQuestions.forEach( question => {
-      if (question.receivedScore < 0 || question.receivedScore > question.maxScore) {
-        this.valid = false;
-        return false;
+    this.validate().subscribe( res => {
+      if (res) {
+        this.testService.sendSolvedTest(this.test).subscribe(result => {
+          if (result === 1) {
+            this.router.navigateByUrl('/recruiter/applicant/' + this.applicantID);
+          }
+        });
       }
     });
+  }
 
-    return true;
+  validate() {
+    return new Observable(observer => {
+      this.test.openQuestions.forEach( question => {
+        if (question.receivedScore < 0 || question.receivedScore > question.maxScore) {
+          this.valid = false;
+          observer.next(false);
+          observer.complete();
+        }
+      });
+
+      observer.next(true);
+      observer.complete();
+    });
+
   }
 
 }

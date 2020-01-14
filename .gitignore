@@ -6,7 +6,7 @@ dist
 dump
 app-consts.ts
 policy.json
-API-documentation-customized.txt
+API-documentation-customized.json
 test_instance.json
 credentials_config.json
 geckodriver.log

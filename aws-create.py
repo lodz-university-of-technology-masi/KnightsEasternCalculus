@@ -57,15 +57,15 @@ for lam in lambda_data:
     subprocess.call("aws lambda create-function --function-name {} --code {} --handler {}::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(
         lam[0], bucket_spec, lam[1], role), shell=True)
 
-with open('API-documentation.txt', 'r') as infile:
-    with open('API-documentation-customized.txt', 'w+') as outfile:
+with open('API-documentation.json', 'r') as infile:
+    with open('API-documentation-customized.json', 'w+') as outfile:
         for line in infile:
             outfile.write(re.sub('arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:.*?:function:',
                                  'arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:{}:function:'.format(accountID), line, flags=re.DOTALL))
 
 print("Creating gateways...")
 gatewayID = json.loads(subprocess.check_output(
-    "aws apigateway import-rest-api --body fileb://API-documentation-customized.txt", shell=True))["id"]
+    "aws apigateway import-rest-api --body fileb://API-documentation-customized.json", shell=True))["id"]
 
 
 # lambda names to automate permission granting
@@ -165,7 +165,7 @@ with open(os.path.join("dummy-data", "cpp-test_template")) as f:
     cpp_test["author"] = admin_id
 with open(os.path.join("dummy-data", "cpp-test.json"), 'w') as f:
     json.dump(cpp_test, f)
-    
+
 subprocess.call("aws lambda invoke --function-name add-test --payload fileb://{} dump".format(
     os.path.join("dummy-data", "cpp-test.json")), shell=True)
 

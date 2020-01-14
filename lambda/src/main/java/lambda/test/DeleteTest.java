@@ -9,9 +9,10 @@ public class DeleteTest extends Handler<Test> {
 
     @Override
     public Response handleRequest(Test input, Context context) {
-        if (input.getId() != null) {
-            if (getMapper().load(Test.class, input.getId()) != null) {
-                getMapper().delete(input);
+        if (input != null) {
+            Test test = getMapper().load(Test.class, input);
+            if (test != null) {
+                getMapper().delete(test);
                 return new Response(200, "Successfully deleted");
             }
         }

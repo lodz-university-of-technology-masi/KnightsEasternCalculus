@@ -9,7 +9,9 @@ import { ApplicantService } from '../../services/applicant.service';
 import { Applicant } from '../../model/applicant';
 import { AssignModalComponent } from '../../common-components/assign-modal/assign-modal.component';
 import { NgbModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import {AuthenticationRecruiterService} from '../../services/authentication-recruiter.service';
+import { AuthenticationRecruiterService } from '../../services/authentication-recruiter.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'show-all-tests',
@@ -41,7 +43,8 @@ export class ShowAllTestsComponent implements OnInit {
         private testService: TestService,
         private applicantService: ApplicantService,
         private modalService: NgbModal,
-        private authService: AuthenticationRecruiterService
+        private authService: AuthenticationRecruiterService,
+        private router: Router,
     ) { }
 
     ngOnInit(): void {
@@ -66,8 +69,17 @@ export class ShowAllTestsComponent implements OnInit {
     }
 
     public downloadTest(id: string): void {
-        // this.testService.getTest(id)
-        //     .subscribe((res: Response) => {
+        this.testService.getTest(id)
+            .subscribe(
+                res => {
+                    console.log(res);
+                    this.testService.downloadTest(<Test>JSON.parse(JSON.stringify(res)));
+                },
+                (error: HttpErrorResponse) => {
+                    console.log(error);
+                });
+
+        // .subscribe((res: Response) => {
         //         console.log(res);
         //         this.testService.downloadTest(<Test>JSON.parse(JSON.stringify(res)));
         //     });
@@ -83,14 +95,22 @@ export class ShowAllTestsComponent implements OnInit {
         fileReader.readAsText(file);
     }
 
+    notFinishedTest: Test;
     public importTest(): void {
-        // if (this.fileContent != "")
-        //     this.testService.importTest(this.fileContent).subscribe({
-        //         error: error => ({}),
-        //         complete: () => {
-        //             this.getAllTests();
-        //         }
-        //     });
+        let notFinishedTest: Test;
+        if (this.fileContent != "") {
+            this.notFinishedTest = this.testService.importTest(this.fileContent);
+        }
+        
+        if (this.notFinishedTest != null) {
+            this.router.navigate(['/recruiter/import-test']);
+        }
+        // .subscribe({
+        //     error: error => ({}),
+        //     complete: () => {
+        //         this.getAllTests();
+        //     }
+        // });
     }
 
     public getTest(id: string): void {

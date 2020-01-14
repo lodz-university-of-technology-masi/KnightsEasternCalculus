@@ -9,7 +9,7 @@ import java.util.List;
 
 @DynamoDBTable(tableName = "TestInstances")
 public class TestInstance implements Serializable {
-    private String applicantID;
+    private String applicantId;
     private long timestamp;
     private String title;
     private List<SolvableClosedQuestion> closeQuestions;
@@ -18,13 +18,14 @@ public class TestInstance implements Serializable {
     private float maxScore;
     private float receivedScore;
     private int status;
-    private String testId;
+    private String recruiterId;
+    private Long testId;
 
     public TestInstance() {
     }
 
-    public TestInstance(String applicantID, long timestamp, String title, List<SolvableClosedQuestion> closeQuestions, List<SolvableOpenQuestion> openQuestions, List<SolvableValueQuestion> valueQuestions, float maxScore, float receivedScore, int status) {
-        this.applicantID = applicantID;
+    public TestInstance(String applicantId, long timestamp, String title, List<SolvableClosedQuestion> closeQuestions, List<SolvableOpenQuestion> openQuestions, List<SolvableValueQuestion> valueQuestions, float maxScore, float receivedScore, int status) {
+        this.applicantId = applicantId;
         this.timestamp = timestamp;
         this.title = title;
         this.closeQuestions = closeQuestions;
@@ -35,13 +36,13 @@ public class TestInstance implements Serializable {
         this.status = status;
     }
 
-    @DynamoDBHashKey(attributeName = "applicantID")
-    public String getApplicantID() {
-        return applicantID;
+    @DynamoDBHashKey(attributeName = "applicantId")
+    public String getApplicantId() {
+        return applicantId;
     }
 
-    public void setApplicantID(String applicantID) {
-        this.applicantID = applicantID;
+    public void setApplicantId(String applicantId) {
+        this.applicantId = applicantId;
     }
 
     @DynamoDBRangeKey(attributeName = "timestamp")
@@ -115,14 +116,21 @@ public class TestInstance implements Serializable {
         this.status = status;
     }
 
-    public String getTestId() {
+    public Long getTestId() {
         return testId;
     }
 
-    public void setTestId(String testId) {
+    public void setTestId(Long testId) {
         this.testId = testId;
     }
 
+    public String getRecruiterId() {
+        return recruiterId;
+    }
+
+    public void setRecruiterId(String recruiterId) {
+        this.recruiterId = recruiterId;
+    }
 
     public void calculatePoints() {
         for (SolvableClosedQuestion c : this.closeQuestions) {

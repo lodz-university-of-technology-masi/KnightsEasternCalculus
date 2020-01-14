@@ -12,7 +12,7 @@
         </a>
         <li class="list-group-item d-flex justify-content-between align-items-center" *ngIf="test.status !== testStatus.Checked" [ngClass]="{'font-weight-bold': test.status===testStatus.NotSolved}">
           <span>{{test.title}}</span>
-          <button type="button" class="btn btn-primary" *ngIf="test.status == testStatus.NotSolved" (click)="solve(test.applicantID, test.timestamp)">Rozwiąż</button>
+          <button type="button" class="btn btn-primary" *ngIf="test.status == testStatus.NotSolved" (click)="solve(test.applicantId, test.timestamp)">Rozwiąż</button>
           <span class="badge badge-light" *ngIf="test.status==testStatus.Solved">OCZEKUJE</span>
         </li>
       </ng-container>

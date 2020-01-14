@@ -14,9 +14,9 @@ public class GradeTest extends Handler<TestInstance> {
     @Override
     public Response handleRequest(TestInstance input, Context context) {
         if (input != null) {
-            TestInstance test = getMapper().load(TestInstance.class, input.getApplicantID(), input.getTimestamp());
+            TestInstance test = getMapper().load(TestInstance.class, input.getApplicantId(), input.getTimestamp());
 
-            if (test.getApplicantID() == null) {
+            if (test.getApplicantId() == null) {
                 return new Response(400, "ApplicantID can't be null");
             }
 

@@ -23,7 +23,7 @@ export class SolveTestComponent implements OnInit {
       const timestamp = Number(split[1]);
       this.testService.getAllUserTests('username').subscribe( result => {
         result.forEach( (t: TestInstance) => {
-          if (t.applicantID === appID && t.timestamp === timestamp) {
+          if (t.applicantId === appID && t.timestamp === timestamp) {
             this.test = t;
           }
         });

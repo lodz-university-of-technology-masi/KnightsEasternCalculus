@@ -14,16 +14,8 @@ public class UpdateTest extends Handler<Test> {
 
     @Override
     public Response handleRequest(Test input, Context context) {
-        if (input.getId() != null) {
-            Test test = getMapper().load(Test.class, input.getId());
-            if (test != null) {
-                if (!test.getAuthor().equalsIgnoreCase(input.getAuthor())) {
-                    return new Response(401, "Wrong recruiter ID");
-                }
-                getMapper().save(input, dynamoDBMapperConfig);
-                return new Response(200, "Succesfully edited");
-            }
-        }
-        return new Response(404, "Such test does not exist");
+        input.setSearchTitle(input.getTitle().toLowerCase());
+        getMapper().save(input, dynamoDBMapperConfig);
+        return new Response(200, input);
     }
 }

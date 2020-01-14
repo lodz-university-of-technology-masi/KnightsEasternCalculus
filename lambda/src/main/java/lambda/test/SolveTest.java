@@ -1,7 +1,6 @@
 package lambda.test;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
 import model.test.*;
@@ -14,9 +13,9 @@ public class SolveTest extends Handler<TestInstance> {
     @Override
     public Response handleRequest(TestInstance input, Context context) {
         if (input != null) {
-            TestInstance test = getMapper().load(TestInstance.class, input.getApplicantID(), input.getTimestamp());
+            TestInstance test = getMapper().load(TestInstance.class, input.getApplicantId(), input.getTimestamp());
 
-            if (test.getApplicantID() == null) {
+            if (test.getApplicantId() == null) {
                 return new Response(400, "ApplicantID can't be null");
             }
 

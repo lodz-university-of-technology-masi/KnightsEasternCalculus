@@ -3,6 +3,7 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {ApplicantService} from '../../services/applicant.service';
 import {TestInstance} from '../../model/test-instance';
 import {HttpErrorResponse} from '@angular/common/http';
+import {TestService} from '../../services/test.service';
 
 @Component({
   selector: 'app-assign-modal',
@@ -20,7 +21,7 @@ export class AssignModalComponent implements OnInit {
   needsConfirmation = false;
   existingTests: string[];
 
-  constructor(public activeModal: NgbActiveModal, private applicantService: ApplicantService) {
+  constructor(public activeModal: NgbActiveModal, private testService: TestService) {
   }
 
   ngOnInit() {
@@ -28,7 +29,7 @@ export class AssignModalComponent implements OnInit {
 
   confirm() {
     this.loading = true;
-    this.applicantService.assignApplicantToTest(this.testId, this.applicantId, this.needsConfirmation).subscribe(
+    this.testService.assignApplicantToTest(this.testId, this.applicantId, this.needsConfirmation).subscribe(
       res => {
         this.activeModal.close();
         this.onClose.emit(res.body as unknown as TestInstance);

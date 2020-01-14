@@ -41,8 +41,8 @@ bucket_spec = "S3Bucket={}-kotec-lambda-{},S3Key=lambda-0.1.zip".format(accountI
 
 print("Creating dynamodb table...")
 subprocess.call("aws dynamodb create-table --table-name Applicant --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
-subprocess.call("aws dynamodb create-table --table-name Tests --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
-subprocess.call("aws dynamodb create-table --table-name TestInstances --attribute-definitions AttributeName=applicantID,AttributeType=S AttributeName=timestamp,AttributeType=N --key-schema AttributeName=applicantID,KeyType=HASH AttributeName=timestamp,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
+subprocess.call("aws dynamodb create-table --table-name Tests --attribute-definitions AttributeName=recruiterId,AttributeType=S AttributeName=timestamp,AttributeType=N --key-schema AttributeName=recruiterId,KeyType=HASH AttributeName=timestamp,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
+subprocess.call("aws dynamodb create-table --table-name TestInstances --attribute-definitions AttributeName=applicantId,AttributeType=S AttributeName=timestamp,AttributeType=N --key-schema AttributeName=applicantId,KeyType=HASH AttributeName=timestamp,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5", shell=True)
 
 print("Creating lambdas...")
 
@@ -85,11 +85,6 @@ for file in files:
     if file == "anna.txt":
         with open("dump", 'r') as f:
             anka_id = json.loads(f.read())['body']['id']
-        with open(os.path.join("dummy-data", "testInst_template"), 'r') as f:
-            test_instance = json.loads(f.read())
-        test_instance['applicantID'] = anka_id
-        with open(os.path.join("dummy-data", "test_instance.json"), 'w') as f:
-            json.dump(test_instance, f)
 
 
 print("\tFilling S3...")
@@ -156,18 +151,29 @@ print("\tAdding test account...")
 admin_id = json.loads(subprocess.check_output("aws cognito-idp admin-create-user --user-pool-id {} --username admin@example.com --user-attributes=Name=email,Value=admin@example.com --temporary-password password --message-action SUPPRESS".format(pool_id), shell=True).decode('utf-8'))["User"]["Username"]
 subprocess.call("aws cognito-idp admin-add-user-to-group --user-pool-id {} --username admin@example.com --group-name recruiter".format(pool_id), shell=True)
 
-print("\tAdding tmp test...")
-subprocess.call("aws lambda invoke --function-name add-test-instance --payload fileb://{} dump".format(os.path.join("dummy-data", "test_instance.json")), shell=True)
-
 print("\tAdding mock test")
 with open(os.path.join("dummy-data", "cpp-test_template")) as f:
     cpp_test = json.loads(f.read())
-    cpp_test["author"] = admin_id
+    cpp_test["recruiterId"] = admin_id
 with open(os.path.join("dummy-data", "cpp-test.json"), 'w') as f:
     json.dump(cpp_test, f)
 
 subprocess.call("aws lambda invoke --function-name add-test --payload fileb://{} dump".format(
     os.path.join("dummy-data", "cpp-test.json")), shell=True)
+
+with open("dump", 'r') as f:
+    test_id = json.loads(f.read())['body']['testId']
+
+with open(os.path.join("dummy-data", "testInst_template"), 'r') as f:
+    test_instance = json.loads(f.read())
+    test_instance['applicantId'] = anka_id
+    test_instance['recruiterId'] = admin_id
+    test_instance['testId'] = test_id
+with open(os.path.join("dummy-data", "test_instance.json"), 'w') as f:
+    json.dump(test_instance, f)
+
+print("\tAdding tmp test...")
+subprocess.call("aws lambda invoke --function-name add-test-instance --payload fileb://{} dump".format(os.path.join("dummy-data", "test_instance.json")), shell=True)
 
 print("Generating constants file...")
 with open(os.path.join("web", "src", "app", "app-consts.ts"), "w+") as file:

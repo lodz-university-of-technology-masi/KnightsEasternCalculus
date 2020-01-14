@@ -44,7 +44,7 @@
   <ng-container *ngIf="testLoading || assignableTests">
     <div class="mt-2" *ngIf="assignableTests; else loading">
       <button type="button" class="list-group-item list-group-item-action" *ngFor="let test of assignableTests"
-              (click)="openAssignModal(test.id, test.title);">
+              (click)="openAssignModal(test.recruiterId, test.title);">
         {{test.title}}
       </button>
     </div>

@@ -4,7 +4,7 @@
     "version": "2019-12-13T22:52:12Z",
     "title": "kotec"
   },
-  "host": "bsprvemo0e.execute-api.us-east-1.amazonaws.com",
+  "host": "xlevdalntf.execute-api.us-east-1.amazonaws.com",
   "basePath": "/test",
   "schemes": [
     "https"
@@ -52,11 +52,11 @@
               }
             }
           },
+          "passthroughBehavior": "when_no_templates",
+          "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "\"$input.params('lastName')\""
           },
-          "passthroughBehavior": "when_no_templates",
-          "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
         }
@@ -131,10 +131,10 @@
               }
             }
           },
+          "passthroughBehavior": "when_no_match",
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
           "type": "mock"
         }
       }
@@ -182,11 +182,11 @@
               }
             }
           },
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "\"$input.params('id')\""
           },
-          "passthroughBehavior": "when_no_match",
-          "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
         }
@@ -228,10 +228,10 @@
               }
             }
           },
+          "passthroughBehavior": "when_no_match",
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
           "type": "mock"
         }
       }
@@ -275,11 +275,11 @@
               }
             }
           },
+          "passthroughBehavior": "when_no_templates",
+          "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "\"$input.params('id')\""
           },
-          "passthroughBehavior": "when_no_templates",
-          "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
         }
@@ -325,11 +325,11 @@
               }
             }
           },
-          "requestTemplates": {
-            "application/json": "{\n\"applicantId\": \"$input.params('id')\",\n\"recruiterId\": $input.json('$.recruiterId'),\n\"testId\": $input.json('$.testId'),\n\"force\": $input.json('$.force')\n}"
-          },
           "passthroughBehavior": "when_no_match",
           "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\n\"applicantId\": \"$input.params('id')\",\n\"testId\": $input.json('$.testId')\n,\n\"force\": $input.json('$.force')\n}"
+          },
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
         }
@@ -412,10 +412,10 @@
               }
             }
           },
+          "passthroughBehavior": "when_no_match",
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
           "type": "mock"
         }
       },
@@ -506,11 +506,11 @@
               }
             }
           },
+          "passthroughBehavior": "when_no_templates",
+          "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "\"$input.params('id')=$input.params('timestamp')\""
           },
-          "passthroughBehavior": "when_no_templates",
-          "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
         }
@@ -562,11 +562,11 @@
               }
             }
           },
-          "requestTemplates": {
-            "application/json": "{\"ownerId\": \"$input.params('id')\",\n\"testId\": \"$input.params('timestamp')\"}"
-          },
           "passthroughBehavior": "when_no_match",
           "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "[\"$input.params('id')\", \"$input.params('timestamp')\"]"
+          },
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
         }
@@ -608,10 +608,10 @@
               }
             }
           },
+          "passthroughBehavior": "when_no_match",
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
           "type": "mock"
         }
       }
@@ -654,15 +654,15 @@
               }
             }
           },
+          "passthroughBehavior": "when_no_match",
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
           "type": "mock"
         }
       }
     },
-    "/recruiters/{id}/tests": {
+    "/recruiters/tests": {
       "get": {
         "consumes": [
           "application/json"
@@ -675,12 +675,6 @@
             "name": "title",
             "in": "query",
             "required": false,
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
             "type": "string"
           }
         ],
@@ -710,11 +704,11 @@
               }
             }
           },
-          "requestTemplates": {
-            "application/json": "{\"ownerId\": \"$input.params('id')\",\n\"title\": \"$input.params('title')\"}"
-          },
           "passthroughBehavior": "when_no_match",
           "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "\"$input.params('title')\""
+          },
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
         }
@@ -722,14 +716,6 @@
       "post": {
         "produces": [
           "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
         ],
         "responses": {
           "200": {
@@ -746,6 +732,42 @@
         },
         "x-amazon-apigateway-integration": {
           "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:add-test/invocations",
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              },
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "POST",
+          "contentHandling": "CONVERT_TO_TEXT",
+          "type": "aws"
+        }
+      },
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:delete-test/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -800,15 +822,51 @@
               }
             }
           },
+          "passthroughBehavior": "when_no_match",
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
           "type": "mock"
+        }
+      },
+      "patch": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:update-test/invocations",
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              },
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "POST",
+          "contentHandling": "CONVERT_TO_TEXT",
+          "type": "aws"
         }
       }
     },
-    "/recruiters/{id}/tests/{testId}": {
+    "/recruiters/tests/{id}": {
       "get": {
         "consumes": [
           "application/json"
@@ -817,12 +875,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "testId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "id",
             "in": "path",
@@ -856,117 +908,11 @@
               }
             }
           },
-          "requestTemplates": {
-            "application/json": "{\"ownerId\": \"$input.params('id')\",\n\"testId\": \"$input.params('testId')\"}"
-          },
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
-          "contentHandling": "CONVERT_TO_TEXT",
-          "type": "aws"
-        }
-      },
-      "put": {
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "testId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/Empty"
-            },
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:update-test/invocations",
-          "responses": {
-            "default": {
-              "statusCode": "200",
-              "responseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "responseTemplates": {
-                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
-              }
-            }
-          },
-          "passthroughBehavior": "when_no_match",
-          "httpMethod": "POST",
-          "contentHandling": "CONVERT_TO_TEXT",
-          "type": "aws"
-        }
-      },
-      "delete": {
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "testId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/Empty"
-            },
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:delete-test/invocations",
-          "responses": {
-            "default": {
-              "statusCode": "200",
-              "responseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "responseTemplates": {
-                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
-              }
-            }
-          },
           "requestTemplates": {
-            "application/json": "{\"ownerId\": \"$input.params('id')\",\n\"testId\": \"$input.params('testId')\"}"
+            "application/json": "\"$input.params('id')\""
           },
-          "passthroughBehavior": "when_no_match",
-          "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
         }
@@ -1002,16 +948,16 @@
             "default": {
               "statusCode": "200",
               "responseParameters": {
-                "method.response.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS,PUT'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
                 "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               }
             }
           },
+          "passthroughBehavior": "when_no_match",
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
           "type": "mock"
         }
       }
@@ -1026,14 +972,14 @@
   "x-amazon-apigateway-gateway-responses": {
     "DEFAULT_5XX": {
       "responseParameters": {
-        "gatewayresponse.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS,PUT'",
+        "gatewayresponse.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS'",
         "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
         "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
       }
     },
     "DEFAULT_4XX": {
       "responseParameters": {
-        "gatewayresponse.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS,PUT'",
+        "gatewayresponse.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS'",
         "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
         "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
       }

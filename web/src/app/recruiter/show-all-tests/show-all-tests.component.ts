@@ -68,7 +68,7 @@ export class ShowAllTestsComponent implements OnInit {
         }
     }
 
-    public downloadTest(id: string): void {
+    public downloadTest(id: number): void {
         this.testService.getTest(id)
             .subscribe(
                 res => {
@@ -101,7 +101,7 @@ export class ShowAllTestsComponent implements OnInit {
         if (this.fileContent != "") {
             this.notFinishedTest = this.testService.importTest(this.fileContent);
         }
-        
+
         if (this.notFinishedTest != null) {
             this.router.navigate(['/recruiter/import-test']);
         }
@@ -113,7 +113,7 @@ export class ShowAllTestsComponent implements OnInit {
         // });
     }
 
-    public getTest(id: string): void {
+    public getTest(id: number): void {
         this.testService.getTest(id)
             .subscribe((res: Response) => {
                 this.test = <Test>JSON.parse(JSON.stringify(res));
@@ -131,7 +131,7 @@ export class ShowAllTestsComponent implements OnInit {
     }
 
     public deleteTest(test: Test): void {
-        this.testService.deleteTest(test)
+        this.testService.deleteTest(test.testId)
             .subscribe({
                 error: () => {
                     console.log("Delete failed");

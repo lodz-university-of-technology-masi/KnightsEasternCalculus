@@ -1,38 +1,62 @@
 package lambda.test;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
 import model.applicant.ApplicantListItem;
+import model.request.TestRequest;
 import model.test.Test;
+import model.test.TestInstance;
 import util.Response;
 import util.Utils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class GetAllTests extends Handler<String> {
+public class GetAllTests extends Handler<GetAllTests.TestQuery> {
 
     @Override
-    public Response handleRequest(String input, Context context) {
-        DynamoDBScanExpression scanExpression;
-        input = input.toLowerCase();
+    public Response handleRequest(TestQuery input, Context context) {
+        String title = input.getTitle().toLowerCase();
 
-        if(input.isEmpty()) {
-            scanExpression = new DynamoDBScanExpression();
-        } else {
-            Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-            eav.put(":val", new AttributeValue().withS(input));
+        Map<String, AttributeValue> attributeValues = new HashMap<>();
+        attributeValues.put(":id", new AttributeValue().withS(input.getOwnerId()));
 
-            scanExpression = new DynamoDBScanExpression()
-                    .withFilterExpression("contains(searchTitle, :val)")
-                    .withExpressionAttributeValues(eav);
+        DynamoDBQueryExpression<Test> query = new DynamoDBQueryExpression<Test>()
+                .withKeyConditionExpression("recruiterId = :id")
+                .withExpressionAttributeValues(attributeValues);
+
+        if(!input.getTitle().isEmpty()) {
+            attributeValues.put(":title", new AttributeValue().withS(title));
+            query.setFilterExpression("contains(searchTitle, :title)");
         }
 
-        List<Test> queryList = new ArrayList<>(getMapper().scan(Test.class, scanExpression));
-        queryList.sort(Comparator.comparing(Test::getTitle));
-        queryList.forEach(replicant -> replicant.setSearchTitle(null));
-        return new Response(200, queryList);
+        List<Test> tab = getMapper().query(Test.class, query);
+
+        return new Response(200, tab);
+    }
+
+    public static class TestQuery {
+        private String ownerId;
+        private String title;
+
+        public String getOwnerId() {
+            return ownerId;
+        }
+
+        public void setOwnerId(String ownerId) {
+            this.ownerId = ownerId;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
     }
 }
 

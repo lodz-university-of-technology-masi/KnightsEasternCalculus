@@ -24,7 +24,7 @@ import { DenyComponent } from './deny/deny.component';
     ConfirmCodeComponent,
     ChangePasswordComponent,
     FillInfoComponent,
-    DenyComponent
+    DenyComponent,
   ],
   imports: [
     BrowserModule,

@@ -10,6 +10,7 @@ import { SolvableOpenQuestion } from '../model/solvable-open-question';
 import { SolvableCloseQuestion } from '../model/solvable-close-question';
 import { map } from 'rxjs/operators';
 import axios from "axios";
+import { saveAs } from 'file-saver';
 import { CustomHttpParamEncoder } from './encoder';
 import { ValueQuestion } from '../model/value-question';
 import { SolvableValueQuestion } from '../model/solvable-value-question';
@@ -99,62 +100,84 @@ export class TestService {
   }
 
   public downloadTest(test: Test): void {
-    // var csv = '';
-    // csv += 'T' + ';' + btoa(unescape(encodeURIComponent(test.title))) + '\n';
-    // csv += 'A' + ';' + btoa(unescape(encodeURIComponent(test.author))) + '\n';
-    // csv += 'L' + ';' + btoa(unescape(encodeURIComponent(test.language))) + '\n';
+    let csv: string = '';
+    let i: number = 1;
 
-    // csv += 'type;question;correctAnswers;incorrectAnswers;answerScore' + '\n';
+    test.openQuestions = test.openQuestions || [];
+    test.closeQuestions = test.closeQuestions || [];
+    test.valueQuestions = test.valueQuestions || [];
 
-    // test.closeQuestions.forEach(function (value) {
-    //   csv += 'C' + ';' + btoa(unescape(encodeURIComponent(value.question))) + ';';
-    //   csv += btoa(unescape(encodeURIComponent(value.correctAnswers.toString()))) + ';';
-    //   csv += btoa(unescape(encodeURIComponent(value.incorrectAnswers.toString()))) + ';';
-    //   csv += btoa(unescape(encodeURIComponent(value.answerScore.toString())));
-    //   csv += '\n';
-    // });
+    test.openQuestions.forEach(function (value) {
+      csv += i + ';'
+        + 'O' + ';'
+        + test.language + ';'
+        + value.question.replace(';', '') + ';'
+        + '|' + ';'
+        + '\n';
+      i++;
+    });
 
-    // csv += 'type;question;correctAnswer;maxScore' + '\n';
+    test.closeQuestions.forEach(function (value) {
+      csv += i + ';'
+        + 'W' + ';'
+        + test.language + ';'
+        + value.question + ';'
+        + (value.correctAnswers.length + value.incorrectAnswers.length) + ';';
+      value.correctAnswers.forEach(function (txt) {
+        csv += txt.replace(';', String.fromCharCode(30)) + ';';
+      })
+      value.incorrectAnswers.forEach(function (txt) {
+        csv += txt.replace(';', String.fromCharCode(30)) + ';';
+      })
+      csv += '\n';
+      i++;
+    });
 
-    // test.openQuestions.forEach(function (value) {
-    //   csv += 'O' + ';' + btoa(unescape(encodeURIComponent(value.question))) + ';';
-    //   csv += btoa(unescape(encodeURIComponent(value.correctAnswer))) + ';';
-    //   csv += btoa(unescape(encodeURIComponent(value.maxScore.toString())));
-    //   csv += '\n';
-    // });
+    test.valueQuestions.forEach(function (value) {
+      csv += i + ';'
+        + 'L' + ';'
+        + test.language + ';'
+        + value.question + ';'
+        + '|' + ';'
+        + '\n';
+      i++;
+    })
 
-    // console.log(csv);
+    console.log('plik csv' + csv);
 
-    // let file = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-    // saveAs(file, test.title + '-' + test.id + '.csv');
+    let file = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    saveAs(file, test.title + '-' + test.id + '.csv');
   }
 
   public importTest(file: string) {
-    // var splitFile = file.split('\n');
+    var splitFile = file.split('\n');
 
-    // var title: string, author: string, language: string, openQuestions: OpenQuestion[] = [], closeQuestions: CloseQuestion[] = [];
+    let language: string, openQuestions: OpenQuestion[] = [], closeQuestions: CloseQuestion[] = [], valueQuestions: ValueQuestion[] = [];
 
-    // splitFile.forEach(function (value) {
-    //   if (value.split(';')[0] == 'T') {
-    //     title = atob(unescape(encodeURIComponent(value.split(';')[1])));
-    //   } else if (value.split(';')[0] == 'A') {
-    //     author = atob(unescape(encodeURIComponent(value.split(';')[1])));
-    //   } else if (value.split(';')[0] == 'L') {
-    //     language = atob(unescape(encodeURIComponent(value.split(';')[1])));
-    //   } else if (value.split(';')[0] == 'O') {
-    //     var splitValue = value.split(';');
-    //     // question: string, correctAnswer: string, maxScore: number
-    //     openQuestions.push(new OpenQuestion(atob(unescape(encodeURIComponent(splitValue[1]))), atob(unescape(encodeURIComponent(splitValue[2]))), parseInt(atob(unescape(encodeURIComponent(splitValue[3]))))));
-    //   } else if (value.split(';')[0] == 'C') {
-    //     var splitValue = value.split(';');
-    //     // question: string, correctAnswers: string[], incorrectAnswers: string[], maxScore: number
-    //     closeQuestions.push(new CloseQuestion(atob(unescape(encodeURIComponent(splitValue[1]))), atob(unescape(encodeURIComponent(splitValue[2]))).split(','), atob(unescape(encodeURIComponent(splitValue[3]))).split(','), parseInt(atob(unescape(encodeURIComponent(splitValue[4]))))));
-    //   }
-    // });
+    splitFile.forEach(function (value) {
+      var splitValue = value.split(';');
+      if (splitValue[1] == 'O') {
+        openQuestions.push(new OpenQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), '', 0));
+      }
+      else if (splitValue[1] == 'W') {
+        if (splitValue.length != parseInt(splitValue[4])) {
+          let questions: string[] = [];
+          for (let i = 5; i < splitValue.length; i++) {
+            questions.push(splitValue[i].replace(String.fromCharCode(30), ';'));
+          }
+          closeQuestions.push(new CloseQuestion(splitValue[3], questions, [], 0));
+        }
+      }
+      else if (splitValue[1] == 'L') {
+        valueQuestions.push(new ValueQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), 0, 0))
+      }
+    });
+    language = splitFile[0].split(';')[2];
 
-    // var test = new Test('', title, author, language, openQuestions, closeQuestions);
+    var test = new Test('', '', '', language, openQuestions, closeQuestions, valueQuestions);
+    console.log(test);
+    return test;
     // return this.httpClient.post<Test>(this.testUrl, test, httpOptions);
-    // // this.createTest(title, openQuestions, closeQuestions);
   }
 
   public getTest(testID: string) {
@@ -222,7 +245,7 @@ export class TestService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       }),
-      body: test
+      body: test.id
     };
 
     return this.httpClient.delete(this.testUrl, httpOptions);

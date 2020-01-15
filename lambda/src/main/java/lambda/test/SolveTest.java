@@ -22,37 +22,52 @@ public class SolveTest extends Handler<TestInstance> {
 
             test.setReceivedScore(0);
 
-            List<SolvableClosedQuestion> close = new ArrayList<>();
-            SolvableClosedQuestion c = null;
-            for (int i = 0; i < test.getCloseQuestions().size(); i++) {
-                c = test.getCloseQuestions().get(i);
-                c.setChosenAnswers(input.getCloseQuestions().get(i).getChosenAnswers());
-                close.add(c);
-            }
-            test.setCloseQuestions(close);
+            if (test.getCloseQuestions() != null) {
+                List<SolvableClosedQuestion> close = new ArrayList<>();
+                SolvableClosedQuestion c = null;
+                for (int i = 0; i < test.getCloseQuestions().size(); i++) {
+                    c = test.getCloseQuestions().get(i);
+                    c.setChosenAnswers(input.getCloseQuestions().get(i).getChosenAnswers());
+                    close.add(c);
+                }
+                test.setCloseQuestions(close);
+                calculateClosed(test.getCloseQuestions());
 
-            List<SolvableOpenQuestion> open = new ArrayList<>();
-            SolvableOpenQuestion o = null;
-            for (int i = 0; i < test.getOpenQuestions().size(); i++) {
-                o = test.getOpenQuestions().get(i);
-                o.setAnswer(input.getOpenQuestions().get(i).getAnswer());
-                o.setReceivedScore(input.getOpenQuestions().get(i).getReceivedScore());
-                open.add(o);
+            } else {
+                test.setCloseQuestions(new ArrayList<>());
             }
-            test.setOpenQuestions(open);
 
-            List<SolvableValueQuestion> value = new ArrayList<>();
-            SolvableValueQuestion v = null;
-            for (int i = 0; i < test.getValueQuestions().size(); i++) {
-                v = test.getValueQuestions().get(i);
-                v.setAnswer(input.getValueQuestions().get(i).getAnswer());
-                v.setReceivedScore(input.getValueQuestions().get(i).getReceivedScore());
-                value.add(v);
+            if (test.getOpenQuestions() != null) {
+                List<SolvableOpenQuestion> open = new ArrayList<>();
+                SolvableOpenQuestion o = null;
+                for (int i = 0; i < test.getOpenQuestions().size(); i++) {
+                    o = test.getOpenQuestions().get(i);
+                    o.setAnswer(input.getOpenQuestions().get(i).getAnswer());
+                    o.setReceivedScore(input.getOpenQuestions().get(i).getReceivedScore());
+                    open.add(o);
+                }
+                test.setOpenQuestions(open);
+
+            } else {
+                test.setOpenQuestions(new ArrayList<>());
             }
-            test.setValueQuestions(value);
 
-            calculateClosed(test.getCloseQuestions());
-            calculateValue(test.getValueQuestions());
+            if (test.getValueQuestions() != null) {
+                List<SolvableValueQuestion> value = new ArrayList<>();
+                SolvableValueQuestion v = null;
+                for (int i = 0; i < test.getValueQuestions().size(); i++) {
+                    v = test.getValueQuestions().get(i);
+                    v.setAnswer(input.getValueQuestions().get(i).getAnswer());
+                    v.setReceivedScore(input.getValueQuestions().get(i).getReceivedScore());
+                    value.add(v);
+                }
+                test.setValueQuestions(value);
+                calculateValue(test.getValueQuestions());
+
+            } else {
+                test.setValueQuestions(new ArrayList<>());
+            }
+
             test.calculatePoints();
 
             test.setStatus(TestStatus.SOLVED.getValue());
@@ -63,7 +78,7 @@ public class SolveTest extends Handler<TestInstance> {
                     .build();
 
             getMapper().save(test, dynamoDBMapperConfig);
-            return new Response(200, "Test successfully saved");
+            return new Response(200, test);
 
         }
 

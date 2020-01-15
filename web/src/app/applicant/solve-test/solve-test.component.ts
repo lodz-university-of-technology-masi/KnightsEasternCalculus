@@ -40,6 +40,7 @@ export class SolveTestComponent implements OnInit {
     this.test.receivedScore = 0;
 
     this.testService.sendSolvedTest(this.test).subscribe( result => {
+      console.log(result);
       if (result) {
         this.router.navigateByUrl('applicant/tests');
       }

@@ -22,28 +22,37 @@ public class GradeTest extends Handler<TestInstance> {
 
             test.setReceivedScore(0);
 
-            List<SolvableOpenQuestion> open = new ArrayList<>();
-            SolvableOpenQuestion o = null;
-            for (int i = 0; i < test.getOpenQuestions().size(); i++) {
-                o = test.getOpenQuestions().get(i);
-                o.setAnswer(input.getOpenQuestions().get(i).getAnswer());
-                o.setReceivedScore(input.getOpenQuestions().get(i).getReceivedScore());
-                o.setCorrectAnswer(input.getOpenQuestions().get(i).getCorrectAnswer());
-                open.add(o);
+            if (test.getOpenQuestions() != null) {
+                List<SolvableOpenQuestion> open = new ArrayList<>();
+                SolvableOpenQuestion o = null;
+                for (int i = 0; i < test.getOpenQuestions().size(); i++) {
+                    o = test.getOpenQuestions().get(i);
+                    o.setAnswer(input.getOpenQuestions().get(i).getAnswer());
+                    o.setReceivedScore(input.getOpenQuestions().get(i).getReceivedScore());
+                    o.setCorrectAnswer(input.getOpenQuestions().get(i).getCorrectAnswer());
+                    open.add(o);
+                }
+                test.setOpenQuestions(open);
+
+            } else {
+                test.setOpenQuestions(new ArrayList<>());
             }
 
-            List<SolvableValueQuestion> value = new ArrayList<>();
-            SolvableValueQuestion v = null;
-            for (int i = 0; i < test.getValueQuestions().size(); i++) {
-                v = test.getValueQuestions().get(i);
-                v.setAnswer(input.getValueQuestions().get(i).getAnswer());
-                v.setReceivedScore(input.getValueQuestions().get(i).getReceivedScore());
-                v.setCorrectAnswer(input.getValueQuestions().get(i).getCorrectAnswer());
-                value.add(v);
+            if (test.getValueQuestions() != null) {
+                List<SolvableValueQuestion> value = new ArrayList<>();
+                SolvableValueQuestion v = null;
+                for (int i = 0; i < test.getValueQuestions().size(); i++) {
+                    v = test.getValueQuestions().get(i);
+                    v.setAnswer(input.getValueQuestions().get(i).getAnswer());
+                    v.setReceivedScore(input.getValueQuestions().get(i).getReceivedScore());
+                    v.setCorrectAnswer(input.getValueQuestions().get(i).getCorrectAnswer());
+                    value.add(v);
+                }
+                test.setValueQuestions(value);
+            } else {
+                test.setValueQuestions(new ArrayList<>());
             }
 
-            test.setValueQuestions(value);
-            test.setOpenQuestions(open);
 
             test.calculatePoints();
 

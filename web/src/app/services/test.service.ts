@@ -263,8 +263,9 @@ export class TestService {
   }
 
   public sendSolvedTest(test: TestInstance) {
+    console.log(test);
     return new Observable(observer => {
-      this.httpClient.put<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantID + '/tests', test, httpOptions)
+      this.httpClient.patch<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantID + '/tests', test, httpOptions)
         .subscribe({
           error: err => {
             console.log(err);
@@ -275,6 +276,22 @@ export class TestService {
             observer.complete();
           }
         });
+    });
+  }
+
+  public sendGradedTest(test: TestInstance) {
+    return new Observable( observer => {
+      this.httpClient.put<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantID + '/tests', test, httpOptions)
+        .subscribe( {
+          error: err => {
+            console.log(err);
+            observer.error(err);
+          },
+          next: value => {
+            observer.next(1);
+            observer.complete();
+          }
+        })
     });
   }
 }

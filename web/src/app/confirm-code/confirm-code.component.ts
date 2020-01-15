@@ -25,7 +25,7 @@ export class ConfirmCodeComponent implements OnInit {
     this.loading = true;
     this.authService.confirmCode(this.email, this.code, this.password).subscribe( result => {
       if (result === 'success') {
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/register');
       }
     });
   }

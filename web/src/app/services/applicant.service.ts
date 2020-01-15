@@ -41,9 +41,4 @@ export class ApplicantService {
   getApplicant(id: string): Observable<Applicant> {
     return this.http.get<Applicant>(this.apiUrl + `/${id}`);
   }
-
-  assignApplicantToTest(_testId: string, applicantId: string, confirm: boolean) {
-    return this.http.post<string>(this.apiUrl + `/${applicantId}` + '/tests', { testId: _testId, force: confirm }, { observe: 'response' });
-  }
-
 }

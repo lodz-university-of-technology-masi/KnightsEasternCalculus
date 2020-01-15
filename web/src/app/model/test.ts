@@ -3,20 +3,19 @@ import { CloseQuestion } from './close-question';
 import { ValueQuestion } from './value-question';
 
 export class Test {
-    id: string;
+    recruiterId: string;
+    testId: number;
     title: string;
     author: string;
     language: string;
     openQuestions: OpenQuestion[] = [];
     closeQuestions: CloseQuestion[] = [];
-    valueQuestions: ValueQuestion[] = []
+    valueQuestions: ValueQuestion[] = [];
 
-    constructor(id: string, title: string, author: string, language: string, openQuestions: OpenQuestion[], closeQuestions: CloseQuestion[], valueQuestions: ValueQuestion[]) {
-        if (id != "") {
-            this.id = id;
-        }
+    constructor(recruiterId: string, testId: number, title: string, language: string, openQuestions: OpenQuestion[], closeQuestions: CloseQuestion[], valueQuestions: ValueQuestion[]) {
+        this.testId = testId;
+        this.recruiterId = recruiterId;
         this.title = title;
-        this.author = author;
         this.language = language;
         this.openQuestions = openQuestions;
         this.closeQuestions = closeQuestions;

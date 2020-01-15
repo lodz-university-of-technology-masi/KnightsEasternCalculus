@@ -22,37 +22,35 @@ public class GetTestInstancesForUser extends Handler<String> {
         attributeValues.put(":id", new AttributeValue().withS(input));
 
         DynamoDBQueryExpression<TestInstance> query = new DynamoDBQueryExpression<TestInstance>()
-                .withKeyConditionExpression("applicantID = :id")
+                .withKeyConditionExpression("applicantId = :id")
                 .withExpressionAttributeValues(attributeValues);
 
         List<TestInstance> tab = getMapper().query(TestInstance.class, query);
-        if (tab == null) {
-            return new Response(404, "No tests for this user");
-        } else {
-                for (int i = 0; i < tab.size(); i++) {
-                    if (tab.get(i).getCloseQuestions() != null) {
-                        for (int j = 0; j < tab.get(i).getCloseQuestions().size(); j++) {
-                            tab.get(i).getCloseQuestions().get(j).setCorrectAnswers(new ArrayList<>());
-                        }
-                    } else {
-                        tab.get(i).setOpenQuestions(new ArrayList<>());
-                    }
-                    if (tab.get(i).getOpenQuestions() != null) {
-                        for (int j = 0; j < tab.get(i).getOpenQuestions().size(); j++) {
-                            tab.get(i).getOpenQuestions().get(j).setCorrectAnswer("");
-                        }
-                    } else {
-                        tab.get(i).setOpenQuestions(new ArrayList<>());
-                    }
-                    if (tab.get(i).getValueQuestions() != null) {
-                        for (int j = 0; j < tab.get(i).getValueQuestions().size(); j++) {
-                            tab.get(i).getValueQuestions().get(j).setCorrectAnswer(0f);
-                        }
-                    } else {
-                        tab.get(i).setValueQuestions(new ArrayList<>());
-                    }
+
+        for (int i = 0; i < tab.size(); i++) {
+            if (tab.get(i).getCloseQuestions() != null) {
+                for (int j = 0; j < tab.get(i).getCloseQuestions().size(); j++) {
+                    tab.get(i).getCloseQuestions().get(j).setCorrectAnswers(new ArrayList<>());
+                }
+            } else {
+                tab.get(i).setOpenQuestions(new ArrayList<>());
             }
-            return new Response(200, tab);
+            if (tab.get(i).getOpenQuestions() != null) {
+                for (int j = 0; j < tab.get(i).getOpenQuestions().size(); j++) {
+                    tab.get(i).getOpenQuestions().get(j).setCorrectAnswer("");
+                }
+            } else {
+                tab.get(i).setOpenQuestions(new ArrayList<>());
+            }
+            if (tab.get(i).getValueQuestions() != null) {
+                for (int j = 0; j < tab.get(i).getValueQuestions().size(); j++) {
+                    tab.get(i).getValueQuestions().get(j).setCorrectAnswer(0f);
+                }
+            } else {
+                tab.get(i).setValueQuestions(new ArrayList<>());
+            }
         }
+
+        return new Response(200, tab);
     }
 }

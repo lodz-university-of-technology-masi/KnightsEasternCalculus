@@ -14,6 +14,7 @@ import { saveAs } from 'file-saver';
 import { CustomHttpParamEncoder } from './encoder';
 import { ValueQuestion } from '../model/value-question';
 import { SolvableValueQuestion } from '../model/solvable-value-question';
+import {AuthenticationRecruiterService} from './authentication-recruiter.service';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -27,20 +28,22 @@ const httpOptions = {
 
 export class TestService {
   constructor(
-    private httpClient: HttpClient
-  ) { }
+    private httpClient: HttpClient,
+    private authService: AuthenticationRecruiterService
+  ) {
+  }
 
-  private testUrl: string = Globals.apiBaseUrl + '/recruiters/tests';
+  private testUrl: string = Globals.apiBaseUrl + '/recruiters';
   private importedTest: Test;
 
   public createTest(inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions) {
-    var test = new Test('', inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions);
-    return this.httpClient.post<Test>(this.testUrl, test, httpOptions);
+    var test = new Test(this.authService.getUserId(), null, inputTestTitle, language, openQuestions, closeQuestions, valueQuestions);
+    return this.httpClient.post<Test>(`${this.testUrl}/${this.authService.getUserId()}/tests`, test, httpOptions);
   }
 
-  public updateTest(id, inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions) {
-    var test = new Test(id, inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions);
-    return this.httpClient.patch(this.testUrl, test, httpOptions);
+  public updateTest(testId, inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions) {
+    var test = new Test(this.authService.getUserId(), testId, inputTestTitle, language, openQuestions, closeQuestions, valueQuestions);
+    return this.httpClient.put(`${this.testUrl}/${this.authService.getUserId()}/tests/${testId}`, test, httpOptions);
   }
 
   public async translateTest(test: Test, language: string) {
@@ -51,7 +54,7 @@ export class TestService {
     var yandexKey = 'trnsl.1.1.20200108T191910Z.fe657624420b3a8c.9b1c3b15e8688d96a425d4596dfc2c6321f04ee2';
     var translateUrl = 'https://translate.yandex.net/api/v1.5/tr.json/translate?key=';
     var lang = ''
-    var result = new Test('', '', '', '', [], [], []);
+    var result = new Test('', null, '', '', [], [], []);
     if (language == 'pl') {
       lang = '&lang=en-pl';
     } else {
@@ -97,7 +100,7 @@ export class TestService {
     }
 
     console.log(result.openQuestions);
-    return this.httpClient.post<Test>(this.testUrl, result, httpOptions);
+    return this.httpClient.post<Test>(`${this.testUrl}/${this.authService.getUserId()}/tests/`, result, httpOptions);
   }
 
   public downloadTest(test: Test): void {
@@ -108,7 +111,7 @@ export class TestService {
     test.closeQuestions = test.closeQuestions || [];
     test.valueQuestions = test.valueQuestions || [];
 
-    test.openQuestions.forEach(function (value) {
+    test.openQuestions.forEach(function(value) {
       csv += i + ';'
         + 'O' + ';'
         + test.language + ';'
@@ -118,23 +121,23 @@ export class TestService {
       i++;
     });
 
-    test.closeQuestions.forEach(function (value) {
+    test.closeQuestions.forEach(function(value) {
       csv += i + ';'
         + 'W' + ';'
         + test.language + ';'
         + value.question + ';'
         + (value.correctAnswers.length + value.incorrectAnswers.length) + ';';
-      value.correctAnswers.forEach(function (txt) {
+      value.correctAnswers.forEach(function(txt) {
         csv += txt.replace(';', String.fromCharCode(30)) + ';';
       })
-      value.incorrectAnswers.forEach(function (txt) {
+      value.incorrectAnswers.forEach(function(txt) {
         csv += txt.replace(';', String.fromCharCode(30)) + ';';
       })
       csv += '\n';
       i++;
     });
 
-    test.valueQuestions.forEach(function (value) {
+    test.valueQuestions.forEach(function(value) {
       csv += i + ';'
         + 'L' + ';'
         + test.language + ';'
@@ -146,8 +149,8 @@ export class TestService {
 
     console.log('plik csv' + csv);
 
-    let file = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-    saveAs(file, test.title + '-' + test.id + '.csv');
+    let file = new Blob([csv], {type: 'text/csv;charset=utf-8'});
+    saveAs(file, test.title + '-' + test.testId + '.csv');
   }
 
   public importTest(file: string) {
@@ -155,15 +158,14 @@ export class TestService {
 
     let language: string, openQuestions: OpenQuestion[] = [], closeQuestions: CloseQuestion[] = [], valueQuestions: ValueQuestion[] = [];
 
-    splitFile.forEach(function (value) {
+    splitFile.forEach(function(value) {
       var splitValue = value.split(';');
       if (splitValue[1] == 'O') {
-        if(splitValue.length > 6){
+        if (splitValue.length > 6) {
           throw new Error("Invalid number of field.");
         }
         openQuestions.push(new OpenQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), '', 1));
-      }
-      else if (splitValue[1] == 'W') {
+      } else if (splitValue[1] == 'W') {
         if (splitValue.length != parseInt(splitValue[4])) {
           let answers: string[] = [];
           for (let i = 5; i < splitValue.length - 1; i++) {
@@ -171,34 +173,33 @@ export class TestService {
           }
           closeQuestions.push(new CloseQuestion(splitValue[3], [], answers, 1));
         }
-      }
-      else if (splitValue[1] == 'L') {
+      } else if (splitValue[1] == 'L') {
         valueQuestions.push(new ValueQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), 0, 1))
       }
     });
     language = splitFile[0].split(';')[2];
 
-    var test = new Test('', '', '', language, openQuestions, closeQuestions, valueQuestions);
+    var test = new Test('', null, '', language, openQuestions, closeQuestions, valueQuestions);
     this.importedTest = test;
     return test;
   }
 
-  public getImportedTest(){
+  public getImportedTest() {
     return this.importedTest;
   }
 
-  public getTest(testID: string) {
+  public getTest(testID: number) {
     var httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     };
-    return this.httpClient.get(this.testUrl + `/${testID}`, httpOptions);
+    return this.httpClient.get(`${this.testUrl}/${this.authService.getUserId()}/tests/${testID}`, httpOptions);
   }
 
   public getAllTests(title: string = ''): Observable<Test[]> {
-    const params = new HttpParams({ encoder: new CustomHttpParamEncoder() }).set('title', title);
-    return this.httpClient.get<Test[]>(this.testUrl, { params });
+    const params = new HttpParams({encoder: new CustomHttpParamEncoder()}).set('title', title);
+    return this.httpClient.get<Test[]>(`${this.testUrl}/${this.authService.getUserId()}/tests/`, {params});
   }
 
   public getAllUserTests(username: string) {
@@ -247,25 +248,24 @@ export class TestService {
     return this.getAllUserTests(username).pipe(map(tests => tests.find(test => test.timestamp === timestamp)));
   }
 
-  public deleteTest(test: Test) {
+  public deleteTest(testId: number) {
     var httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
-      }),
-      body: test.id
+      })
     };
 
-    return this.httpClient.delete(this.testUrl, httpOptions);
+    return this.httpClient.delete(`${this.testUrl}/${this.authService.getUserId()}/tests/${testId}`, httpOptions);
   }
 
   public deleteTestInstance(applicantId: string, timestamp: string) {
-    return this.httpClient.delete(`${Globals.apiBaseUrl}/applicants/${applicantId}/tests/${timestamp}`, { observe: 'response' });
+    return this.httpClient.delete(`${Globals.apiBaseUrl}/applicants/${applicantId}/tests/${timestamp}`, {observe: 'response'});
   }
 
   public sendSolvedTest(test: TestInstance) {
     console.log(test);
     return new Observable(observer => {
-      this.httpClient.patch<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantID + '/tests', test, httpOptions)
+      this.httpClient.patch<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantId + '/tests', test, httpOptions)
         .subscribe({
           error: err => {
             console.log(err);
@@ -279,10 +279,11 @@ export class TestService {
     });
   }
 
+
   public sendGradedTest(test: TestInstance) {
-    return new Observable( observer => {
+    return new Observable(observer => {
       this.httpClient.put<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantID + '/tests', test, httpOptions)
-        .subscribe( {
+        .subscribe({
           error: err => {
             console.log(err);
             observer.error(err);
@@ -291,7 +292,12 @@ export class TestService {
             observer.next(1);
             observer.complete();
           }
-        })
+        });
     });
+  }
+
+  assignApplicantToTest(_testId: string, applicantId: string, confirm: boolean) {
+    return this.httpClient.post<string>(`${Globals.apiBaseUrl}/applicants/${applicantId}/tests`,
+      {recruiterId: this.authService.getUserId(), testId: _testId, force: confirm}, {observe: 'response'});
   }
 }

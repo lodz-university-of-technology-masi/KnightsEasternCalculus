@@ -16,7 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class UpdateTestComponent implements OnInit {
-  testId: string;
+  testId: number;
   test: Test;
   inputMaxScore: number;
 
@@ -31,7 +31,7 @@ export class UpdateTestComponent implements OnInit {
 
   ngOnInit() {
     this.questionType = 0;
-    this.route.paramMap.subscribe(value => this.testId = value.get('id'));
+    this.route.paramMap.subscribe(value => this.testId = parseInt(value.get('id'), 10));
     this.getTest(this.testId);
   }
 
@@ -157,7 +157,7 @@ export class UpdateTestComponent implements OnInit {
 
   //#region "Test Management"
   public updateTest(): void {
-    this.testService.updateTest(this.test.id, this.test.title, this.test.author, this.test.language, this.test.openQuestions, this.test.closeQuestions, this.test.valueQuestions).subscribe({
+    this.testService.updateTest(this.test.testId, this.test.title, this.test.author, this.test.language, this.test.openQuestions, this.test.closeQuestions, this.test.valueQuestions).subscribe({
       error: error => ({}),
       complete: () => {
         this.router.navigate(['/recruiter/show-all-tests']);
@@ -165,7 +165,7 @@ export class UpdateTestComponent implements OnInit {
     });
   }
 
-  getTest(id: string): void {
+  getTest(id: number): void {
     this.testService.getTest(id).subscribe(
       // .subscribe((res: Response) => {
       //   console.log(res);

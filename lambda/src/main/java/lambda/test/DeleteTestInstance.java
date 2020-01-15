@@ -2,13 +2,14 @@ package lambda.test;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
+import model.request.TestRequest;
 import model.test.TestInstance;
 import util.Response;
 
-public class DeleteTestInstance extends Handler<String[]> {
+public class DeleteTestInstance extends Handler<TestRequest> {
     @Override
-    public Response handleRequest(String[] input, Context context) {
-        TestInstance test = getMapper().load(TestInstance.class, input[0], Long.parseLong(input[1]));
+    public Response handleRequest(TestRequest input, Context context) {
+        TestInstance test = getMapper().load(TestInstance.class, input.getOwnerId(), input.getTestId());
         if(test == null)
             return new Response(404, "Test not found");
 

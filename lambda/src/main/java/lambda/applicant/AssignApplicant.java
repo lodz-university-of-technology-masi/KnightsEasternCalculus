@@ -18,17 +18,16 @@ public class AssignApplicant extends Handler<AssignApplicant.AssignRequest> {
 
         if(!input.isForce()) {
             Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-            eav.put(":val", new AttributeValue().withS(input.getTestId()));
-
-            TestInstance hashKeyValues = new TestInstance();
-            hashKeyValues.setApplicantID(input.getApplicantId());
+            eav.put(":val", new AttributeValue().withN(Long.toString(input.getTestId())));
+            eav.put(":val2", new AttributeValue().withS(input.getRecruiterId()));
+            eav.put(":id", new AttributeValue().withS(input.getApplicantId()));
 
             Map<String, String> attributeNames = new HashMap<>();
             attributeNames.put("#t", "timestamp");
 
             queryExpression = new DynamoDBQueryExpression()
-                    .withHashKeyValues(hashKeyValues)
-                    .withFilterExpression("testId = :val")
+                    .withKeyConditionExpression("applicantId = :id")
+                    .withFilterExpression("testId = :val AND recruiterId = :val2")
                     .withExpressionAttributeValues(eav)
                     .withProjectionExpression("#t")
                     .withExpressionAttributeNames(attributeNames);
@@ -41,7 +40,7 @@ public class AssignApplicant extends Handler<AssignApplicant.AssignRequest> {
             }
         }
 
-        Test test = getMapper().load(Test.class, input.getTestId());
+        Test test = getMapper().load(Test.class, input.getRecruiterId(), input.getTestId());
         if(test == null) {
             return new Response(404, "Test was not found");
         }
@@ -53,7 +52,7 @@ public class AssignApplicant extends Handler<AssignApplicant.AssignRequest> {
 
         TestInstance testInstance = new TestInstance();
 
-        testInstance.setApplicantID(input.getApplicantId());
+        testInstance.setApplicantId(input.getApplicantId());
         testInstance.setTimestamp(new Date().getTime());
         testInstance.setTitle(test.getTitle());
         testInstance.setCloseQuestions(test.getCloseQuestions().stream()
@@ -67,6 +66,7 @@ public class AssignApplicant extends Handler<AssignApplicant.AssignRequest> {
         testInstance.setMaxScore(testInstance.getOpenQuestions().stream()
                 .reduce(testInstance.getMaxScore(), (sum, question) -> sum + question.getMaxScore(), Float::sum));
         testInstance.setStatus(TestStatus.NOTSOLVED.getValue());
+        testInstance.setRecruiterId(input.getRecruiterId());
         testInstance.setTestId(input.getTestId());
 
         getMapper().save(testInstance);
@@ -76,7 +76,8 @@ public class AssignApplicant extends Handler<AssignApplicant.AssignRequest> {
 
     public static class AssignRequest {
         private String applicantId;
-        private String testId;
+        private Long testId;
+        private String recruiterId;
         private boolean force = false;
 
         public String getApplicantId() {
@@ -87,11 +88,11 @@ public class AssignApplicant extends Handler<AssignApplicant.AssignRequest> {
             this.applicantId = applicantId;
         }
 
-        public String getTestId() {
+        public Long getTestId() {
             return testId;
         }
 
-        public void setTestId(String testId) {
+        public void setTestId(Long testId) {
             this.testId = testId;
         }
 
@@ -101,6 +102,14 @@ public class AssignApplicant extends Handler<AssignApplicant.AssignRequest> {
 
         public void setForce(boolean force) {
             this.force = force;
+        }
+
+        public String getRecruiterId() {
+            return recruiterId;
+        }
+
+        public void setRecruiterId(String recruiterId) {
+            this.recruiterId = recruiterId;
         }
     }
 }

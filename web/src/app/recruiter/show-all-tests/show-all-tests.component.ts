@@ -1,10 +1,6 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { TestService } from 'src/app/services/test.service';
 import { Test } from '../../model/test';
-import * as saveAs from 'file-saver';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
-import { stringify } from 'querystring';
-import { checkServerIdentity } from 'tls';
 import { ApplicantService } from '../../services/applicant.service';
 import { Applicant } from '../../model/applicant';
 import { AssignModalComponent } from '../../common-components/assign-modal/assign-modal.component';
@@ -68,7 +64,7 @@ export class ShowAllTestsComponent implements OnInit {
         }
     }
 
-    public downloadTest(id: string): void {
+    public downloadTest(id: number): void {
         this.testService.getTest(id)
             .subscribe(
                 res => {
@@ -111,7 +107,7 @@ export class ShowAllTestsComponent implements OnInit {
         // });
     }
 
-    public getTest(id: string): void {
+    public getTest(id: number): void {
         this.testService.getTest(id)
             .subscribe((res: Response) => {
                 this.test = <Test>JSON.parse(JSON.stringify(res));
@@ -129,7 +125,7 @@ export class ShowAllTestsComponent implements OnInit {
     }
 
     public deleteTest(test: Test): void {
-        this.testService.deleteTest(test)
+        this.testService.deleteTest(test.testId)
             .subscribe({
                 error: () => {
                     console.log("Delete failed");

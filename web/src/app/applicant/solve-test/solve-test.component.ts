@@ -23,7 +23,7 @@ export class SolveTestComponent implements OnInit {
       const timestamp = split[1];
       this.testService.getTestInstance(appID, timestamp).subscribe( (result: Response) => {
         this.test = JSON.parse(JSON.stringify(result.body));
-      })
+      });
     });
   }
 

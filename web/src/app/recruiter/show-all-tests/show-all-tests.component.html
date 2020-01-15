@@ -19,9 +19,9 @@
         <th class="text-right">
           <button class="btn btn-primary mr-2" [ngbPopover]="assignPopover" triggers="manual"
             popoverTitle="Przypisz kandydata" #p="ngbPopover" autoClose="outside"
-            (click)="toggleAssign(p, test.id, test.title)" popoverClass="assign-popover">Przypisz</button>
-          <button class="btn btn-outline-secondary mr-2" (click)="downloadTest(test.id)">Pobierz</button>
-          <button class="btn btn-success mr-2" [routerLink]="['update-test', test.id]" *ngIf="authService.getUser().getUsername() == test.author">Zmień</button>
+            (click)="toggleAssign(p, test.testId, test.title)" popoverClass="assign-popover">Przypisz</button>
+          <button class="btn btn-outline-secondary mr-2" (click)="downloadTest(test.testId)">Pobierz</button>
+          <button class="btn btn-success mr-2" [routerLink]="['update-test', test.testId]" *ngIf="authService.getUser().getUsername() == test.author">Zmień</button>
           <button class="btn btn-danger" (click)="deleteTest(test)">Usuń</button>
         </th>
       </tr>

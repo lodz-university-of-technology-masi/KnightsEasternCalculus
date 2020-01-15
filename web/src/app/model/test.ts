@@ -6,7 +6,6 @@ export class Test {
     recruiterId: string;
     testId: number;
     title: string;
-    author: string;
     language: string;
     openQuestions: OpenQuestion[] = [];
     closeQuestions: CloseQuestion[] = [];

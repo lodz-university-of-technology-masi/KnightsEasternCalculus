@@ -282,7 +282,7 @@ export class TestService {
 
   public sendGradedTest(test: TestInstance) {
     return new Observable(observer => {
-      this.httpClient.put<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantID + '/tests', test, httpOptions)
+      this.httpClient.put<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantId + '/tests', test, httpOptions)
         .subscribe({
           error: err => {
             console.log(err);
@@ -296,7 +296,7 @@ export class TestService {
     });
   }
 
-  assignApplicantToTest(_testId: string, applicantId: string, confirm: boolean) {
+  assignApplicantToTest(_testId: number, applicantId: string, confirm: boolean) {
     return this.httpClient.post<string>(`${Globals.apiBaseUrl}/applicants/${applicantId}/tests`,
       {recruiterId: this.authService.getUserId(), testId: _testId, force: confirm}, {observe: 'response'});
   }

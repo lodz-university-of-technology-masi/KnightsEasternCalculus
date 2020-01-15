@@ -39,7 +39,7 @@ export class ApplicantTestListComponent implements OnInit {
         this.assignableTests = tests; this.testLoading = false; });
   }
 
-  openAssignModal(testId: string, testName: string) {
+  openAssignModal(testId: number, testName: string) {
     this.popover.close();
     const modalRef = this.modalService.open(AssignModalComponent, {centered: true});
     modalRef.componentInstance.testId = testId;

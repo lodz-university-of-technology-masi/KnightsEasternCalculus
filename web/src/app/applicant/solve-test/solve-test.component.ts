@@ -20,14 +20,10 @@ export class SolveTestComponent implements OnInit {
     this.route.paramMap.subscribe( value => {
       const split = value.get('id').split('=');
       const appID = split[0];
-      const timestamp = Number(split[1]);
-      this.testService.getAllUserTests('username').subscribe( result => {
-        result.forEach( (t: TestInstance) => {
-          if (t.applicantID === appID && t.timestamp === timestamp) {
-            this.test = t;
-          }
-        });
-      });
+      const timestamp = split[1];
+      this.testService.getTestInstance(appID, timestamp).subscribe( (result: Response) => {
+        this.test = JSON.parse(JSON.stringify(result.body));
+      })
     });
   }
 

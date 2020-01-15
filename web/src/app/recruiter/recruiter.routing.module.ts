@@ -9,6 +9,7 @@ import { ShowAllTestsComponent } from './show-all-tests/show-all-tests.component
 import { AppRecruiterComponent } from './app-recruiter/app-recruiter.component';
 import { UpdateTestComponent } from './update-test/update-test.component';
 import { GradeTestComponent } from './grade-test/grade-test.component';
+import { ImportTestComponent } from './import-test/import-test.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: 'show-all-tests',
         component: ShowAllTestsComponent
+      },
+      {
+        path: 'import-test',
+        component: ImportTestComponent
       },
       {
         path: 'show-all-tests/update-test/:id',

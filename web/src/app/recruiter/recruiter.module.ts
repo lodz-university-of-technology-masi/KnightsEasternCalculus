@@ -16,6 +16,7 @@ import { UpdateTestComponent } from './update-test/update-test.component';
 import {NgbDropdownModule, NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap';
 import { AssignModalComponent } from '../common-components/assign-modal/assign-modal.component';
 import { GradeTestComponent } from './grade-test/grade-test.component';
+import { ImportTestComponent } from './import-test/import-test.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { GradeTestComponent } from './grade-test/grade-test.component';
     ApplicantTestListComponent,
     UpdateTestComponent,
     AssignModalComponent,
-    GradeTestComponent
+    GradeTestComponent,
+    ImportTestComponent
   ],
   imports: [
     CommonModule,

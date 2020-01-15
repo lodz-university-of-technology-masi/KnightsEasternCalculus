@@ -95,16 +95,14 @@ export class ShowAllTestsComponent implements OnInit {
         fileReader.readAsText(file);
     }
 
-    notFinishedTest: Test;
     public importTest(): void {
         let notFinishedTest: Test;
         if (this.fileContent != "") {
-            this.notFinishedTest = this.testService.importTest(this.fileContent);
-        }
-        
-        if (this.notFinishedTest != null) {
+            this.testService.importTest(this.fileContent);
             this.router.navigate(['/recruiter/import-test']);
         }
+
+
         // .subscribe({
         //     error: error => ({}),
         //     complete: () => {

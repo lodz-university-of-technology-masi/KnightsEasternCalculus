@@ -60,6 +60,8 @@ public class AssignApplicant extends Handler<AssignApplicant.AssignRequest> {
                 .map(SolvableClosedQuestion::new).collect(Collectors.toList()));
         testInstance.setOpenQuestions(test.getOpenQuestions().stream()
                 .map(SolvableOpenQuestion::new).collect(Collectors.toList()));
+        testInstance.setValueQuestions(test.getValueQuestions().stream()
+                .map(SolvableValueQuestion::new).collect(Collectors.toList()));
         testInstance.setMaxScore(testInstance.getCloseQuestions().stream()
                 .reduce(0F, (sum, question) -> sum + question.getAnswerScore()*question.getCorrectAnswers().size(), Float::sum));
         testInstance.setMaxScore(testInstance.getOpenQuestions().stream()

@@ -40,9 +40,6 @@ public class GetTestInstance extends Handler<String> {
                     test.setValueQuestions(new ArrayList<>());
                 }
             } else if (test.getStatus() == 1) {
-                for (int i = 0; i < test.getCloseQuestions().size(); i++) {
-                    test.getCloseQuestions().get(i).setReceivedScore(0);
-                }
                 for (int i = 0; i < test.getOpenQuestions().size(); i++ ){
                     test.getOpenQuestions().get(i).setReceivedScore(0);
                 }

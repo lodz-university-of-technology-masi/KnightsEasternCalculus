@@ -10,6 +10,7 @@ import lambda.Handler;
 import model.test.TestInstance;
 import util.Response;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,29 @@ public class GetTestInstancesForUser extends Handler<String> {
         if (tab == null) {
             return new Response(404, "No tests for this user");
         } else {
+                for (int i = 0; i < tab.size(); i++) {
+                    if (tab.get(i).getCloseQuestions() != null) {
+                        for (int j = 0; j < tab.get(i).getCloseQuestions().size(); j++) {
+                            tab.get(i).getCloseQuestions().get(j).setCorrectAnswers(new ArrayList<>());
+                        }
+                    } else {
+                        tab.get(i).setOpenQuestions(new ArrayList<>());
+                    }
+                    if (tab.get(i).getOpenQuestions() != null) {
+                        for (int j = 0; j < tab.get(i).getOpenQuestions().size(); j++) {
+                            tab.get(i).getOpenQuestions().get(j).setCorrectAnswer("");
+                        }
+                    } else {
+                        tab.get(i).setOpenQuestions(new ArrayList<>());
+                    }
+                    if (tab.get(i).getValueQuestions() != null) {
+                        for (int j = 0; j < tab.get(i).getValueQuestions().size(); j++) {
+                            tab.get(i).getValueQuestions().get(j).setCorrectAnswer(0f);
+                        }
+                    } else {
+                        tab.get(i).setValueQuestions(new ArrayList<>());
+                    }
+            }
             return new Response(200, tab);
         }
     }

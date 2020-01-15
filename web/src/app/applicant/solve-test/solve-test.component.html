@@ -39,7 +39,7 @@
 <div>
   <div class="card my-3" *ngIf="test.valueQuestions.length != 0">
     <div class="card my-3" *ngFor="let valueQuestion of test.valueQuestions; let k = index">
-      <div class="card-header">Pytanie {{k+test.closeQuestions.length+test.valueQuestions.length+1}}</div>
+      <div class="card-header">Pytanie {{k+test.closeQuestions.length+test.openQuestions.length+1}}</div>
       <div class="row no-gutters">
         <div class="col-md-auto">
           <div class="card-body text-center">{{valueQuestion.maxScore}}pkt.</div>

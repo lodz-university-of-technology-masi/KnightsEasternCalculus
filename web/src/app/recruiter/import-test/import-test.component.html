@@ -1,0 +1,175 @@
+<!-- TOP -->
+<ng-container *ngIf="importedTest; else empty">
+    <h2 class="mt-2">Tworzenie testu</h2>
+    <div>
+        <h5 class="mt-2">Tytuł testu:</h5>
+
+        <div class="input-group">
+            <input id="title" name="title" class="form-control" type="text" required [(ngModel)]="importedTest.title"
+                #title="ngModel" (input)="importedTest.title=$event.target.value">
+        </div>
+        <div *ngIf="title.invalid && (title.dirty || title.touched)" class="alert alert-danger mt-2">
+            <div *ngIf="title.errors.required">
+                Title is required.
+            </div>
+        </div>
+    </div>
+
+    <!-- MIDDLE -->
+    <div>
+        <!-- created OPEN questions -->
+        <div class="card-body" *ngIf="importedTest.openQuestions.length != 0">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 45%;">Pytanie otwarte</th>
+                        <th style="width: 45%;">Odpowiedź</th>
+                        <th style="width: 10%;">Max pkt.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let openQuestion of importedTest.openQuestions">
+                        <td>{{ openQuestion.question }}</td>
+                        <td>
+                            <div class="input-group">
+                                <input class="form-control" type="text" required
+                                    [(ngModel)]="openQuestion.correctAnswer" #correctOpenAnswer="ngModel"
+                                    (input)="openQuestion.correctAnswer=$event.target.value">
+                            </div>
+                            <div *ngIf="correctOpenAnswer.invalid && (correctOpenAnswer.dirty || correctOpenAnswer.touched)"
+                                class="alert alert-danger mt-2">
+                                <div *ngIf="correctOpenAnswer.errors.required">
+                                    Answer is required.
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input id="maxScore" name="maxScore" class="form-control" type="number" min="1" required
+                                    [(ngModel)]="openQuestion.maxScore" #maxScore="ngModel"
+                                    (input)="openQuestion.maxScore=$event.target.value"
+                                    pattern="^[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*$">
+                            </div>
+                            <div *ngIf="maxScore.invalid && (maxScore.dirty || maxScore.touched)"
+                                class="alert alert-danger mt-2">
+                                <div *ngIf="maxScore.errors.required">
+                                    Max score is required.
+                                </div>
+                                <div *ngIf="maxScore.errors.pattern">
+                                    Invalid number (should be greather than 0).
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- created VALUE questions -->
+        <div class="card-body" *ngIf="importedTest.valueQuestions.length != 0">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 45%;">Pytanie liczbowe</th>
+                        <th style="width: 45%;">Odpowiedź</th>
+                        <th style="width: 10%;">Max pkt.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let valueQuestion of importedTest.valueQuestions">
+                        <td>{{ valueQuestion.question }}</td>
+                        <td>
+                            <div>
+                                <div class="input-group">
+                                    <input id="answerValue" name="answerValue" class="form-control" type="number"
+                                        required [(ngModel)]="valueQuestion.correctAnswer" #answerValue="ngModel"
+                                        (input)="valueQuestion.correctAnswer=$event.target.value">
+                                </div>
+                                <div *ngIf="answerValue.invalid && (answerValue.dirty || answerValue.touched)"
+                                    class="alert alert-danger mt-2">
+                                    <div *ngIf="answerValue.errors.required">
+                                        Answer is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input id="maxScore" name="maxScore" class="form-control" type="number" min="1" required
+                                    [(ngModel)]="valueQuestion.maxScore" #maxScore="ngModel"
+                                    (input)="valueQuestion.maxScore=$event.target.value"
+                                    pattern="^[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*$">
+                            </div>
+                            <div *ngIf="maxScore.invalid && (maxScore.dirty || maxScore.touched)"
+                                class="alert alert-danger mt-2">
+                                <div *ngIf="maxScore.errors.required">
+                                    Max score is required.
+                                </div>
+                                <div *ngIf="maxScore.errors.pattern">
+                                    Invalid number (should be greather than 0).
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- created CLOSE questions -->
+        <div class="card-body" *ngIf="importedTest.closeQuestions.length != 0">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 45%;">Pytanie zamknięte</th>
+                        <th style="width: 45%;">Poprawne odpowiedzi</th>
+                        <th style="width: 10%;">Pkt za odp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let closeQuestion of importedTest.closeQuestions; let i = index">
+                        <td>{{ closeQuestion.question }}</td>
+                        <td>
+                            <div class="form-check"
+                                *ngFor="let question of closeQuestion.incorrectAnswers; let j = index">
+                                <input class="form-check-input" type="checkbox" value="question" id="{{i}},{{j}}">
+                                <label class="form-check-label" for="{{i}},{{j}}">
+                                    {{question}}
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input id="maxScore" name="maxScore" class="form-control" type="number" min="1" required
+                                    [(ngModel)]="closeQuestion.answerScore" #maxScore="ngModel"
+                                    (input)="closeQuestion.answerScore=$event.target.value"
+                                    pattern="^[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*$">
+                            </div>
+                            <div *ngIf="maxScore.invalid && (maxScore.dirty || maxScore.touched)"
+                                class="alert alert-danger mt-2">
+                                <div *ngIf="maxScore.errors.required">
+                                    Max score is required.
+                                </div>
+                                <div *ngIf="maxScore.errors.pattern">
+                                    Invalid number (should be greather than 0).
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- BOTTOM -->
+    <div>
+        <!-- button to end create test -->
+        <button class="btn btn-success full-button" (click)="createTest()">
+            Dodaj test
+        </button>
+    </div>
+
+    <div class="alert alert-danger mt-3" role="alert" *ngIf="message != ''">
+        {{message}}
+    </div>
+</ng-container>
+<ng-template #empty>
+    <div role="status">Brak testu!</div>
+</ng-template>

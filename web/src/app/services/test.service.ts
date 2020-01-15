@@ -31,6 +31,7 @@ export class TestService {
   ) { }
 
   private testUrl: string = Globals.apiBaseUrl + '/recruiters/tests';
+  private importedTest: Test;
 
   public createTest(inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions) {
     var test = new Test('', inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions);
@@ -157,27 +158,33 @@ export class TestService {
     splitFile.forEach(function (value) {
       var splitValue = value.split(';');
       if (splitValue[1] == 'O') {
-        openQuestions.push(new OpenQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), '', 0));
+        if(splitValue.length > 6){
+          throw new Error("Invalid number of field.");
+        }
+        openQuestions.push(new OpenQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), '', 1));
       }
       else if (splitValue[1] == 'W') {
         if (splitValue.length != parseInt(splitValue[4])) {
-          let questions: string[] = [];
-          for (let i = 5; i < splitValue.length; i++) {
-            questions.push(splitValue[i].replace(String.fromCharCode(30), ';'));
+          let answers: string[] = [];
+          for (let i = 5; i < splitValue.length - 1; i++) {
+            answers.push(splitValue[i].replace(String.fromCharCode(30), ';'));
           }
-          closeQuestions.push(new CloseQuestion(splitValue[3], questions, [], 0));
+          closeQuestions.push(new CloseQuestion(splitValue[3], [], answers, 1));
         }
       }
       else if (splitValue[1] == 'L') {
-        valueQuestions.push(new ValueQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), 0, 0))
+        valueQuestions.push(new ValueQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), 0, 1))
       }
     });
     language = splitFile[0].split(';')[2];
 
     var test = new Test('', '', '', language, openQuestions, closeQuestions, valueQuestions);
-    console.log(test);
+    this.importedTest = test;
     return test;
-    // return this.httpClient.post<Test>(this.testUrl, test, httpOptions);
+  }
+
+  public getImportedTest(){
+    return this.importedTest;
   }
 
   public getTest(testID: string) {
@@ -256,8 +263,9 @@ export class TestService {
   }
 
   public sendSolvedTest(test: TestInstance) {
+    console.log(test);
     return new Observable(observer => {
-      this.httpClient.put<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantID + '/tests', test, httpOptions)
+      this.httpClient.patch<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantID + '/tests', test, httpOptions)
         .subscribe({
           error: err => {
             console.log(err);
@@ -268,6 +276,22 @@ export class TestService {
             observer.complete();
           }
         });
+    });
+  }
+
+  public sendGradedTest(test: TestInstance) {
+    return new Observable( observer => {
+      this.httpClient.put<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantID + '/tests', test, httpOptions)
+        .subscribe( {
+          error: err => {
+            console.log(err);
+            observer.error(err);
+          },
+          next: value => {
+            observer.next(1);
+            observer.complete();
+          }
+        })
     });
   }
 }

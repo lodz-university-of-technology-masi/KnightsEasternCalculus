@@ -34,7 +34,7 @@ export class GradeTestComponent implements OnInit {
   grade() {
     this.validate().subscribe( res => {
       if (res) {
-        this.testService.sendSolvedTest(this.test).subscribe(result => {
+        this.testService.sendGradedTest(this.test).subscribe(result => {
           if (result === 1) {
             this.router.navigateByUrl('/recruiter/applicant/' + this.applicantID);
           }

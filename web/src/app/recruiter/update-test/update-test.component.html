@@ -22,10 +22,10 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Pytanie otwarte</th>
-                        <th>Odpowiedź</th>
-                        <th>Max pkt.</th>
-                        <th></th>
+                        <th style="width: 40%;">Pytanie otwarte</th>
+                        <th style="width: 40%;">Odpowiedź</th>
+                        <th style="width: 10%;">Max pkt.</th>
+                        <th style="width: 10%;"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,10 +46,10 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Pytanie liczbowe</th>
-                        <th>Odpowiedź</th>
-                        <th>Pkt.</th>
-                        <th></th>
+                        <th style="width: 40%;">Pytanie liczbowe</th>
+                        <th style="width: 40%;">Odpowiedź</th>
+                        <th style="width: 10%;">Pkt.</th>
+                        <th style="width: 10%;"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,11 +70,11 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Pytanie zamknięte</th>
-                        <th>Poprawne odpowiedzi</th>
-                        <th>Niepoprawne odpowiedzi</th>
-                        <th>Pkt.</th>
-                        <th></th>
+                        <th style="width: 40%;">Pytanie zamknięte</th>
+                        <th style="width: 20%;">Poprawne odpowiedzi</th>
+                        <th style="width: 20%;">Niepoprawne odpowiedzi</th>
+                        <th style="width: 10%;">Pkt.</th>
+                        <th style="width: 10%;"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -185,8 +185,7 @@
             <h5 class="mt-2">Maksymalna ilość punktów:</h5>
             <div class="input-group">
                 <input id="maxScore" name="maxScore" class="form-control" type="number" min="1" required
-                    [(ngModel)]="inputMaxScore" #maxScore="ngModel"
-                    (input)="inputMaxScore=$event.target.value"
+                    [(ngModel)]="inputMaxScore" #maxScore="ngModel" (input)="inputMaxScore=$event.target.value"
                     pattern="^[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*$">
             </div>
             <div *ngIf="maxScore.invalid && (maxScore.dirty || maxScore.touched)" class="alert alert-danger mt-2">

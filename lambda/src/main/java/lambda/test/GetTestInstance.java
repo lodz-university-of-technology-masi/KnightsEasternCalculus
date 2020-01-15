@@ -18,18 +18,33 @@ public class GetTestInstance extends Handler<String> {
             return new Response(404, "Test not found");
         } else {
             if (test.getStatus() == 0) {
-                for (SolvableClosedQuestion q : test.getCloseQuestions()) {
-                    q.setCorrectAnswers(new ArrayList<>());
+                if (test.getCloseQuestions() != null) {
+                    for (int i = 0; i < test.getCloseQuestions().size(); i++) {
+                        test.getCloseQuestions().get(i).setCorrectAnswers(new ArrayList<>());
+                    }
+                } else {
+                    test.setCloseQuestions(new ArrayList<>());
                 }
-                for (SolvableOpenQuestion q : test.getOpenQuestions()) {
-                    q.setCorrectAnswer("");
+                if (test.getOpenQuestions() != null) {
+                    for (int i = 0; i < test.getOpenQuestions().size(); i++) {
+                        test.getOpenQuestions().get(i).setCorrectAnswer("");
+                    }
+                } else {
+                    test.setOpenQuestions(new ArrayList<>());
+                }
+                if (test.getValueQuestions() != null) {
+                    for (int i = 0; i < test.getValueQuestions().size(); i++) {
+                        test.getValueQuestions().get(i).setCorrectAnswer(0f);
+                    }
+                } else {
+                    test.setValueQuestions(new ArrayList<>());
                 }
             } else if (test.getStatus() == 1) {
-                for (SolvableClosedQuestion q : test.getCloseQuestions()) {
-                    q.setReceivedScore(0);
+                for (int i = 0; i < test.getOpenQuestions().size(); i++ ){
+                    test.getOpenQuestions().get(i).setReceivedScore(0);
                 }
-                for (SolvableOpenQuestion q : test.getOpenQuestions()) {
-                    q.setReceivedScore(0);
+                for (int i = 0; i < test.getValueQuestions().size(); i++) {
+                    test.getValueQuestions().get(i).setReceivedScore(0);
                 }
             }
             return new Response(200, test);

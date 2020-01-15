@@ -6,8 +6,6 @@ import {MyProfileComponent} from './my-profile/my-profile.component';
 import {TestListComponent} from './test-list/test-list.component';
 import {SolvedTestComponent} from './solved-test/solved-test.component';
 import {SolveTestComponent} from './solve-test/solve-test.component';
-import {ApplicantGuardService} from './applicant-guard.service';
-import { Applicant } from '../model/applicant';
 import { IdGuardService } from './id-guard.service';
 const routes: Routes = [
   {
@@ -27,7 +25,6 @@ const routes: Routes = [
       {
         path: 'tests/:id',
         component: SolvedTestComponent,
-        canActivate: [IdGuardService],
         data: {id: ':id'}
       },
       {

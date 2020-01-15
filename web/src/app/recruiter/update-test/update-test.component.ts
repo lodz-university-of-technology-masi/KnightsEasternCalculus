@@ -157,7 +157,7 @@ export class UpdateTestComponent implements OnInit {
 
   //#region "Test Management"
   public updateTest(): void {
-    this.testService.updateTest(this.test.testId, this.test.title, this.test.author, this.test.language, this.test.openQuestions, this.test.closeQuestions, this.test.valueQuestions).subscribe({
+    this.testService.updateTest(this.test.testId, this.test.title, this.test.language, this.test.openQuestions, this.test.closeQuestions, this.test.valueQuestions).subscribe({
       error: error => ({}),
       complete: () => {
         this.router.navigate(['/recruiter/show-all-tests']);

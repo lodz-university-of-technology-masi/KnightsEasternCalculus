@@ -36,12 +36,12 @@ export class TestService {
   private testUrl: string = Globals.apiBaseUrl + '/recruiters';
   private importedTest: Test;
 
-  public createTest(inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions) {
+  public createTest(inputTestTitle, language, openQuestions, closeQuestions, valueQuestions) {
     var test = new Test(this.authService.getUserId(), null, inputTestTitle, language, openQuestions, closeQuestions, valueQuestions);
     return this.httpClient.post<Test>(`${this.testUrl}/${this.authService.getUserId()}/tests`, test, httpOptions);
   }
 
-  public updateTest(testId, inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions) {
+  public updateTest(testId, inputTestTitle, language, openQuestions, closeQuestions, valueQuestions) {
     var test = new Test(this.authService.getUserId(), testId, inputTestTitle, language, openQuestions, closeQuestions, valueQuestions);
     return this.httpClient.put(`${this.testUrl}/${this.authService.getUserId()}/tests/${testId}`, test, httpOptions);
   }
@@ -62,7 +62,6 @@ export class TestService {
     }
 
     result.title = (await axios.post(translateUrl + yandexKey + '&text=' + test.title + lang)).data.text[0];
-    result.author = test.author;
     result.language = language;
 
     for (let i = 0; i < test.closeQuestions.length; i++) {
@@ -202,50 +201,12 @@ export class TestService {
     return this.httpClient.get<Test[]>(`${this.testUrl}/${this.authService.getUserId()}/tests/`, {params});
   }
 
-  public getAllUserTests(username: string) {
-    return of([
-      new TestInstance('2', 2, 'Computer Systems Comprehension I', TestStatus.NotSolved, [], [], [], 100, 0),
-      new TestInstance('3', 1, 'Am I an idiot? Find the type of bread you are.', TestStatus.NotSolved,
-        [
-          new SolvableOpenQuestion('What is a v table?', '', 10, 0, ''),
-          new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', '', 20, 15, '')
-        ],
-        [
-          new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[];', 'int[5] i;', 'int i[] = new int[10];'], [], 20, 0, []),
-          new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning an array of int pointers'], [], 10, 0, [])
-        ],
-        [
-          // question: string, answer: number, maxScore: number, receivedScore: number, correctAnswer: number
-          new SolvableValueQuestion('What is a value of x (x = 5)?', 5, 1, 1, 5),
-          new SolvableValueQuestion('What is a value of y (y = - 1 + 8 + 1)', 8, 1, 0, 5)
-        ],
-        60, 15),
-      new TestInstance('3', 0, 'C++ basic knowledge', TestStatus.Checked,
-        [
-          new SolvableOpenQuestion('What is a v table?', 'I don\'t know, sorry', 10, 0, 'A lookup table of functions used to resolve virtual function calls'),
-          new SolvableOpenQuestion('Write a basic while loop that stops when the incremented variable is divisible by 14. Consider the variable (i of type int) initialized with random value.', 'while(i % 14 != 0) {i+= 1;}', 20, 15, 'while(i++%14 != 0);')
-        ],
-        [
-          new SolvableCloseQuestion('Choose the correct array declaration method.', ['int i[5];', 'int i[2] = {1};', 'int i[];', 'int[5] i;', 'int i[] = new int[10];'], [0, 1], 20, 0, [1, 3]),
-          new SolvableCloseQuestion('What does this pointer point to? int (*fpa())[]', ['an array of functions returning int pointers', 'an array of pointers to functions returning an int', 'a function returning a pointer to an array of ints', 'a function returning an array of int pointers'], [2], 10, 0, [1])
-        ],
-        [
-          new SolvableValueQuestion('What is a value of x (x = 5)?', 5, 1, 1, 5),
-          new SolvableValueQuestion('What is a value of y (y = - 1 + 8 + 1)', 8, 1, 0, 5)
-        ],
-        60, 15)]);
-  }
-
   public getTestInstances(id: string) {
     return this.httpClient.get(Globals.apiBaseUrl + '/applicants/' + id + '/tests');
   }
 
   public getTestInstance(id: string, timestamp: string) {
     return this.httpClient.get(Globals.apiBaseUrl + '/applicants/' + id + '/tests/' + timestamp);
-  }
-
-  public getUserTest(username: string, timestamp: number) {
-    return this.getAllUserTests(username).pipe(map(tests => tests.find(test => test.timestamp === timestamp)));
   }
 
   public deleteTest(testId: number) {

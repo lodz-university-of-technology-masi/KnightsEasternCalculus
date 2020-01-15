@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
       }
     }, (err) => {
       console.log('err' + err.toString());
-      if(err.code === 'UserNotFoundException') {
+      if(err.code === 'UserNotFoundException' || err.code === 'NotAuthorizedException') {
         this.userUnknown = true;
       }
       this.loading = false;

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthenticationRecruiterService} from '../../services/authentication-recruiter.service';
 
 @Component({
   selector: 'app-my-profile',
@@ -8,11 +9,12 @@ import { Component, OnInit } from '@angular/core';
 export class MyProfileComponent implements OnInit {
   applicantId: string;
 
-  constructor() {
-    this.applicantId = 'ccdf7c1d-8573-4c13-94eb-9011077a73f0';
+  constructor(private authService: AuthenticationRecruiterService) {
+
   }
 
   ngOnInit() {
+    this.applicantId = this.authService.getUserId();
   }
 
 }

@@ -503,6 +503,9 @@
               "statusCode": "200",
               "responseParameters": {
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
+              },
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
               }
             }
           },

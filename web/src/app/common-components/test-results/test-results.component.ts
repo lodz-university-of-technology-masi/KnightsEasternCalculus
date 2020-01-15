@@ -11,7 +11,7 @@ import {Experience} from '../../model/experience';
   styleUrls: ['./test-results.component.scss']
 })
 export class TestResultsComponent implements OnInit {
-  @Input() testTimestamp: number;
+  @Input() testTimestamp: string;
   @Input() applicantId: string;
   test: TestInstance;
   applicant: Applicant;
@@ -19,11 +19,8 @@ export class TestResultsComponent implements OnInit {
   constructor(private testService: TestService, private applicantService: ApplicantService) { }
 
   ngOnInit() {
-    this.testService.getUserTest(this.applicantId, Number(this.testTimestamp)).subscribe(test => this.test = test);
-    //this.applicantService.getApplicant(this.applicantId).subscribe(applicant => this.applicant = applicant);
-    this.applicant = new Applicant('3', 'Anna', 'Fafińska', new Date(1970, 1, 11), 'Garbowska 100', 'Grzybowo', '16-200', 'fafik@o2.pl', '11192364',
-      new Array(new Experience('LapyMati', 'Obsługa klienta', '1991-2019')),
-      new Array(), 'Przez wiele lat pracowałam jako sprzedawca pamięci RAM na allegro, ale firma upadła przez fatalną obsługę klienta. Teraz jestem bezrobotna i desperacko potrzebuję pracy.', '/assets/indeks.jpeg');
-}
+    this.testService.getTestInstance(this.applicantId, this.testTimestamp).subscribe(test => this.test = test as TestInstance);
+    this.applicantService.getApplicant(this.applicantId).subscribe(applicant => this.applicant = applicant);
+    }
 
 }

@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {TestService} from '../../services/test.service';
-import {TestStatus} from '../../model/test-instance';
+import {TestInstance, TestStatus} from '../../model/test-instance';
+import {AuthenticationRecruiterService} from '../../services/authentication-recruiter.service';
 
 @Component({
   selector: 'app-solved-test',
@@ -12,18 +13,18 @@ export class SolvedTestComponent implements OnInit {
   testId: string;
   applicantId: string;
 
-  constructor(private route: ActivatedRoute, private testService: TestService) {
+  constructor(private route: ActivatedRoute, private testService: TestService, private authService: AuthenticationRecruiterService) {
   }
 
   ngOnInit() {
-    this.applicantId = ''; // TODO: Get ID from auth service
+    this.applicantId = this.authService.getUserId();
     this.route.paramMap.subscribe(
       value => {
         const id = value.get('id');
-        this.testService.getUserTest('', Number(id)).subscribe(test => {
-          if (test.status === TestStatus.Checked) {
+        this.testService.getTestInstance(this.applicantId, id).subscribe(test => {
+          if ((test as TestInstance).status === TestStatus.Checked) {
             this.testId = id;
-          } else if (test.status === TestStatus.NotSolved) {
+          } else if ((test as TestInstance).status === TestStatus.NotSolved) {
             // TODO: redirect to test solving component
           }
         });

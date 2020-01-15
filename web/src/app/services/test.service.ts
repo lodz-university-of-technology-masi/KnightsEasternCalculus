@@ -158,6 +158,9 @@ export class TestService {
     splitFile.forEach(function (value) {
       var splitValue = value.split(';');
       if (splitValue[1] == 'O') {
+        if(splitValue.length > 6){
+          throw new Error("Invalid number of field.");
+        }
         openQuestions.push(new OpenQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), '', 1));
       }
       else if (splitValue[1] == 'W') {
@@ -178,7 +181,6 @@ export class TestService {
     var test = new Test('', '', '', language, openQuestions, closeQuestions, valueQuestions);
     this.importedTest = test;
     return test;
-    // return this.httpClient.post<Test>(this.testUrl, test, httpOptions);
   }
 
   public getImportedTest(){

@@ -4,7 +4,7 @@
     "version": "2019-12-13T22:52:12Z",
     "title": "kotec"
   },
-  "host": "4ywgpx3jr1.execute-api.us-east-1.amazonaws.com",
+  "host": "s4ltk9qr4i.execute-api.us-east-1.amazonaws.com",
   "basePath": "/test",
   "schemes": [
     "https"
@@ -40,7 +40,7 @@
           }
         },
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:get-applicants/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:get-applicants/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -93,7 +93,7 @@
         },
         "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:add-applicant/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:add-applicant/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -175,7 +175,7 @@
           }
         },
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:get-unchecked-test-instances/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:get-unchecked-test-instances/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -269,7 +269,7 @@
         },
         "x-amazon-apigateway-request-validator": "Validate query string parameters and headers",
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:get-applicant/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:get-applicant/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -365,7 +365,7 @@
           }
         },
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:get-test-instances-for-user/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:get-test-instances-for-user/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -421,7 +421,7 @@
         },
         "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:assign-applicant/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:assign-applicant/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -480,7 +480,7 @@
         },
         "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:grade-test/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:grade-test/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -577,7 +577,7 @@
         },
         "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:solve-test/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:solve-test/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -629,7 +629,7 @@
           }
         },
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:get-test-instance/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:get-test-instance/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -685,7 +685,7 @@
           }
         },
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:delete-test-instance/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:delete-test-instance/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -833,7 +833,7 @@
           }
         },
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:get-all-tests/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:get-all-tests/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -892,7 +892,7 @@
         },
         "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:add-test/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:add-test/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -991,7 +991,7 @@
           }
         },
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:get-test/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:get-test/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -1056,7 +1056,7 @@
         },
         "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:update-test/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:update-test/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -1109,7 +1109,7 @@
           }
         },
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:467411825755:function:delete-test/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:delete-test/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -1172,6 +1172,33 @@
           },
           "passthroughBehavior": "when_no_match",
           "type": "mock"
+        }
+      }
+    },
+    "/tools/translate": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:translate-test/invocations",
+          "responses": {
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "POST",
+          "contentHandling": "CONVERT_TO_TEXT",
+          "type": "aws"
         }
       }
     }
@@ -1682,18 +1709,18 @@
     }
   },
   "x-amazon-apigateway-gateway-responses": {
-    "DEFAULT_5XX": {
-      "responseParameters": {
-        "gatewayresponse.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS,PUT'",
-        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
-        "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-      }
-    },
     "DEFAULT_4XX": {
       "responseParameters": {
         "gatewayresponse.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS,PUT'",
-        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
-        "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'"
+      }
+    },
+    "DEFAULT_5XX": {
+      "responseParameters": {
+        "gatewayresponse.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS,PUT'",
+        "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'"
       }
     }
   },

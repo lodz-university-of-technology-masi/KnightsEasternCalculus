@@ -34,6 +34,7 @@ export class TestService {
   }
 
   private testUrl: string = Globals.apiBaseUrl + '/recruiters';
+  private translateUrl: string = Globals.apiBaseUrl + "/test/tools/translate";
   private importedTest: Test;
 
   public createTest(inputTestTitle, language, openQuestions, closeQuestions, valueQuestions) {
@@ -46,60 +47,8 @@ export class TestService {
     return this.httpClient.put(`${this.testUrl}/${this.authService.getUserId()}/tests/${testId}`, test, httpOptions);
   }
 
-  public async translateTest(test: Test, language: string) {
-    //  https://translate.yandex.net/api/v1.5/tr.json/translate
-    //  ? key=<API key>
-    //  & text=<text to translate>
-    //  & lang=<translation direction>
-    var yandexKey = 'trnsl.1.1.20200108T191910Z.fe657624420b3a8c.9b1c3b15e8688d96a425d4596dfc2c6321f04ee2';
-    var translateUrl = 'https://translate.yandex.net/api/v1.5/tr.json/translate?key=';
-    var lang = ''
-    var result = new Test('', null, '', '', [], [], []);
-    if (language == 'pl') {
-      lang = '&lang=en-pl';
-    } else {
-      lang = '&lang=pl-en';
-    }
-
-    result.title = (await axios.post(translateUrl + yandexKey + '&text=' + test.title + lang)).data.text[0];
-    result.language = language;
-
-    for (let i = 0; i < test.closeQuestions.length; i++) {
-      // question: string, correctAnswers: string[], incorrectAnswers: string[], answerScore: number
-      var closeQuestion = new CloseQuestion('', [], [], 0);
-      closeQuestion.question = (await axios.post(translateUrl + yandexKey + '&text=' + test.closeQuestions[i].question + lang)).data.text[0];
-      closeQuestion.answerScore = test.closeQuestions[i].answerScore;
-
-      for (let j = 0; j < test.closeQuestions[i].correctAnswers.length; j++) {
-        closeQuestion.correctAnswers.push((await axios.post(translateUrl + yandexKey + '&text=' + test.closeQuestions[i].correctAnswers[j] + lang)).data.text[0])
-      }
-
-      for (let j = 0; j < test.closeQuestions[i].incorrectAnswers.length; j++) {
-        closeQuestion.incorrectAnswers.push((await axios.post(translateUrl + yandexKey + '&text=' + test.closeQuestions[i].incorrectAnswers[j] + lang)).data.text[0])
-      }
-
-      console.log(closeQuestion);
-      result.closeQuestions.push(closeQuestion);
-    }
-
-    for (let i = 0; i < test.openQuestions.length; i++) {
-      // question: string, correctAnswer: string, maxScore: number
-      result.openQuestions.push(new OpenQuestion(
-        (await axios.post(translateUrl + yandexKey + '&text=' + test.openQuestions[i].question + lang)).data.text[0],
-        (await axios.post(translateUrl + yandexKey + '&text=' + test.openQuestions[i].correctAnswer + lang)).data.text[0],
-        test.openQuestions[i].maxScore));
-    }
-
-    for (let i = 0; i < test.valueQuestions.length; i++) {
-      // question: string, correctAnswer: number, maxScore: number
-      result.valueQuestions.push(new ValueQuestion(
-        (await axios.post(translateUrl + yandexKey + '&text=' + test.valueQuestions[i].question + lang)).data.text[0],
-        test.valueQuestions[i].correctAnswer,
-        test.valueQuestions[i].maxScore));
-    }
-
-    console.log(result.openQuestions);
-    return this.httpClient.post<Test>(`${this.testUrl}/${this.authService.getUserId()}/tests/`, result, httpOptions);
+  public translateTest(test: Test) {
+    return this.httpClient.post<Test>(`${this.testUrl}/${this.authService.getUserId()}/tests/tools/translate`, test, httpOptions);
   }
 
   public downloadTest(test: Test): void {

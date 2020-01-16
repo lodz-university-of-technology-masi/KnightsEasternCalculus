@@ -54,13 +54,13 @@ export class ShowAllTestsComponent implements OnInit {
 
     public async translateTest() {
         if (this.currentLanguage != null && this.selectedTest != null && this.currentLanguage != this.selectedTest.language) {
-            (await this.testService.translateTest(this.selectedTest, this.currentLanguage.toLowerCase()))
+            (await this.testService.translateTest(this.selectedTest)
                 .subscribe({
                     error: error => ({}),
                     complete: () => {
                         this.getAllTests();
                     }
-                });
+                }));
         }
     }
 

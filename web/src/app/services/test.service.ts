@@ -206,7 +206,7 @@ export class TestService {
   }
 
   public getTestInstance(id: string, timestamp: string) {
-    return this.httpClient.get(Globals.apiBaseUrl + '/applicants/' + id + '/tests/' + timestamp);
+    return this.httpClient.get(Globals.apiBaseUrl + '/applicants/' + id + '/tests/' + timestamp, {observe: 'response'});
   }
 
   public deleteTest(testId: number) {

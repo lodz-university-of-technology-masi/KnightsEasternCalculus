@@ -17,6 +17,7 @@ import {NgbDropdownModule, NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap';
 import { AssignModalComponent } from '../common-components/assign-modal/assign-modal.component';
 import { GradeTestComponent } from './grade-test/grade-test.component';
 import { ImportTestComponent } from './import-test/import-test.component';
+import { CheckTestsComponent } from './check-tests/check-tests.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { ImportTestComponent } from './import-test/import-test.component';
     UpdateTestComponent,
     AssignModalComponent,
     GradeTestComponent,
-    ImportTestComponent
+    ImportTestComponent,
+    CheckTestsComponent
   ],
   imports: [
     CommonModule,

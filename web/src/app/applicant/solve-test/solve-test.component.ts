@@ -21,7 +21,7 @@ export class SolveTestComponent implements OnInit {
       const split = value.get('id').split('=');
       const appID = split[0];
       const timestamp = split[1];
-      this.testService.getTestInstance(appID, timestamp).subscribe( (result: Response) => {
+      this.testService.getTestInstance(appID, timestamp).subscribe( result => {
         this.test = JSON.parse(JSON.stringify(result.body));
       });
     });

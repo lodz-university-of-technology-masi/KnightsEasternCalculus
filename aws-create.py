@@ -50,7 +50,7 @@ lambda_data = [("get-applicant", "lambda.applicant.GetApplicant"), ("get-applica
                ("get-all-tests", "lambda.test.GetAllTests"), ("add-test", "lambda.test.AddTest"), ("delete-test", "lambda.test.DeleteTest"), ("update-test", "lambda.test.UpdateTest"), ("get-test", "lambda.test.GetTest"),
                ("solve-test", "lambda.test.SolveTest"), ("add-test-instance", "lambda.test.AddTestInstance"), ("assign-applicant", "lambda.applicant.AssignApplicant"),
                ("get-test-instances-for-user", "lambda.test.GetTestInstancesForUser"), ("get-test-instance", "lambda.test.GetTestInstance"), ("grade-test", "lambda.test.GradeTest"),
-               ("delete-test-instance", "lambda.test.DeleteTestInstance")]
+               ("delete-test-instance", "lambda.test.DeleteTestInstance"), ("get-unchecked-test-instances", "lambda.test.GetUncheckedTestInstances")]
 
 for lam in lambda_data:
     print("\t"+lam[0])
@@ -84,7 +84,7 @@ for file in files:
         os.path.join("dummy-data", file)), shell=True)
     if file == "anna.txt":
         with open("dump", 'r') as f:
-            anka_id = json.loads(f.read())['body']['id']
+            anka_id = json.loads(f.read())["body"]['id']
 
 
 print("\tFilling S3...")

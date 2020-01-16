@@ -19,7 +19,7 @@ export class TestResultsComponent implements OnInit {
   constructor(private testService: TestService, private applicantService: ApplicantService) { }
 
   ngOnInit() {
-    this.testService.getTestInstance(this.applicantId, this.testTimestamp).subscribe(test => this.test = test as TestInstance);
+    this.testService.getTestInstance(this.applicantId, this.testTimestamp).subscribe(test => this.test = JSON.parse(JSON.stringify(test)));
     this.applicantService.getApplicant(this.applicantId).subscribe(applicant => this.applicant = applicant);
     }
 

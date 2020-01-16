@@ -95,7 +95,7 @@ export class FillInfoComponent implements OnInit {
     this.nfSer.addPer(this.inFirstName, this.inLastName.toLowerCase(), this.inDateOfBirth, this.inAddress, this.inCity, this.inPostalCode, this.inEmail, this.inPhoneNumber, this.ex, this.un, this.inAboutMe, this.inPhotoUrl).subscribe({
       error: error => ({}),
       complete: () => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
       }
     });
   }

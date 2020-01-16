@@ -7,6 +7,9 @@ public class TranslateResponse {
     private String lang;
     private List<String> text;
 
+    public TranslateResponse() {
+    }
+
     public TranslateResponse(int code, String lang, List<String> text) {
         this.code = code;
         this.lang = lang;

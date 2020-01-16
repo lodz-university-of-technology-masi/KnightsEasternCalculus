@@ -75,7 +75,7 @@ public class Translator {
     public String getRequest(String input) {
         String result = null;
         try {
-            InputStream inputStream = createGetConnection((this.yandexDicKey + input).replace(" ", "%20")).getInputStream();
+            InputStream inputStream = createConnection((this.yandexDicKey + input).replace(" ", "%20")).getInputStream();
             result = streamToString(inputStream);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -83,17 +83,6 @@ public class Translator {
         return result;
     }
 
-    public HttpURLConnection createGetConnection(String input) throws IOException {
-        URL obj = new URL(input);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestMethod("GET");
-        con.setDoOutput(true);
-        con.setInstanceFollowRedirects(false);
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("charset", "utf-8");
-        con.connect();
-        return con;
-    }
 
     public String postRequest(String input) {
         String result = null;

@@ -1,0 +1,53 @@
+{
+   "type":"object",
+   "required": ["applicantId", "timestamp", "recruiterId"],
+   "properties":{
+      "applicantId":{
+         "type":"string",
+         "minLength": 1
+      },
+      "openQuestions":{
+         "type":"array",
+         "items":{
+            "type":"object",
+            "required": ["question", "receivedScore"],
+            "properties":{
+               "question":{
+                  "type":"string",
+                  "minLength": 1
+               },
+               "receivedScore":{
+                  "type":"number",
+                  "minimum": 0
+               }
+            }
+         }
+      },
+      "recruiterId":{
+         "type":"string",
+         "minLength": 1
+      },
+      "timestamp":{
+         "type":"integer",
+         "minLength": 1
+      },
+      "valueQuestions":{
+         "type":"array",
+         "items":{
+            "type":"object",
+            "required": ["question", "receivedScore"],
+            "properties":{
+               "question":{
+                  "type":"string",
+                  "minLength": 1
+               },
+               "receivedScore":{
+                  "type":"integer",
+                  "minimum": 0
+               }
+            }
+         }
+      }
+   },
+   "$schema":"http://json-schema.org/draft-04/schema#"
+}

@@ -1,5 +1,8 @@
 package model.applicant;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
+
+@DynamoDBDocument
 public class Experience {
     private String name;
     private String position;

@@ -1,0 +1,74 @@
+{
+   "type":"object",
+   "required": ["applicantId", "timestamp"],
+   "properties":{
+      "applicantId":{
+         "type":"string",
+         "minLength": 1
+      },
+      "closeQuestions":{
+         "type":"array",
+         "items":{
+            "type":"object",
+            "required": ["answers", "chosenAnswers","question"],
+            "properties":{
+               "answers":{
+                  "type":"array",
+                  "items":{
+                     "type":"string",
+                     "minLength": 1
+                  }
+               },
+               "chosenAnswers":{
+                  "type":"array",
+                  "items":{
+                     "type":"integer",
+                     "minimum": 0
+                  }
+               },
+               "question":{
+                  "type":"string",
+                  "minLength": 1
+               }
+            }
+         }
+      },
+      "openQuestions":{
+         "type":"array",
+         "items":{
+            "type":"object",
+            "required": ["answer", "question"],
+            "properties":{
+               "answer":{
+                  "type":"string",
+                  "minLength": 1
+               },
+               "question":{
+                  "type":"string",
+                  "minLength": 1
+               }
+            }
+         }
+      },
+      "timestamp":{
+         "type":"integer"
+      },
+      "valueQuestions":{
+         "type":"array",
+         "items":{
+            "type":"object",
+            "required": ["answer", "question"],
+            "properties":{
+               "answer":{
+                  "type":"number"
+               },
+               "question":{
+                  "type":"string",
+                  "minLength": 1
+               }
+            }
+         }
+      }
+   },
+   "$schema":"http://json-schema.org/draft-04/schema#"
+}

@@ -98,7 +98,6 @@ public class Applicant {
         this.phoneNumber = phoneNumber;
     }
 
-    @DynamoDBTypeConvertedJson
     public List<Univerity> getUniversities() {
         return universities;
     }
@@ -107,7 +106,6 @@ public class Applicant {
         this.universities = universities;
     }
 
-    @DynamoDBTypeConvertedJson
     public List<Experience> getExperiences() {
         return experiences;
     }

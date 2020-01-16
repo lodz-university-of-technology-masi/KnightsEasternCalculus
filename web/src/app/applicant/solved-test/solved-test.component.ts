@@ -22,9 +22,9 @@ export class SolvedTestComponent implements OnInit {
       value => {
         const id = value.get('id');
         this.testService.getTestInstance(this.applicantId, id).subscribe(test => {
-          if ((test as TestInstance).status === TestStatus.Checked) {
+          if ((test as unknown as TestInstance).status === TestStatus.Checked) {
             this.testId = id;
-          } else if ((test as TestInstance).status === TestStatus.NotSolved) {
+          } else if ((test as unknown as TestInstance).status === TestStatus.NotSolved) {
             // TODO: redirect to test solving component
           }
         });

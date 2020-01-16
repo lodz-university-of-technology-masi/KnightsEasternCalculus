@@ -4,7 +4,7 @@
     "version": "2019-12-13T22:52:12Z",
     "title": "kotec"
   },
-  "host": "bsprvemo0e.execute-api.us-east-1.amazonaws.com",
+  "host": "vdawgtr5fe.execute-api.us-east-1.amazonaws.com",
   "basePath": "/test",
   "schemes": [
     "https"
@@ -62,8 +62,21 @@
         }
       },
       "post": {
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Applicant",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Applicant"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -78,6 +91,7 @@
             }
           }
         },
+        "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
           "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:add-applicant/invocations",
           "responses": {
@@ -297,6 +311,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "AssignRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AssignRequest"
+            }
           }
         ],
         "responses": {
@@ -312,6 +334,7 @@
             }
           }
         },
+        "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
           "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:assign-applicant/invocations",
           "responses": {
@@ -335,6 +358,9 @@
         }
       },
       "put": {
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -344,6 +370,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "TestGrade",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestGrade"
+            }
           }
         ],
         "responses": {
@@ -359,6 +393,7 @@
             }
           }
         },
+        "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
           "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:grade-test/invocations",
           "responses": {
@@ -420,6 +455,9 @@
         }
       },
       "patch": {
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -429,6 +467,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "TestSolve",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestSolve"
+            }
           }
         ],
         "responses": {
@@ -444,6 +490,7 @@
             }
           }
         },
+        "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
           "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:solve-test/invocations",
           "responses": {
@@ -723,6 +770,9 @@
         }
       },
       "post": {
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -732,6 +782,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "TestNew",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestNew"
+            }
           }
         ],
         "responses": {
@@ -747,6 +805,7 @@
             }
           }
         },
+        "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
           "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:add-test/invocations",
           "responses": {
@@ -869,6 +928,9 @@
         }
       },
       "put": {
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -884,6 +946,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "TestUpdate",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestUpdate"
+            }
           }
         ],
         "responses": {
@@ -899,6 +969,7 @@
             }
           }
         },
+        "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
           "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:update-test/invocations",
           "responses": {
@@ -1021,28 +1092,531 @@
     }
   },
   "definitions": {
+    "TestNew": {
+      "type": "object",
+      "required": [
+        "language",
+        "recruiterId",
+        "title"
+      ],
+      "properties": {
+        "closeQuestions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "answerScore": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "correctAnswers": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "incorrectAnswers": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "question": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "answerScore",
+              "correctAnswers",
+              "question"
+            ]
+          }
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1
+        },
+        "openQuestions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "correctAnswer": {
+                "type": "string"
+              },
+              "maxScore": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "question": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "maxScore",
+              "question"
+            ]
+          }
+        },
+        "recruiterId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "valueQuestions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "correctAnswer": {
+                "type": "number"
+              },
+              "maxScore": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "question": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "correctAnswer",
+              "maxScore",
+              "question"
+            ]
+          }
+        }
+      }
+    },
     "Empty": {
       "type": "object",
       "title": "Empty Schema"
+    },
+    "TestGrade": {
+      "type": "object",
+      "required": [
+        "applicantId",
+        "recruiterId",
+        "timestamp"
+      ],
+      "properties": {
+        "applicantId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "openQuestions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "question": {
+                "type": "string",
+                "minLength": 1
+              },
+              "receivedScore": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "question",
+              "receivedScore"
+            ]
+          }
+        },
+        "recruiterId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timestamp": {
+          "type": "integer"
+        },
+        "valueQuestions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "question": {
+                "type": "string",
+                "minLength": 1
+              },
+              "receivedScore": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "question",
+              "receivedScore"
+            ]
+          }
+        }
+      }
+    },
+    "TestSolve": {
+      "type": "object",
+      "required": [
+        "applicantId",
+        "timestamp"
+      ],
+      "properties": {
+        "applicantId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "closeQuestions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "answers": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "chosenAnswers": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "question": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "answers",
+              "chosenAnswers",
+              "question"
+            ]
+          }
+        },
+        "openQuestions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "string",
+                "minLength": 1
+              },
+              "question": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "answer",
+              "question"
+            ]
+          }
+        },
+        "timestamp": {
+          "type": "integer"
+        },
+        "valueQuestions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "number"
+              },
+              "question": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "answer",
+              "question"
+            ]
+          }
+        }
+      }
+    },
+    "TestUpdate": {
+      "type": "object",
+      "required": [
+        "language",
+        "recruiterId",
+        "testId",
+        "title"
+      ],
+      "properties": {
+        "closeQuestions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "answerScore": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "correctAnswers": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "incorrectAnswers": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "question": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "answerScore",
+              "correctAnswers",
+              "question"
+            ]
+          }
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1
+        },
+        "openQuestions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "correctAnswer": {
+                "type": "string"
+              },
+              "maxScore": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "question": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "maxScore",
+              "question"
+            ]
+          }
+        },
+        "recruiterId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "testId": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "valueQuestions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "correctAnswer": {
+                "type": "number"
+              },
+              "maxScore": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "question": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "correctAnswer",
+              "maxScore",
+              "question"
+            ]
+          }
+        }
+      }
+    },
+    "Applicant": {
+      "type": "object",
+      "required": [
+        "aboutMe",
+        "address",
+        "city",
+        "dateOfBirth",
+        "email",
+        "experiences",
+        "firstName",
+        "id",
+        "lastName",
+        "phoneNumber",
+        "photoUrl",
+        "postalCode",
+        "universities"
+      ],
+      "properties": {
+        "aboutMe": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string",
+          "minLength": 1
+        },
+        "city": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "pattern": "[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])"
+        },
+        "email": {
+          "type": "string",
+          "pattern": "^[^@\\s]+@[^@\\s\\.]+\\.[^@\\.\\s]+$"
+        },
+        "experiences": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "position": {
+                "type": "string",
+                "minLength": 1
+              },
+              "years": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "name",
+              "position",
+              "years"
+            ]
+          }
+        },
+        "firstName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "id": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phoneNumber": {
+          "type": "string",
+          "pattern": "[0-9]{9}"
+        },
+        "photoUrl": {
+          "type": "string",
+          "pattern": ".+\\.(jpeg|png|jpg)"
+        },
+        "postalCode": {
+          "type": "string",
+          "pattern": "[0-9]{2}-[0-9]{3}"
+        },
+        "universities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "degree": {
+                "type": "string",
+                "pattern": "lic|inż|mgr|dr|prof"
+              },
+              "major": {
+                "type": "string",
+                "minLength": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "years": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "degree",
+              "major",
+              "name",
+              "years"
+            ]
+          }
+        }
+      }
+    },
+    "AssignRequest": {
+      "type": "object",
+      "required": [
+        "recruiterId",
+        "testId"
+      ],
+      "properties": {
+        "applicantId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recruiterId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "testId": {
+          "type": "integer"
+        },
+        "force": {
+          "type": "boolean"
+        }
+      }
     }
   },
   "x-amazon-apigateway-gateway-responses": {
-    "DEFAULT_5XX": {
-      "responseParameters": {
-        "gatewayresponse.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS,PUT'",
-        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
-        "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-      }
-    },
     "DEFAULT_4XX": {
       "responseParameters": {
         "gatewayresponse.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS,PUT'",
-        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
-        "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'"
+      }
+    },
+    "DEFAULT_5XX": {
+      "responseParameters": {
+        "gatewayresponse.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS,PUT'",
+        "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'"
       }
     }
   },
   "x-amazon-apigateway-request-validators": {
+    "Validate body": {
+      "validateRequestParameters": false,
+      "validateRequestBody": true
+    },
     "Validate query string parameters and headers": {
       "validateRequestParameters": true,
       "validateRequestBody": false

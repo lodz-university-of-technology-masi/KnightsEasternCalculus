@@ -1,0 +1,93 @@
+{
+   "type":"object",
+   "required" : ["language", "recruiterId", "title"],
+   "properties":{
+      "closeQuestions":{
+         "type":"array",
+         "items":{
+            "type":"object",
+            "required": ["answerScore", "correctAnswers", "question"],
+            "properties":{
+               "answerScore":{
+                  "type":"integer",
+                  "minimum": 1
+               },
+               "correctAnswers":{
+                  "type":"array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items":{
+                     "type":"string",
+                     "minLength":1
+                  }
+               },
+               "incorrectAnswers":{
+                  "type":"array",
+                  "uniqueItems": true,
+                  "items":{
+                     "type":"string",
+                     "minLength":1
+                  }
+               },
+               "question":{
+                  "type":"string",
+                  "minLength":1
+               }
+            }
+         }
+      },
+      "language":{
+         "type":"string",
+         "minLength":1
+      },
+      "openQuestions":{
+         "type":"array",
+         "items":{
+            "type":"object",
+            "required": ["maxScore", "question"],
+            "properties":{
+               "correctAnswer":{
+                  "type":"string"
+               },
+               "maxScore":{
+                  "type":"integer",
+                  "minimum": 1
+               },
+               "question":{
+                  "type":"string",
+                  "minLength":1
+               }
+            }
+         }
+      },
+      "recruiterId":{
+         "type":"string",
+         "minLength":1
+      },
+      "title":{
+         "type":"string",
+         "minLength":1
+      },
+      "valueQuestions":{
+         "type":"array",
+         "items":{
+            "type":"object",
+            "required": ["maxScore", "correctAnswer", "question"],
+            "properties":{
+               "correctAnswer":{
+                  "type":"number"
+               },
+               "maxScore":{
+                  "type":"integer",
+                  "minimum": 1
+               },
+               "question":{
+                  "type":"string",
+                  "minLength":1
+               }
+            }
+         }
+      }
+   },
+   "$schema":"http://json-schema.org/draft-04/schema#"
+}

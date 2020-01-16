@@ -22,7 +22,8 @@ export class FillInfoService {
 
   addApplicantUrl: string = Globals.apiBaseUrl + '/applicants';
   public addPer(firstName, lastName, date, address, city, postal, email, phone, exper, univers, aboutMe, photoUrl) {
-    var applicant = new Applicant(this.authService.getUser().getUsername(), firstName, lastName, date, address, city, postal, this.authService.getUsername(), phone, exper, univers, aboutMe, photoUrl);
+    var applicant = new Applicant(this.authService.getUser().getUsername(), firstName, lastName, date, address, city, postal, this.authService.getUsername(), phone, exper, univers, aboutMe, '1.jpg');
+    // var applicant = new Applicant(this.authService.getUser().getUsername(), firstName, lastName, date, address, city, postal, this.authService.getUsername(), phone, exper, univers, aboutMe, photoUrl);
     return this.httpClient.post<Applicant>(this.addApplicantUrl, applicant, httpOptions);
   }
 }

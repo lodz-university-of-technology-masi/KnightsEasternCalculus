@@ -5,7 +5,7 @@
     <div class="col-9 align-self-center">
     <div>
       <h5 class="mt-2">Imię:</h5>
-      <input id="firstName" name="firstName" class="form-control" type="text" required
+      <input id="firstName" name="firstName" class="form-control" type="text" pattern="[^0-9]*" required
              [(ngModel)]="inFirstName" #firstName="ngModel"
              (input)="inFirstName=$event.target.value">
       <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="alert alert-danger mt-2">
@@ -17,7 +17,7 @@
 
     <div>
       <h5 class="mt-2">Nazwisko:</h5>
-      <input id="lastName" name="lastName" class="form-control" type="text" required
+      <input id="lastName" name="lastName" class="form-control" type="text" pattern="[^0-9]*" required
              [(ngModel)]="inLastName" #lastName="ngModel"
              (input)="inLastName=$event.target.value">
       <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="alert alert-danger mt-2">
@@ -53,7 +53,7 @@
 
     <div>
       <h5 class="mt-2">Miasto:</h5>
-      <input id="city" name="city" class="form-control" type="text" required
+      <input id="city" name="city" class="form-control" type="text" pattern="[^0-9]*" required
              [(ngModel)]="inCity" #city="ngModel"
              (input)="inCity=$event.target.value">
       <div *ngIf="city.invalid && (city.dirty || city.touched)" class="alert alert-danger mt-2">
@@ -87,11 +87,11 @@
       </div>
     </div>
 
-    <div>
+    <div class="form-group">
       <h5 class="mt-2">O mnie:</h5>
-      <input id="aboutMe" name="aboutMe" class="form-control" type="text" required
-             [(ngModel)]="inAboutMe" #aboutMe="ngModel"
-             (input)="inAboutMe=$event.target.value">
+      <textarea id="aboutMe" name="aboutMe" class="form-control" rows="5" type="text" required
+              [(ngModel)]="inAboutMe" #aboutMe="ngModel"
+              (input)="inAboutMe=$event.target.value"></textarea>
       <div *ngIf="aboutMe.invalid && (aboutMe.dirty || aboutMe.touched)" class="alert alert-danger mt-2">
         <div *ngIf="aboutMe.errors.required">
           Opis jest wymagany.
@@ -99,17 +99,30 @@
       </div>
     </div>
 
-    <div>
-      <h5 class="mt-2">Zdjęcie:</h5>
-      <input id="photoUrl" name="photoUrl" class="form-control" type="url" required
-             [(ngModel)]="inPhotoUrl" #photoUrl="ngModel"
-             (input)="inPhotoUrl=$event.target.value">
-      <div *ngIf="photoUrl.invalid && (photoUrl.dirty || photoUrl.touched)" class="alert alert-danger mt-2">
-        <div *ngIf="photoUrl.errors.required">
-          Zdjęcie jest wymagane.
-        </div>
-      </div>
-    </div>
+<!--    <div>-->
+<!--      <h5 class="mt-2">Zdjęcie:</h5>-->
+<!--      <input id="photoUrl" name="photoUrl" class="form-control" type="url" required-->
+<!--             [(ngModel)]="inPhotoUrl" #photoUrl="ngModel"-->
+<!--             (input)="inPhotoUrl=$event.target.value">-->
+<!--      <div *ngIf="photoUrl.invalid && (photoUrl.dirty || photoUrl.touched)" class="alert alert-danger mt-2">-->
+<!--        <div *ngIf="photoUrl.errors.required">-->
+<!--          Zdjęcie jest wymagane.-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <div class="custom-file">-->
+<!--      <h5 class="mt-2">Zdjęcie:</h5>-->
+<!--      <input id="photoUrl" name="photoUrl" class="custom-file-input" type="file" required-->
+<!--             [(ngModel)]="inPhotoUrl" #photoUrl="ngModel"-->
+<!--             (input)="inPhotoUrl=$event.target.value">-->
+<!--      <label class="custom-file-label" for="photoUrl">Wybierz plik</label>-->
+<!--      <div *ngIf="photoUrl.invalid && (photoUrl.dirty || photoUrl.touched)" class="alert alert-danger mt-2">-->
+<!--        <div *ngIf="photoUrl.errors.required">-->
+<!--          Zdjęcie jest wymagane.-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
     <div>
       <h5 class="mt-2">Doświadczenia:</h5>
@@ -173,9 +186,15 @@
         <input id="uyears" name="uyears" class="form-control" type="text" pattern="[0-9]{4}-[0-9]{4}" required
                [(ngModel)]="inUyears" #uyears="ngModel"
                (input)="inUyears=$event.target.value">
-        <input id="udegree" name="udegree" class="form-control" type="text" required
-               [(ngModel)]="inUdegree" #udegree="ngModel"
-               (input)="inUdegree=$event.target.value">
+        <select id="udegree" name="udegree" class="form-control" required
+                [(ngModel)]="inUdegree" #udegree="ngModel"
+                (input)="inUdegree=$event.target.value">
+          <option>lic.</option>
+          <option>inż.</option>
+          <option>mgr</option>
+          <option>dr</option>
+          <option>prof.</option>
+        </select>
         <div class="input-group-append">
           <button class="btn btn-success" type="button" (click)="addUniversity()"
                   [disabled]="!uname.valid || !umajor.valid || !uyears.valid || !udegree.valid">

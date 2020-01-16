@@ -48,7 +48,6 @@ public class ApplicantListItem {
         this.email = email;
     }
 
-    @DynamoDBTypeConvertedJson
     public List<Univerity> getUniversities() {
         return universities;
     }

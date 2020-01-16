@@ -1,0 +1,21 @@
+{
+   "type":"object",
+   "required": ["recruiterId", "testId"],
+   "properties":{
+      "applicantId":{
+         "type":"string",
+         "minLength":1
+      },
+      "recruiterId":{
+         "type":"string",
+         "minLength":1
+      },
+      "testId":{
+         "type":"integer"
+      },
+      "force":{
+         "type":"boolean"
+      }
+   },
+   "$schema":"http://json-schema.org/draft-04/schema#"
+}

@@ -1,5 +1,8 @@
 package model.applicant;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
+
+@DynamoDBDocument
 public class Univerity {
     private String name;
     private String major;

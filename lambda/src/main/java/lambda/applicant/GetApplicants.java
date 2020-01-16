@@ -5,17 +5,21 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
 import model.applicant.ApplicantListItem;
+import model.request.AuthenticatedRequest;
 import util.Response;
 import util.Utils;
 
 import java.util.*;
 
-public class GetApplicants extends Handler<String> {
+public class GetApplicants extends Handler<AuthenticatedRequest<String>> {
 
     @Override
-    public Response handleRequest(String input, Context context) {
+    public Response handleRequest(AuthenticatedRequest<String> authInput, Context context) {
+        if(!authInput.isRecruiter())
+            return new Response(403, "Recruiter permissions required");
+
         DynamoDBScanExpression scanExpression;
-        input = input.toLowerCase();
+        String input = authInput.getBody().toLowerCase();
 
         if(input.isEmpty()) {
             scanExpression = new DynamoDBScanExpression();
@@ -34,5 +38,4 @@ public class GetApplicants extends Handler<String> {
         queryList.forEach(replicant -> replicant.setLastName(Utils.capitalize(replicant.getLastName())));
         return new Response(200, queryList);
     }
-
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Applicant } from '../../model/applicant';
 import { ApplicantService } from '../../services/applicant.service';
+import {AuthenticationRecruiterService} from '../../services/authentication-recruiter.service';
 
 @Component({
   selector: 'app-applicant-list',

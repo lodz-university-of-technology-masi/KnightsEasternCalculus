@@ -40,7 +40,7 @@ export class AuthenticationRecruiterService {
       this.cognitoUser = new CognitoUser(userData);
       this.cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: result => {
-          sessionStorage.setItem('accessToken', result.getAccessToken().getJwtToken());
+          localStorage.setItem('accessToken', result.getAccessToken().getJwtToken());
           localStorage.setItem('idToken', result.getIdToken().getJwtToken());
 
           observer.next(result);
@@ -205,10 +205,12 @@ export class AuthenticationRecruiterService {
     return userPool.getCurrentUser();
   }
 
-  getAccessToken() {
-    return sessionStorage.getItem('accessToken');
+  getRawAccessToken() {
+    return localStorage.getItem('accessToken');
   }
-
+  getAccessToken() {
+    return jwt_decode(localStorage.getItem('accessToken'));
+  }
 
   getUsername() {
     return jwt_decode(localStorage.getItem('idToken')).email;
@@ -224,6 +226,9 @@ export class AuthenticationRecruiterService {
 
   getIdToken() {
     return jwt_decode(localStorage.getItem('idToken'));
+  }
+  getRawIdToken() {
+    return localStorage.getItem('idToken');
   }
 
   logOut() {

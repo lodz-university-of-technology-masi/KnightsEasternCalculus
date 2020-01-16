@@ -2,6 +2,7 @@ package lambda.test;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
+import model.request.TestRequest;
 import model.test.SolvableClosedQuestion;
 import model.test.SolvableOpenQuestion;
 import model.test.TestInstance;
@@ -9,11 +10,10 @@ import util.Response;
 
 import java.util.ArrayList;
 
-public class GetTestInstance extends Handler<String> {
+public class GetTestInstance extends Handler<TestRequest> {
     @Override
-    public Response handleRequest(String input, Context context) {
-        String[] index = input.split("=");
-        TestInstance test = getMapper().load(TestInstance.class, index[0], Long.parseLong(index[1]));
+    public Response handleRequest(TestRequest input, Context context) {
+        TestInstance test = getMapper().load(TestInstance.class, input.getOwnerId(), input.getTestId());
         if (test == null) {
             return new Response(404, "Test not found");
         } else {

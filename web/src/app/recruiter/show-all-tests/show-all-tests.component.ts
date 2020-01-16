@@ -59,7 +59,9 @@ export class ShowAllTestsComponent implements OnInit {
                     console.log(res);
                     var test = <Test>JSON.parse(JSON.stringify(res));
                     this.testService.createTest(test.title, test.language, test.openQuestions, test.closeQuestions, test.valueQuestions).subscribe({
-                        error: error => ({}),
+                        error: error => (
+                            console.log(error)
+                        ),
                         complete: () => {
                             this.getAllTests();
                         }
@@ -68,12 +70,6 @@ export class ShowAllTestsComponent implements OnInit {
                 (error: HttpErrorResponse) => {
                     console.log(error);
                 }));
-        // .subscribe({
-        //     error: error => ({}),
-        //     complete: () => {
-        //         this.getAllTests();
-        //     }
-        // }));
     }
 
     public downloadTest(id: number): void {
@@ -86,11 +82,6 @@ export class ShowAllTestsComponent implements OnInit {
                 (error: HttpErrorResponse) => {
                     console.log(error);
                 });
-
-        // .subscribe((res: Response) => {
-        //         console.log(res);
-        //         this.testService.downloadTest(<Test>JSON.parse(JSON.stringify(res)));
-        //     });
     }
 
     public loadTest(fileList: FileList): void {

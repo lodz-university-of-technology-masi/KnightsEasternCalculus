@@ -4,7 +4,7 @@
     "version": "2019-12-13T22:52:12Z",
     "title": "kotec"
   },
-  "host": "s4ltk9qr4i.execute-api.us-east-1.amazonaws.com",
+  "host": "ejupvb9adb.execute-api.us-east-1.amazonaws.com",
   "basePath": "/test",
   "schemes": [
     "https"
@@ -1185,6 +1185,11 @@
             "description": "200 response",
             "schema": {
               "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
             }
           }
         },
@@ -1192,13 +1197,63 @@
           "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:translate-test/invocations",
           "responses": {
             "default": {
-              "statusCode": "200"
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              },
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')\n"
+              }
             }
           },
           "passthroughBehavior": "when_no_match",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "passthroughBehavior": "when_no_match",
+          "type": "mock"
         }
       }
     }
@@ -1712,15 +1767,15 @@
     "DEFAULT_4XX": {
       "responseParameters": {
         "gatewayresponse.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS,PUT'",
-        "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'"
+        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+        "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
       }
     },
     "DEFAULT_5XX": {
       "responseParameters": {
         "gatewayresponse.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS,PUT'",
-        "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'"
+        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+        "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
       }
     }
   },

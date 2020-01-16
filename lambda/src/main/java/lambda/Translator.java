@@ -1,10 +1,16 @@
 package lambda;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import model.TranslateResponse;
 import model.test.CloseQuestion;
 import model.test.OpenQuestion;
 import model.test.Test;
 import model.test.ValueQuestion;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 public class Translator {
@@ -32,8 +38,34 @@ public class Translator {
     }
 
     private String translateText(String input, String lang) {
-//        url + input + lang
-        return null;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            TranslateResponse translateResponse = objectMapper.readValue(postRequest(input, lang), TranslateResponse.class);
+            return translateResponse.getText().get(0);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    public String postRequest(String input, String lang) {
+        String result = null;
+        try {
+            InputStream inputStream = createConnection(input.replace(" ", "%20")).getInputStream();
+            result = new ObjectMapper().readValue(inputStream, String.class);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public HttpURLConnection createConnection(String input) throws IOException {
+        URL obj = new URL(input);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("POST");
+        con.setDoOutput(true);
+        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        con.connect();
+        return con;
     }
 
     private List<CloseQuestion> translateCloseQuestions(List<CloseQuestion> closeQuestions, String lang) {

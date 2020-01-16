@@ -53,15 +53,27 @@ export class ShowAllTestsComponent implements OnInit {
     }
 
     public async translateTest() {
-        if (this.currentLanguage != null && this.selectedTest != null && this.currentLanguage != this.selectedTest.language) {
-            (await this.testService.translateTest(this.selectedTest)
-                .subscribe({
-                    error: error => ({}),
-                    complete: () => {
-                        this.getAllTests();
-                    }
+        (await this.testService.translateTest(this.selectedTest)
+            .subscribe(
+                res => {
+                    console.log(res);
+                    var test = <Test>JSON.parse(JSON.stringify(res));
+                    this.testService.createTest(test.title, test.language, test.openQuestions, test.closeQuestions, test.valueQuestions).subscribe({
+                        error: error => ({}),
+                        complete: () => {
+                            this.getAllTests();
+                        }
+                    })
+                },
+                (error: HttpErrorResponse) => {
+                    console.log(error);
                 }));
-        }
+        // .subscribe({
+        //     error: error => ({}),
+        //     complete: () => {
+        //         this.getAllTests();
+        //     }
+        // }));
     }
 
     public downloadTest(id: number): void {

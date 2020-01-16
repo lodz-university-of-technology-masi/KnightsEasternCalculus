@@ -25,7 +25,7 @@ export class GradeTestComponent implements OnInit {
       this.timestamp = value.get('timestamp');
 
       this.testService.getTestInstance(this.applicantID, this.timestamp).subscribe( result => {
-        this.test = result.body as unknown as TestInstance;
+        this.test = JSON.parse(JSON.stringify(result.body)) as TestInstance;
         console.log(this.test);
       });
     });

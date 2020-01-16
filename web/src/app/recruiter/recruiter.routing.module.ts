@@ -10,6 +10,7 @@ import { AppRecruiterComponent } from './app-recruiter/app-recruiter.component';
 import { UpdateTestComponent } from './update-test/update-test.component';
 import { GradeTestComponent } from './grade-test/grade-test.component';
 import { ImportTestComponent } from './import-test/import-test.component';
+import {CheckTestsComponent} from './check-tests/check-tests.component';
 
 const routes: Routes = [
   {
@@ -49,6 +50,10 @@ const routes: Routes = [
       {
         path: 'applicant/:id/test/:timestamp',
         component: GradeTestComponent
+      },
+      {
+        path: 'unchecked-tests',
+        component: CheckTestsComponent
       }
     ]
   }

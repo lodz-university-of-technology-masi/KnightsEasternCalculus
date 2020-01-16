@@ -261,4 +261,8 @@ export class TestService {
     return this.httpClient.post<string>(`${Globals.apiBaseUrl}/applicants/${applicantId}/tests`,
       {recruiterId: this.authService.getUserId(), testId: _testId, force: confirm}, {observe: 'response'});
   }
+
+  public getUncheckedTests() {
+    return this.httpClient.get(Globals.apiBaseUrl + '/applicants/tests', {observe: 'response'});
+  }
 }

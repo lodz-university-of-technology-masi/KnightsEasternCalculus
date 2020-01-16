@@ -13,6 +13,8 @@ public class AddApplicant extends Handler<Applicant> {
             input.setLastName(input.getLastName().toLowerCase());
             getMapper().save(input);
             return new Response(200, input);
-        } else return new Response(409, "kurcze konflikt :/");
+        } else {
+            return new Response(409, "Replicant already exists");
+        }
     }
 }

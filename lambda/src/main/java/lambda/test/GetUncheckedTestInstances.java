@@ -16,7 +16,7 @@ public class GetUncheckedTestInstances extends Handler<String> {
     @Override
     public Response handleRequest(String input, Context context) {
         Map<String, AttributeValue> eav = new HashMap<>();
-        eav.put(":s", new AttributeValue().withN("0"));
+        eav.put(":s", new AttributeValue().withN("1"));
 
         Map<String, String> names = new HashMap<>();
         names.put("#st", "status");

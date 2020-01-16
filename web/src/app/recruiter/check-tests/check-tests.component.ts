@@ -15,6 +15,9 @@ export class CheckTestsComponent implements OnInit {
   constructor(private testService: TestService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.testService.getUncheckedTests().subscribe( result => {
+      this.tests = JSON.parse(JSON.stringify(result.body));
+    });
   }
 
 }

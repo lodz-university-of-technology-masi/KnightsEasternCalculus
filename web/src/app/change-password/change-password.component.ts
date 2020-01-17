@@ -17,9 +17,6 @@ export class ChangePasswordComponent implements OnInit {
   constructor(private router: Router, private authService: AuthenticationRecruiterService) { }
 
   ngOnInit() {
-    if (!this.authService.isLogged()) {
-      this.router.navigateByUrl('/');
-    }
   }
 
   changePassword() {

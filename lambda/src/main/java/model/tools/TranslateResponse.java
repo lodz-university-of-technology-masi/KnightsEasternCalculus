@@ -1,4 +1,4 @@
-package model;
+package model.tools;
 
 import java.util.List;
 

@@ -1,7 +1,9 @@
 package lambda;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.TranslateResponse;
+import model.tools.SynonymResponse;
+import model.tools.TranslateResponse;
+import model.tools.Word;
 import model.test.CloseQuestion;
 import model.test.OpenQuestion;
 import model.test.Test;
@@ -17,10 +19,15 @@ import java.util.Scanner;
 
 public class Translator {
     private String yandexKey = "trnsl.1.1.20200108T191910Z.fe657624420b3a8c.9b1c3b15e8688d96a425d4596dfc2c6321f04ee2";
+    private String yandexDicKey = "https://dictionary.yandex.net/api/v1/dicservice/lookup?key=dict.1.1.20200116T213001Z.6be5317691bae1ff.7faedf456380aa760d1a473b3a50be12d04d622d&lang=en-en&text=";
     private String translateUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=";
     private String url = translateUrl + yandexKey + "&text=";
     private Test test;
     private String lang = "";
+
+    public Translator() {
+
+    }
 
     public Translator(Test test) {
         this.test = test;
@@ -52,6 +59,30 @@ public class Translator {
         }
         return null;
     }
+
+    public String getSynonyms(String input) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            SynonymResponse translateResponse = objectMapper.readValue(postRequest(input), SynonymResponse.class);
+            List<Word> words = translateResponse.getDefinitions().get(0).getTranslations().get(0).getSynonyms();
+            return words.get(0).getText();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getRequest(String input) {
+        String result = null;
+        try {
+            InputStream inputStream = createConnection((this.yandexDicKey + input).replace(" ", "%20")).getInputStream();
+            result = streamToString(inputStream);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
 
     public String postRequest(String input) {
         String result = null;

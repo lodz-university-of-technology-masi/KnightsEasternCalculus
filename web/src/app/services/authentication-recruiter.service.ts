@@ -183,7 +183,7 @@ export class AuthenticationRecruiterService {
     return new Observable( observer => {
       this.cognitoUser.completeNewPasswordChallenge(newPassword, this.sessionUserAttributes, {
         onSuccess: result => {
-          sessionStorage.setItem('accessToken', result.getAccessToken().getJwtToken());
+          localStorage.setItem('accessToken', result.getAccessToken().getJwtToken());
           localStorage.setItem('refreshToken', result.getRefreshToken().getToken());
           localStorage.setItem('idToken', result.getIdToken().getJwtToken());
 

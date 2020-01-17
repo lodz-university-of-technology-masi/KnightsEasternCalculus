@@ -23,7 +23,7 @@ export class CreateTestComponent implements OnInit {
     private authService: AuthenticationRecruiterService
   ) { }
 
-  currentLanguage: string = "PL";
+  currentLanguage: string = "pl";
   inputMaxScore: number;
 
   //#region "Init and choices beetween open and close question"

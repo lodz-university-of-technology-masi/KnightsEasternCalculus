@@ -31,7 +31,7 @@ public class Translator {
 
     public Translator(Test test) {
         this.test = test;
-        if (this.test.getLanguage() == "pl") {
+        if (this.test.getLanguage().equals("pl")) {
             this.lang = "&lang=pl-en";
             this.test.setLanguage("en");
         } else {

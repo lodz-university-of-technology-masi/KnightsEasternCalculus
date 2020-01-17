@@ -47,25 +47,27 @@ export class ShowAllTestsComponent implements OnInit {
         this.getAllTests();
     }
 
-    public onSelect(test: Test) {
-        this.selectedTest = test;
-        this.currentLanguage = this.selectedTest.language.toUpperCase();
+    public getUser() {
+        return this.authService.getUser().getUsername();
     }
 
-    public async translateTest() {
-        (await this.testService.translateTest(this.selectedTest)
+    public async translateTest(testToTranslate: Test) {
+        console.log(testToTranslate);
+        (await this.testService.translateTest(testToTranslate)
             .subscribe(
                 res => {
                     console.log(res);
                     var test = <Test>JSON.parse(JSON.stringify(res));
-                    this.testService.createTest(test.title, test.language, test.openQuestions, test.closeQuestions, test.valueQuestions).subscribe({
-                        error: error => (
-                            console.log(error)
-                        ),
-                        complete: () => {
-                            this.getAllTests();
+                    this.testService.createTest(test.title, test.language, test.openQuestions, test.closeQuestions, test.valueQuestions).subscribe(
+                        res2 => {
+                            console.log(res2);
+                            this.router.navigate(['/recruiter/show-all-tests/update-test', res2.testId]);
+
+                        },
+                        (error: HttpErrorResponse) => {
+                            console.log(error);
                         }
-                    })
+                    )
                 },
                 (error: HttpErrorResponse) => {
                     console.log(error);
@@ -81,7 +83,8 @@ export class ShowAllTestsComponent implements OnInit {
                 },
                 (error: HttpErrorResponse) => {
                     console.log(error);
-                });
+                }
+            );
     }
 
     public loadTest(fileList: FileList): void {
@@ -95,19 +98,16 @@ export class ShowAllTestsComponent implements OnInit {
     }
 
     public importTest(): void {
-        let notFinishedTest: Test;
         if (this.fileContent != "") {
-            this.testService.importTest(this.fileContent);
-            this.router.navigate(['/recruiter/import-test']);
+            try{
+                this.testService.importTest(this.fileContent);
+                this.router.navigate(['/recruiter/import-test']);
+            }
+            catch(error){
+                // console.log("ERROR: import failed");
+                console.log(error);
+            }
         }
-
-
-        // .subscribe({
-        //     error: error => ({}),
-        //     complete: () => {
-        //         this.getAllTests();
-        //     }
-        // });
     }
 
     public getTest(id: number): void {

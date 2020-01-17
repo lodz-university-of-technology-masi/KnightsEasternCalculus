@@ -59,7 +59,6 @@ export class AuthenticationRecruiterService {
   }
 
   addToGroup(username, group) {
-    // todo "fix this shit"
     return new Observable( observer => {
       const params = {
         GroupName: group,
@@ -109,6 +108,7 @@ export class AuthenticationRecruiterService {
                       }
 
                       localStorage.setItem('idToken', newSession.getIdToken().getJwtToken());
+                      localStorage.setItem('accessToken', newSession.getAccessToken().getJwtToken());
                     })
                   }
                 });
@@ -197,6 +197,15 @@ export class AuthenticationRecruiterService {
     });
   }
 
+  setTokens() {
+    if (this.cognitoUser) {
+      this.cognitoUser.getSession( (error, session) => {
+        localStorage.setItem('accessToken', session.getAccessToken().getJwtToken());
+        localStorage.setItem('idToken', session.getIdToken().getJwtToken());
+        localStorage.setItem('refreshToken', session.getRefreshToken().getJwtToken());
+      });
+    }
+  }
 
   isLogged(): boolean {
     return userPool.getCurrentUser() != null;

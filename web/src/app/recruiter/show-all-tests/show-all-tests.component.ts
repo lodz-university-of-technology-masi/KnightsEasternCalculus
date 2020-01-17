@@ -98,19 +98,16 @@ export class ShowAllTestsComponent implements OnInit {
     }
 
     public importTest(): void {
-        let notFinishedTest: Test;
         if (this.fileContent != "") {
-            this.testService.importTest(this.fileContent);
-            this.router.navigate(['/recruiter/import-test']);
+            try{
+                this.testService.importTest(this.fileContent);
+                this.router.navigate(['/recruiter/import-test']);
+            }
+            catch(error){
+                // console.log("ERROR: import failed");
+                console.log(error);
+            }
         }
-
-
-        // .subscribe({
-        //     error: error => ({}),
-        //     complete: () => {
-        //         this.getAllTests();
-        //     }
-        // });
     }
 
     public getTest(id: number): void {

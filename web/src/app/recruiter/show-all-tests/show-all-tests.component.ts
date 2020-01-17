@@ -52,6 +52,10 @@ export class ShowAllTestsComponent implements OnInit {
         this.currentLanguage = this.selectedTest.language.toUpperCase();
     }
 
+    public getUser(){
+        return this.authService.getUser().getUsername();
+    }
+
     public async translateTest() {
         (await this.testService.translateTest(this.selectedTest)
             .subscribe(

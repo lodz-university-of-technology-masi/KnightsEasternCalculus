@@ -36,10 +36,11 @@ export class TestService {
   private testUrl: string = Globals.apiBaseUrl + '/recruiters';
   private translateUrl: string = Globals.apiBaseUrl + "/tools/translate";
   private importedTest: Test;
+  private createdTest: Test;
 
   public createTest(inputTestTitle, language, openQuestions, closeQuestions, valueQuestions) {
-    var test = new Test(this.authService.getUserId(), null, inputTestTitle, language, openQuestions, closeQuestions, valueQuestions);
-    return this.httpClient.post<Test>(`${this.testUrl}/${this.authService.getUserId()}/tests`, test, httpOptions);
+    this.createdTest = new Test(this.authService.getUserId(), null, inputTestTitle, language, openQuestions, closeQuestions, valueQuestions);
+    return this.httpClient.post<Test>(`${this.testUrl}/${this.authService.getUserId()}/tests`, this.createdTest, httpOptions);
   }
 
   public updateTest(testId, inputTestTitle, language, openQuestions, closeQuestions, valueQuestions) {

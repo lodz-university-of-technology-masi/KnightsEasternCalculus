@@ -14,7 +14,7 @@
       <tr *ngFor="let test of tests; let i = index" (click)="onSelect(test)" style="cursor: pointer;">
         <th>{{i+1}}</th>
         <th>{{test.title}}</th>
-        <th>{{test.amplify-authenticator}}</th>
+        <th>{{test.recruiterId}}</th>
         <th>{{test.language}}</th>
         <th class="text-right">
           <button class="btn btn-outline-secondary mr-2" (click)="translateTest(test)">Tłumacz</button>
@@ -22,7 +22,7 @@
             popoverTitle="Przypisz kandydata" #p="ngbPopover" autoClose="outside"
             (click)="toggleAssign(p, test.testId, test.title)" popoverClass="assign-popover">Przypisz</button>
           <button class="btn btn-outline-secondary mr-2" (click)="downloadTest(test.testId)">Pobierz</button>
-          <button class="btn btn-success mr-2" [routerLink]="['update-test', test.testId]" *ngIf="authService.getUser().getUsername() == test.author">Zmień</button>
+          <button class="btn btn-success mr-2" [routerLink]="['update-test', test.testId]" *ngIf="getUser() == test.recruiterId">Zmień</button>
           <button class="btn btn-danger" (click)="deleteTest(test)">Usuń</button>
         </th>
       </tr>

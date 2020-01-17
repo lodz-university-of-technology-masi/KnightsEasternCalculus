@@ -9,7 +9,8 @@ import {RecruiterGuardService} from '../recruiter/recruiter-guard.service';
 import {DenyComponent} from '../deny/deny.component';
 import {ApplicantGuardService} from '../applicant/applicant-guard.service';
 import {RootGuard} from '../services/root-guard.service';
-import {AppComponent} from "../app.component";
+import {AppComponent} from '../app.component';
+import {ChangePasswordGuard} from '../change-password/change-password-guard';
 
 const routes: Routes = [
   {
@@ -37,11 +38,13 @@ const routes: Routes = [
   },
   {
     path: 'change-password',
-    component: ChangePasswordComponent
+    component: ChangePasswordComponent,
+    canActivate: [ChangePasswordGuard]
   },
   {
     path: 'register',
-    component: FillInfoComponent
+    component: FillInfoComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: '404',

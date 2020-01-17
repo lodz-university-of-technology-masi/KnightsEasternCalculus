@@ -15,7 +15,7 @@
     "UsernameAttributes": [
         "email"
     ],
-    "EmailVerificationMessage": "Supply additional information at http://localhost:4200/confirm?code={####}",
+    "EmailVerificationMessage": "Supply additional information at http://localhost:4200/confirm?code={####}&username={username}",
     "VerificationMessageTemplate": {
         "DefaultEmailOption": "CONFIRM_WITH_CODE"
     },

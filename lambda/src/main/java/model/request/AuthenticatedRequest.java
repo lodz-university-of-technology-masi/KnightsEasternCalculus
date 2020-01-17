@@ -30,6 +30,6 @@ public class AuthenticatedRequest<T> {
     }
 
     public boolean isRecruiter() {
-        return this.group.equals("recruiter");
+        return this.group != null && this.group.equals("recruiter");
     }
 }

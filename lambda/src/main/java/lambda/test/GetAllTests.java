@@ -6,6 +6,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
 import model.applicant.ApplicantListItem;
+import model.request.AuthenticatedRequest;
 import model.request.TestRequest;
 import model.test.Test;
 import model.test.TestInstance;
@@ -15,12 +16,17 @@ import util.Utils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GetAllTests extends Handler<GetAllTests.TestQuery> {
+public class GetAllTests extends Handler<AuthenticatedRequest<GetAllTests.TestQuery>> {
 
     @Override
-    public Response handleRequest(TestQuery input, Context context) {
-        String title = input.getTitle().toLowerCase();
+    public Response handleRequest(AuthenticatedRequest<GetAllTests.TestQuery> authenticatedRequest, Context context) {
+        if(!authenticatedRequest.isRecruiter())
+            return new Response(403, "Recruiter permissions required");
+        if(!authenticatedRequest.getUserId().equals(authenticatedRequest.getBody().getOwnerId()))
+            return new Response(403, "Insufficient permissions");
 
+        TestQuery input = authenticatedRequest.getBody();
+        String title = input.getTitle().toLowerCase();
         Map<String, AttributeValue> attributeValues = new HashMap<>();
         attributeValues.put(":id", new AttributeValue().withS(input.getOwnerId()));
 

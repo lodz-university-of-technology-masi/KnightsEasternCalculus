@@ -3,85 +3,86 @@ package lambda.test;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
+import model.request.AuthenticatedRequest;
 import model.test.*;
 import util.Response;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SolveTest extends Handler<TestInstance> {
+public class SolveTest extends Handler<AuthenticatedRequest<TestInstance>> {
     @Override
-    public Response handleRequest(TestInstance input, Context context) {
-        if (input != null) {
-            TestInstance test = getMapper().load(TestInstance.class, input.getApplicantId(), input.getTimestamp());
+    public Response handleRequest(AuthenticatedRequest<TestInstance> authenticatedRequest, Context context) {
+        if(!authenticatedRequest.getUserId().equals(authenticatedRequest.getBody().getApplicantId()))
+            return new Response(403, "Insufficient permissions");
 
-            if (test.getApplicantId() == null) {
-                return new Response(400, "ApplicantID can't be null");
-            }
+        TestInstance input = authenticatedRequest.getBody();
+        TestInstance test = getMapper().load(TestInstance.class, input.getApplicantId(), input.getTimestamp());
 
-            test.setReceivedScore(0);
-
-            if (test.getCloseQuestions() != null) {
-                List<SolvableClosedQuestion> close = new ArrayList<>();
-                SolvableClosedQuestion c = null;
-                for (int i = 0; i < test.getCloseQuestions().size(); i++) {
-                    c = test.getCloseQuestions().get(i);
-                    c.setChosenAnswers(input.getCloseQuestions().get(i).getChosenAnswers());
-                    close.add(c);
-                }
-                test.setCloseQuestions(close);
-                calculateClosed(test.getCloseQuestions());
-
-            } else {
-                test.setCloseQuestions(new ArrayList<>());
-            }
-
-            if (test.getOpenQuestions() != null) {
-                List<SolvableOpenQuestion> open = new ArrayList<>();
-                SolvableOpenQuestion o = null;
-                for (int i = 0; i < test.getOpenQuestions().size(); i++) {
-                    o = test.getOpenQuestions().get(i);
-                    o.setAnswer(input.getOpenQuestions().get(i).getAnswer());
-                    o.setReceivedScore(input.getOpenQuestions().get(i).getReceivedScore());
-                    open.add(o);
-                }
-                test.setOpenQuestions(open);
-
-            } else {
-                test.setOpenQuestions(new ArrayList<>());
-            }
-
-            if (test.getValueQuestions() != null) {
-                List<SolvableValueQuestion> value = new ArrayList<>();
-                SolvableValueQuestion v = null;
-                for (int i = 0; i < test.getValueQuestions().size(); i++) {
-                    v = test.getValueQuestions().get(i);
-                    v.setAnswer(input.getValueQuestions().get(i).getAnswer());
-                    v.setReceivedScore(input.getValueQuestions().get(i).getReceivedScore());
-                    value.add(v);
-                }
-                test.setValueQuestions(value);
-                calculateValue(test.getValueQuestions());
-
-            } else {
-                test.setValueQuestions(new ArrayList<>());
-            }
-
-            test.calculatePoints();
-
-            test.setStatus(TestStatus.SOLVED.getValue());
-
-            DynamoDBMapperConfig dynamoDBMapperConfig = new DynamoDBMapperConfig.Builder()
-                    .withConsistentReads(DynamoDBMapperConfig.ConsistentReads.CONSISTENT)
-                    .withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.UPDATE)
-                    .build();
-
-            getMapper().save(test, dynamoDBMapperConfig);
-            return new Response(200, test);
-
+        if (test.getApplicantId() == null) {
+            return new Response(400, "ApplicantID can't be null");
         }
 
-        return new Response(400, "Input can't be empty");
+        test.setReceivedScore(0);
+
+        if (test.getCloseQuestions() != null) {
+            List<SolvableClosedQuestion> close = new ArrayList<>();
+            SolvableClosedQuestion c = null;
+            for (int i = 0; i < test.getCloseQuestions().size(); i++) {
+                c = test.getCloseQuestions().get(i);
+                c.setChosenAnswers(input.getCloseQuestions().get(i).getChosenAnswers());
+                close.add(c);
+            }
+            test.setCloseQuestions(close);
+            calculateClosed(test.getCloseQuestions());
+
+        } else {
+            test.setCloseQuestions(new ArrayList<>());
+        }
+
+        if (test.getOpenQuestions() != null) {
+            List<SolvableOpenQuestion> open = new ArrayList<>();
+            SolvableOpenQuestion o = null;
+            for (int i = 0; i < test.getOpenQuestions().size(); i++) {
+                o = test.getOpenQuestions().get(i);
+                o.setAnswer(input.getOpenQuestions().get(i).getAnswer());
+                o.setReceivedScore(input.getOpenQuestions().get(i).getReceivedScore());
+                open.add(o);
+            }
+            test.setOpenQuestions(open);
+
+        } else {
+            test.setOpenQuestions(new ArrayList<>());
+        }
+
+        if (test.getValueQuestions() != null) {
+            List<SolvableValueQuestion> value = new ArrayList<>();
+            SolvableValueQuestion v = null;
+            for (int i = 0; i < test.getValueQuestions().size(); i++) {
+                v = test.getValueQuestions().get(i);
+                v.setAnswer(input.getValueQuestions().get(i).getAnswer());
+                v.setReceivedScore(input.getValueQuestions().get(i).getReceivedScore());
+                value.add(v);
+            }
+            test.setValueQuestions(value);
+            calculateValue(test.getValueQuestions());
+
+        } else {
+            test.setValueQuestions(new ArrayList<>());
+        }
+
+        test.calculatePoints();
+
+        test.setStatus(TestStatus.SOLVED.getValue());
+
+        DynamoDBMapperConfig dynamoDBMapperConfig = new DynamoDBMapperConfig.Builder()
+                .withConsistentReads(DynamoDBMapperConfig.ConsistentReads.CONSISTENT)
+                .withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.UPDATE)
+                .build();
+
+        getMapper().save(test, dynamoDBMapperConfig);
+        return new Response(200, test);
+
     }
 
     private void calculateClosed(List<SolvableClosedQuestion> closed) {

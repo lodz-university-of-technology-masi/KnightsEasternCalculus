@@ -4,6 +4,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
+import model.request.AuthenticatedRequest;
 import model.test.TestInstance;
 import util.Response;
 
@@ -12,9 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetUncheckedTestInstances extends Handler<String> {
+public class GetUncheckedTestInstances extends Handler<AuthenticatedRequest<String>> {
     @Override
-    public Response handleRequest(String input, Context context) {
+    public Response handleRequest(AuthenticatedRequest<String> authenticatedRequest, Context context) {
+        if(!authenticatedRequest.isRecruiter())
+            return new Response(403, "Recruiter permissions required");
+
         Map<String, AttributeValue> eav = new HashMap<>();
         eav.put(":s", new AttributeValue().withN("1"));
 

@@ -4,7 +4,7 @@
     "version": "2019-12-13T22:52:12Z",
     "title": "kotec"
   },
-  "host": "ejupvb9adb.execute-api.us-east-1.amazonaws.com",
+  "host": "6fcds578mi.execute-api.us-east-1.amazonaws.com",
   "basePath": "/test",
   "schemes": [
     "https"
@@ -39,8 +39,13 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:get-applicants/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:get-applicants/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -48,12 +53,12 @@
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               },
               "responseTemplates": {
-                "application/json": "$input.json('$.body')"
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 403)\n#set($context.responseOverride.status = 403)\n#end"
               }
             }
           },
           "requestTemplates": {
-            "application/json": "\"$input.params('lastName')\""
+            "application/json": "{\n\"userId\" : \"$context.authorizer.claims.sub\",\n\"group\" : \"$context.authorizer.claims['cognito:groups']\",\n\"body\": \"$input.params('lastName')\"}"
           },
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
@@ -91,9 +96,14 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:add-applicant/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:add-applicant/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -102,7 +112,7 @@
               }
             }
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -148,7 +158,7 @@
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "type": "mock"
         }
       }
@@ -174,20 +184,28 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:get-unchecked-test-instances/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:get-unchecked-test-instances/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
               "responseParameters": {
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
+              },
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 403)\n#set($context.responseOverride.status = 403)\n#end"
               }
             }
           },
           "requestTemplates": {
-            "application/json": "\"\""
+            "application/json": "{\n\"userId\" : \"$context.authorizer.claims.sub\",\n\"group\" : \"$context.authorizer.claims['cognito:groups']\",\n\"body\":\"\"}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -233,7 +251,7 @@
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "type": "mock"
         }
       }
@@ -267,9 +285,14 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-request-validator": "Validate query string parameters and headers",
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:get-applicant/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:get-applicant/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -277,14 +300,14 @@
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               },
               "responseTemplates": {
-                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 403)\n#set($context.responseOverride.status = 403)\n#end\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
               }
             }
           },
           "requestTemplates": {
-            "application/json": "\"$input.params('id')\""
+            "application/json": "{\n\"userId\" : \"$context.authorizer.claims.sub\",\n\"group\" : \"$context.authorizer.claims['cognito:groups']\",\n\"body\":\"$input.params('id')\"}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -330,7 +353,7 @@
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "type": "mock"
         }
       }
@@ -364,8 +387,13 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:get-test-instances-for-user/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:get-test-instances-for-user/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -375,7 +403,7 @@
             }
           },
           "requestTemplates": {
-            "application/json": "\"$input.params('id')\""
+            "application/json": "{\n\"userId\" : \"$context.authorizer.claims.sub\",\n\"group\" : \"$context.authorizer.claims['cognito:groups']\",\n\"body\":\"$input.params('id')\"}"
           },
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
@@ -419,9 +447,14 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:assign-applicant/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:assign-applicant/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -429,14 +462,14 @@
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               },
               "responseTemplates": {
-                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 409)\n#set($context.responseOverride.status = 409)\n#end\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 403)\n#set($context.responseOverride.status = 403)\n#end\n#if($status_code == 409)\n#set($context.responseOverride.status = 409)\n#end\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
               }
             }
           },
           "requestTemplates": {
-            "application/json": "{\n\"applicantId\": \"$input.params('id')\",\n\"recruiterId\": $input.json('$.recruiterId'),\n\"testId\": $input.json('$.testId'),\n\"force\": $input.json('$.force')\n}"
+            "application/json": "{\n\"userId\" : \"$context.authorizer.claims.sub\",\n\"group\" : \"$context.authorizer.claims['cognito:groups']\",\n\"body\":{\n\"applicantId\": \"$input.params('id')\",\n\"recruiterId\": $input.json('$.recruiterId'),\n\"testId\": $input.json('$.testId'),\n\"force\": $input.json('$.force')\n}\n}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -478,9 +511,14 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:grade-test/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:grade-test/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -489,7 +527,10 @@
               }
             }
           },
-          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "#set($rootObject = $input.path('$'))\r\n#set($discard = $rootObject.put('applicantId', \"$input.params('id')\"))\r\n{\n\"userId\" : \"$context.authorizer.claims.sub\",\n\"group\" : \"$context.authorizer.claims['cognito:groups']\",\n\"body\":$input.json('$')\n}"
+          },
+          "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -535,7 +576,7 @@
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "type": "mock"
         }
       },
@@ -575,9 +616,14 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:solve-test/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:solve-test/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -586,7 +632,10 @@
               }
             }
           },
-          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "#set($rootObject = $input.path('$'))\r\n#set($discard = $rootObject.put('applicantId', \"$input.params('id')\"))\r\n{\n\"userId\" : \"$context.authorizer.claims.sub\",\n\"group\" : \"$context.authorizer.claims['cognito:groups']\",\n\"body\":$input.json('$')\n}"
+          },
+          "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -628,8 +677,13 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:get-test-instance/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:get-test-instance/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -637,12 +691,12 @@
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               },
               "responseTemplates": {
-                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 403)\n#set($context.responseOverride.status = 403)\n#end\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
               }
             }
           },
           "requestTemplates": {
-            "application/json": "\"$input.params('id')=$input.params('timestamp')\""
+            "application/json": "{\n\"userId\" : \"$context.authorizer.claims.sub\",\n\"group\" : \"$context.authorizer.claims['cognito:groups']\",\n\"body\":{\"ownerId\": \"$input.params('id')\",\n\"testId\": \"$input.params('timestamp')\"}\n}"
           },
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
@@ -684,8 +738,13 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:delete-test-instance/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:delete-test-instance/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -693,14 +752,14 @@
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               },
               "responseTemplates": {
-                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end\n#if($status_code == 204)\n#set($context.responseOverride.status = 204)\n#end"
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 403)\n#set($context.responseOverride.status = 403)\n#end\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end\n#if($status_code == 204)\n#set($context.responseOverride.status = 204)\n#end"
               }
             }
           },
           "requestTemplates": {
-            "application/json": "{\"ownerId\": \"$input.params('id')\",\n\"testId\": \"$input.params('timestamp')\"}"
+            "application/json": "{\n\"userId\" : \"$context.authorizer.claims.sub\",\n\"group\" : \"$context.authorizer.claims['cognito:groups']\",\n\"body\":{\"ownerId\": \"$input.params('id')\",\n\"testId\": \"$input.params('timestamp')\"}\n}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -746,7 +805,7 @@
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "type": "mock"
         }
       }
@@ -792,7 +851,7 @@
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "type": "mock"
         }
       }
@@ -832,8 +891,13 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:get-all-tests/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:get-all-tests/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -841,14 +905,14 @@
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               },
               "responseTemplates": {
-                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 403)\n#set($context.responseOverride.status = 403)\n#end\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
               }
             }
           },
           "requestTemplates": {
-            "application/json": "{\"ownerId\": \"$input.params('id')\",\n\"title\": \"$input.params('title')\"}"
+            "application/json": "{\n\"userId\" : \"$context.authorizer.claims.sub\",\n\"group\" : \"$context.authorizer.claims['cognito:groups']\",\n\"body\":{\"ownerId\": \"$input.params('id')\",\n\"title\": \"$input.params('title')\"}\n}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -890,9 +954,14 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:add-test/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:add-test/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -900,11 +969,14 @@
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               },
               "responseTemplates": {
-                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 403)\n#set($context.responseOverride.status = 403)\n#end\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
               }
             }
           },
-          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "#set($rootObject = $input.path('$'))\r\n#set($discard = $rootObject.put('recruiterId', \"$input.params('id')\"))\r\n{\n\"userId\" : \"$context.authorizer.claims.sub\",\n\"group\" : \"$context.authorizer.claims['cognito:groups']\",\n\"body\":$input.json('$')\n}"
+          },
+          "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -950,7 +1022,7 @@
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "type": "mock"
         }
       }
@@ -990,8 +1062,13 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:get-test/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:get-test/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -999,12 +1076,12 @@
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               },
               "responseTemplates": {
-                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 403)\n#set($context.responseOverride.status = 403)\n#end\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
               }
             }
           },
           "requestTemplates": {
-            "application/json": "{\"ownerId\": \"$input.params('id')\",\n\"testId\": \"$input.params('testId')\"}"
+            "application/json": "{\n\"userId\" : \"$context.authorizer.claims.sub\",\n\"group\" : \"$context.authorizer.claims['cognito:groups']\",\n\"body\":{\"ownerId\": \"$input.params('id')\",\n\"testId\": \"$input.params('testId')\"}\n}"
           },
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
@@ -1054,9 +1131,14 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:update-test/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:update-test/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -1064,11 +1146,14 @@
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               },
               "responseTemplates": {
-                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 403)\n#set($context.responseOverride.status = 403)\n#end\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
               }
             }
           },
-          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "#set($rootObject = $input.path('$'))\r\n#set($discard = $rootObject.put('recruiterId', \"$input.params('id')\"))\r\n#set($discard = $rootObject.put('testId', \"$input.params('testId')\"))\r\n{\n\"userId\" : \"$context.authorizer.claims.sub\",\n\"group\" : \"$context.authorizer.claims['cognito:groups']\",\n\"body\":$input.json('$')\n}"
+          },
+          "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -1108,8 +1193,13 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:delete-test/invocations",
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:delete-test/invocations",
           "responses": {
             "default": {
               "statusCode": "200",
@@ -1117,14 +1207,14 @@
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               },
               "responseTemplates": {
-                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 403)\n#set($context.responseOverride.status = 403)\n#end\n#if($status_code == 404)\n#set($context.responseOverride.status = 404)\n#end"
               }
             }
           },
           "requestTemplates": {
-            "application/json": "{\"ownerId\": \"$input.params('id')\",\n\"testId\": \"$input.params('testId')\"}"
+            "application/json": "{\n\"userId\" : \"$context.authorizer.claims.sub\",\n\"group\" : \"$context.authorizer.claims['cognito:groups']\",\n\"body\":{\"ownerId\": \"$input.params('id')\",\n\"testId\": \"$input.params('testId')\"}\n}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -1170,7 +1260,7 @@
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "type": "mock"
         }
       }
@@ -1193,6 +1283,11 @@
             }
           }
         },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:714753697351:function:translate-test/invocations",
           "responses": {
@@ -1202,11 +1297,11 @@
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               },
               "responseTemplates": {
-                "application/json": "$input.json('$.body')\n"
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 403)\n#set($context.responseOverride.status = 403)\n#end"
               }
             }
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -1252,9 +1347,23 @@
           "requestTemplates": {
             "application/json": "{\"statusCode\": 200}"
           },
-          "passthroughBehavior": "when_no_match",
+          "passthroughBehavior": "when_no_templates",
           "type": "mock"
         }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "AnyAuthenticated": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "x-amazon-apigateway-authtype": "cognito_user_pools",
+      "x-amazon-apigateway-authorizer": {
+        "providerARNs": [
+          "arn:aws:cognito-idp:us-east-1:716447952913:userpool/us-east-1_v15dfhRHe"
+        ],
+        "type": "cognito_user_pools"
       }
     }
   },

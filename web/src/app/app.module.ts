@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import {Injector, NgModule} from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +14,7 @@ import {FillInfoComponent} from './fill-info/fill-info.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthGuardService} from './services/auth-guard.service';
 import { DenyComponent } from './deny/deny.component';
+import {RequestAuthInterceptor} from './interceptors/RequestAuthInterceptor';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,10 @@ import { DenyComponent } from './deny/deny.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [AuthGuardService],
+  providers: [
+    AuthGuardService,
+    { provide: HTTP_INTERCEPTORS, useClass: RequestAuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

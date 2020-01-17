@@ -7,6 +7,7 @@ import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
+import model.request.AuthenticatedRequest;
 import model.test.TestInstance;
 import util.Response;
 
@@ -15,11 +16,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetTestInstancesForUser extends Handler<String> {
+public class GetTestInstancesForUser extends Handler<AuthenticatedRequest<String>> {
     @Override
-    public Response handleRequest(String input, Context context) {
+    public Response handleRequest(AuthenticatedRequest<String> authenticatedRequest, Context context) {
+        if(!authenticatedRequest.isRecruiter() && !authenticatedRequest.getUserId().equals(authenticatedRequest.getBody()))
+            return new Response(403, "Insufficient permissions");
+
         Map<String, AttributeValue> attributeValues = new HashMap<>();
-        attributeValues.put(":id", new AttributeValue().withS(input));
+        attributeValues.put(":id", new AttributeValue().withS(authenticatedRequest.getBody()));
 
         DynamoDBQueryExpression<TestInstance> query = new DynamoDBQueryExpression<TestInstance>()
                 .withKeyConditionExpression("applicantId = :id")

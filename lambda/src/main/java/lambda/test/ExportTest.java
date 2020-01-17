@@ -2,13 +2,19 @@ package lambda.test;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
+import model.request.AuthenticatedRequest;
 import model.test.Test;
 import util.Response;
 
-public class ExportTest extends Handler<String> {
+public class ExportTest extends Handler<AuthenticatedRequest<String>> {
     @Override
-    public Response handleRequest(String input, Context context) {
-        Test test = getMapper().load(Test.class, input);
+    public Response handleRequest(AuthenticatedRequest<String> authenticatedRequest, Context context) {
+        if(!authenticatedRequest.isRecruiter())
+            return new Response(403, "Recruiter permissions required");
+        if(!authenticatedRequest.getUserId().equals(authenticatedRequest.getBody())) //TODO: zmienić na id rekrutera z requestu
+            return new Response(403, "Insufficient permissions");
+
+        Test test = getMapper().load(Test.class, authenticatedRequest.getBody());
         if (test == null)
             return new Response(404, "Test was not found");
         else {

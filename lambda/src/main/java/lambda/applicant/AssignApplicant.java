@@ -5,15 +5,23 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
 import model.applicant.Applicant;
+import model.request.AuthenticatedRequest;
 import model.test.*;
 import util.Response;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class AssignApplicant extends Handler<AssignApplicant.AssignRequest> {
+public class AssignApplicant extends Handler<AuthenticatedRequest<AssignApplicant.AssignRequest>> {
     @Override
-    public Response handleRequest(AssignRequest input, Context context) {
+    public Response handleRequest(AuthenticatedRequest<AssignRequest> authenticatedRequest, Context context) {
+        if(!authenticatedRequest.isRecruiter())
+            return new Response(403, "Recruiter permissions required");
+        if(!authenticatedRequest.getUserId().equals(authenticatedRequest.getBody().getRecruiterId()))
+            return new Response(403, "The assigned test doesn't belong to the caller");
+
+        AssignRequest input = authenticatedRequest.getBody();
+
         DynamoDBQueryExpression queryExpression;
 
         if(!input.isForce()) {

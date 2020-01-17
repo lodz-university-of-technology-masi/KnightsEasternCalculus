@@ -15,6 +15,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthGuardService} from './services/auth-guard.service';
 import { DenyComponent } from './deny/deny.component';
 import {RequestAuthInterceptor} from './interceptors/RequestAuthInterceptor';
+import {ChangePasswordGuard} from './change-password/change-password-guard';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {RequestAuthInterceptor} from './interceptors/RequestAuthInterceptor';
   providers: [
     AuthGuardService,
     { provide: HTTP_INTERCEPTORS, useClass: RequestAuthInterceptor, multi: true },
+    ChangePasswordGuard
   ],
   bootstrap: [AppComponent]
 })

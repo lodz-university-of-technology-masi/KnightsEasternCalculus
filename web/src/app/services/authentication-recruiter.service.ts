@@ -230,7 +230,7 @@ export class AuthenticationRecruiterService {
     return jwt_decode(localStorage.getItem('idToken')).sub;
   }
 
-  getGroups() {
+  getGroups(): string[] {
     return jwt_decode(localStorage.getItem('idToken'))['cognito:groups'];
   }
 

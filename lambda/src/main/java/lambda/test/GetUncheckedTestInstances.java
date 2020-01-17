@@ -21,12 +21,13 @@ public class GetUncheckedTestInstances extends Handler<AuthenticatedRequest<Stri
 
         Map<String, AttributeValue> eav = new HashMap<>();
         eav.put(":s", new AttributeValue().withN("1"));
+        eav.put(":id", new AttributeValue().withS(authenticatedRequest.getUserId()));
 
         Map<String, String> names = new HashMap<>();
         names.put("#st", "status");
 
         DynamoDBScanExpression scan = new DynamoDBScanExpression()
-                .withFilterExpression("#st = :s")
+                .withFilterExpression("#st = :s AND recruiterId = :id")
                 .withExpressionAttributeValues(eav)
                 .withExpressionAttributeNames(names);
 

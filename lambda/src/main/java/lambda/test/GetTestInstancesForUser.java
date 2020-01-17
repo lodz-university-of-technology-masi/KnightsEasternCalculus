@@ -29,6 +29,11 @@ public class GetTestInstancesForUser extends Handler<AuthenticatedRequest<String
                 .withKeyConditionExpression("applicantId = :id")
                 .withExpressionAttributeValues(attributeValues);
 
+        if(authenticatedRequest.isRecruiter()) {
+            attributeValues.put(":id2", new AttributeValue().withS(authenticatedRequest.getUserId()));
+            query.setFilterExpression("recruiterId = :id2");
+        }
+
         List<TestInstance> tab = getMapper().query(TestInstance.class, query);
 
         for (int i = 0; i < tab.size(); i++) {

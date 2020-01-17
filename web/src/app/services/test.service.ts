@@ -61,17 +61,17 @@ export class TestService {
     test.valueQuestions = test.valueQuestions || [];
 
     test.openQuestions.forEach(function (value) {
-      csv += i + ';'
+      csv += '\"' + i + ';'
         + 'O' + ';'
         + test.language + ';'
         + value.question.replace(';', '') + ';'
-        + '|' + ';'
+        + '|' + ';' + '\"'
         + '\n';
       i++;
     });
 
     test.closeQuestions.forEach(function (value) {
-      csv += i + ';'
+      csv += '\"' + i + ';'
         + 'W' + ';'
         + test.language + ';'
         + value.question + ';'
@@ -82,16 +82,16 @@ export class TestService {
       value.incorrectAnswers.forEach(function (txt) {
         csv += txt.replace(';', String.fromCharCode(30)) + ';';
       })
-      csv += '\n';
+      csv += '\"' + '\n';
       i++;
     });
 
     test.valueQuestions.forEach(function (value) {
-      csv += i + ';'
+      csv += '\"' + i + ';'
         + 'L' + ';'
         + test.language + ';'
         + value.question + ';'
-        + '|' + ';'
+        + '|' + ';' + '\"'
         + '\n';
       i++;
     })
@@ -105,28 +105,61 @@ export class TestService {
   public importTest(file: string) {
     var splitFile = file.split('\n');
 
-    let language: string, openQuestions: OpenQuestion[] = [], closeQuestions: CloseQuestion[] = [], valueQuestions: ValueQuestion[] = [];
+    let language: string, openQuestions: OpenQuestion[] = [], closeQuestions: CloseQuestion[] = [], valueQuestions: ValueQuestion[] = [], flag: boolean = true;
+
+    if (splitFile[0].split(';')[0] == '') {
+      flag = false;
+    }
 
     splitFile.forEach(function (value) {
       var splitValue = value.split(';');
-      if (splitValue.length != 7) {
-        if (splitValue[1] == 'O') {
-          if (splitValue.length > 12) {
-            alert("Invalid number of field in open qestion.")
-            throw new Error("Invalid number of field.");
+      let type: string = splitValue[1];
+
+      const shortOpenQuestionLength = 6
+
+      if (type == 'O') {
+        if (flag == true) {
+          if (splitValue.length > shortOpenQuestionLength) {
+            alert("Niewłaściwy format pliku csv (pytania otwarte)")
+            throw new Error("Invalid number of field in open qestion.");
           }
-          openQuestions.push(new OpenQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), '', 1));
-        } else if (splitValue[1] == 'W') {
-          if (splitValue.length != parseInt(splitValue[4])) {
-            let answers: string[] = [];
-            for (let i = 5; i < 5 + parseInt(splitValue[4]); i++) {
-              answers.push(splitValue[i].replace(String.fromCharCode(30), ';'));
-            }
-            closeQuestions.push(new CloseQuestion(splitValue[3], [], answers, 1));
+        } else {
+          if (splitValue.length > shortOpenQuestionLength + 6) {
+            alert("Niewłaściwy format pliku csv (pytania otwarte)")
+            throw new Error("Invalid number of field in open qestion.");
           }
-        } else if (splitValue[1] == 'L') {
-          valueQuestions.push(new ValueQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), 0, 1))
         }
+        openQuestions.push(new OpenQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), '', 1));
+      } else if (type == 'W') {
+        if (flag == true) {
+          if (splitValue.length > (6 + parseInt(splitValue[4]))) {
+            alert("Niewłaściwy format pliku csv (pytania zamknięte)")
+            throw new Error("Invalid number of field in close qestion.");
+          }
+        } else {
+          if (splitValue.length > (6 + parseInt(splitValue[4])) + 6) {
+            alert("Niewłaściwy format pliku csv (pytania zamknięte)")
+            throw new Error("Invalid number of field in close qestion.");
+          }
+        }
+        let answers: string[] = [];
+        for (let i = 5; i < 5 + parseInt(splitValue[4]); i++) {
+          answers.push(splitValue[i].replace(String.fromCharCode(30), ';'));
+        }
+        closeQuestions.push(new CloseQuestion(splitValue[3], [], answers, 1));
+      } else if (type == 'L') {
+        if (flag == true) {
+          if (splitValue.length > 6) {
+            alert("Niewłaściwy format pliku csv (pytania liczbowe)")
+          throw new Error("Invalid number of field in open qestion.");
+          }
+        } else {
+          if (splitValue.length > 6 + 6) {
+            alert("Niewłaściwy format pliku csv (pytania liczbowe)")
+          throw new Error("Invalid number of field in open qestion.");
+          }
+        }
+        valueQuestions.push(new ValueQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), 0, 1))
       }
     });
     language = splitFile[0].split(';')[2];

@@ -59,6 +59,7 @@ export class AuthenticationRecruiterService {
   }
 
   addToGroup(username, group) {
+    // todo "fix this shit"
     return new Observable( observer => {
       const params = {
         GroupName: group,

@@ -11,7 +11,7 @@ public class TranslateTest extends Handler<AuthenticatedRequest<Test>> {
 
     @Override
     public Response handleRequest(AuthenticatedRequest<Test> input, Context context) {
-        if (!input.isRecruiter() || input.getUserId() != input.getBody().getRecruiterId()) {
+        if (!input.isRecruiter() || !input.getUserId().equals(input.getBody().getRecruiterId())) {
             return new Response(403, "Recruiter permissions required");
         }
         Test test = input.getBody();

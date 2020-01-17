@@ -13,6 +13,8 @@ import { Router } from '@angular/router';
 @Injectable()
 export class FillInfoComponent implements OnInit {
 
+  private loading = false;
+
   constructor(
     private nfSer: FillInfoService,
     private router: Router
@@ -92,6 +94,7 @@ export class FillInfoComponent implements OnInit {
 
   //#region "Fill info"
   public fillInfo(): void {
+    this.loading = true;
     this.nfSer.addPer(this.inFirstName, this.inLastName.toLowerCase(), this.inDateOfBirth, this.inAddress, this.inCity, this.inPostalCode, this.inEmail, this.inPhoneNumber, this.ex, this.un, this.inAboutMe, this.inPhotoUrl).subscribe({
       error: error => ({}),
       complete: () => {

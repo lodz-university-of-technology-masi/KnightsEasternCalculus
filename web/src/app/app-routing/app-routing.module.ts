@@ -43,7 +43,8 @@ const routes: Routes = [
   },
   {
     path: 'register',
-    component: FillInfoComponent
+    component: FillInfoComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: '404',

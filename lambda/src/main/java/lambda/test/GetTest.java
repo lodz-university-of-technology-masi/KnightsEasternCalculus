@@ -5,7 +5,7 @@ import lambda.Handler;
 import model.request.AuthenticatedRequest;
 import model.request.TestRequest;
 import model.test.Test;
-import util.Response;
+import lambda.Response;
 
 public class GetTest extends Handler<AuthenticatedRequest<TestRequest>> {
     @Override

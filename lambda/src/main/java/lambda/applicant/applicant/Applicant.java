@@ -1,4 +1,4 @@
-package model.applicant;
+package lambda.applicant.applicant;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 

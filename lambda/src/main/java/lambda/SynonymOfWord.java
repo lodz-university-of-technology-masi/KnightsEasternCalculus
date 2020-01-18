@@ -1,7 +1,6 @@
 package lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import util.Response;
 
 public class SynonymOfWord extends Handler<String> {
     @Override

@@ -4,9 +4,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
-import model.applicant.ApplicantListItem;
+import lambda.applicant.applicant.ApplicantListItem;
 import model.request.AuthenticatedRequest;
-import util.Response;
+import lambda.Response;
 import util.Utils;
 
 import java.util.*;

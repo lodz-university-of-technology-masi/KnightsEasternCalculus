@@ -6,7 +6,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
 import model.request.AuthenticatedRequest;
 import model.test.TestInstance;
-import util.Response;
+import lambda.Response;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -5,7 +5,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
 import model.request.AuthenticatedRequest;
 import model.test.Test;
-import util.Response;
+import lambda.Response;
 
 public class UpdateTest extends Handler<AuthenticatedRequest<Test>> {
     private DynamoDBMapperConfig dynamoDBMapperConfig = new DynamoDBMapperConfig.Builder()

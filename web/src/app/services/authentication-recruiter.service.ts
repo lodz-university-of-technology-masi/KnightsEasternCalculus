@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import {BehaviorSubject, Observable, Observer} from 'rxjs';
+import {BehaviorSubject, Observable, Observer, throwError} from 'rxjs';
 import * as AWS from 'aws-sdk';
 import * as Globals from '../app-consts';
 import * as jwt_decode from 'jwt-decode';
@@ -21,6 +21,7 @@ export class AuthenticationRecruiterService {
   private username = new BehaviorSubject('');
   public currUsername = this.username.asObservable();
   private sessionUserAttributes;
+  private hasExpired = false;
 
   constructor() {}
 
@@ -136,6 +137,7 @@ export class AuthenticationRecruiterService {
       cUser.confirmRegistration(code, false, (err, result) => {
         if (err) {
           console.log(err);
+          observer.error(err);
           return;
         }
 
@@ -143,6 +145,8 @@ export class AuthenticationRecruiterService {
           this.cognitoUser.changePassword('password', password, (e, r) => {
             if (e) {
               console.log(e);
+              observer.error(e);
+              return;
             }
           });
 
@@ -248,6 +252,19 @@ export class AuthenticationRecruiterService {
       this.getUser().signOut();
     }
     this.cognitoUser = null;
+  }
+
+  wasExpired() {
+    if (this.hasExpired) {
+      this.hasExpired = false;
+      return true;
+    }
+    return false;
+  }
+
+  expire() {
+    this.hasExpired = true;
+    this.logOut();
   }
 
 }

@@ -134,7 +134,7 @@ export class FillInfoComponent implements OnInit {
             this.photoUploaded = true;
             this.loadingPhoto = false;
             if (this.profileUploaded) {
-              this.router.navigate(['/']);
+              this.router.navigateByUrl('/applicant');
             }
           },
           (error: HttpErrorResponse) => {
@@ -149,7 +149,7 @@ export class FillInfoComponent implements OnInit {
           this.profileUploaded = true;
           this.loadingProfile = false;
           if (this.photoUploaded) {
-            this.router.navigate(['/']);
+            this.router.navigateByUrl('/applicant');
           }
         },
         (error: HttpErrorResponse) => {

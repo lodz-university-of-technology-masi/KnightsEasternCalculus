@@ -229,7 +229,7 @@
       <!-- BOTTOM -->
       <div class="col-11 align-self-center mt-5 mb-3">
         <button class="btn btn-primary float-right" (click)="fillInfo()" [disabled]="loadingPhoto || loadingProfile ||
-          !firstName.valid || !lastName.valid || !dateOfBirth.valid || !phoneNumber.valid || !address.valid || !city.valid || !postalCode.valid
+          firstName.invalid || lastName.invalid || dateOfBirth.invalid || phoneNumber.invalid || address.invalid || city.invalid || postalCode.invalid
           || (photo == undefined && !this.photoUploaded)">
           Zarejestruj
         </button>

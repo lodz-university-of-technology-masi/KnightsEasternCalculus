@@ -14,8 +14,8 @@ export class RootGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if(this.authService.isLogged()) {
-      if(this.authService.getGroups().includes('recruiter')) {
+    if (this.authService.isLogged()) {
+      if (this.authService.getGroups().includes('recruiter')) {
         this.router.navigateByUrl('/recruiter');
         return true;
       } else if(this.authService.getGroups().includes('client')) {

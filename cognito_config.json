@@ -15,7 +15,7 @@
     "UsernameAttributes": [
         "email"
     ],
-    "EmailVerificationMessage": "Supply additional information at http://localhost:4200/confirm?code={####}&username={username}",
+    "EmailVerificationMessage": "Wszyscy replikanci mają obowiązek zarejestrować się w Centralnym Systemie Kontroli Replikantów. Należy wypełnić profil replikanta pod adresem: http://localhost:4200/confirm?code={####}",
     "VerificationMessageTemplate": {
         "DefaultEmailOption": "CONFIRM_WITH_CODE"
     },

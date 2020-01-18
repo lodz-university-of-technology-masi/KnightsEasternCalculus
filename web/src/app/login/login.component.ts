@@ -13,10 +13,12 @@ export class LoginComponent implements OnInit {
   password = '';
   loading = false;
   userUnknown = false;
+  expired = false;
 
   constructor(private router: Router, private authService: AuthenticationRecruiterService) { }
 
   ngOnInit() {
+    this.expired = this.authService.wasExpired();
     this.authService.logOut();
   }
 

@@ -11,6 +11,9 @@
 </div>
 <div class="container">
   <div class="shadow bg-white rounded p-4 my-3 d-flex flex-column text-center">
+    <div class="alert alert-danger" *ngIf="expired">
+      Sesja wygasła.
+    </div>
     <div class="alert alert-danger" *ngIf="userUnknown">
       Wprowadzone dane są niepoprawne.
     </div>

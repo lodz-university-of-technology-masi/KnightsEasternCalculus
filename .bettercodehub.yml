@@ -1,12 +1,10 @@
+ 
 component_depth: 6
 languages:
-- name: java
-        production:
-                exclude:
-                        - /lambda/src/test/.*\.java
-        test:
-                include:
-                        - /lambda/src/test/.*\.java
+- java
 exclude:
-        - /node_modules/.*
-        - /web/.*
+- /node_modules/.*
+- /web/.*
+test:
+    include:
+      - /lambda/src/test/.*\.java

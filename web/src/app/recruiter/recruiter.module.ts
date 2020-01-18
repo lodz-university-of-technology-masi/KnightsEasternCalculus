@@ -18,6 +18,7 @@ import { AssignModalComponent } from '../common-components/assign-modal/assign-m
 import { GradeTestComponent } from './grade-test/grade-test.component';
 import { ImportTestComponent } from './import-test/import-test.component';
 import { CheckTestsComponent } from './check-tests/check-tests.component';
+import { SolvedTestComponent } from './solved-test/solved-test.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { CheckTestsComponent } from './check-tests/check-tests.component';
     AssignModalComponent,
     GradeTestComponent,
     ImportTestComponent,
-    CheckTestsComponent
+    CheckTestsComponent,
+    SolvedTestComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,2 @@
+<app-test-results *ngIf="applicantId && timestamp else loading" [applicantId]="applicantId" [testTimestamp]="timestamp"></app-test-results>
+<ng-template #loading><div class="text-center"><div class="spinner-grow mt-2"></div></div></ng-template>

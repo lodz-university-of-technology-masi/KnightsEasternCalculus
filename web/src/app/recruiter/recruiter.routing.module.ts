@@ -11,6 +11,9 @@ import { UpdateTestComponent } from './update-test/update-test.component';
 import { GradeTestComponent } from './grade-test/grade-test.component';
 import { ImportTestComponent } from './import-test/import-test.component';
 import {CheckTestsComponent} from './check-tests/check-tests.component';
+import {TestRequest} from '@angular/common/http/testing';
+import {TestResultsComponent} from '../common-components/test-results/test-results.component';
+import {SolvedTestComponent} from './solved-test/solved-test.component';
 
 const routes: Routes = [
   {
@@ -54,6 +57,10 @@ const routes: Routes = [
       {
         path: 'unchecked-tests',
         component: CheckTestsComponent
+      },
+      {
+        path: 'applicant/:id/solved/:timestamp',
+        component: SolvedTestComponent
       }
     ]
   }

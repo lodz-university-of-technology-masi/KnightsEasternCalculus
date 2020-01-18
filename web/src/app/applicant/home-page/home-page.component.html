@@ -1,4 +1,4 @@
-<h2 class="mt-4">Strona główna</h2>
+<h2 class="mt-4">Kokpit</h2>
 <p class="mt-5 mb-3 lead text-center">Witaj! {{dayTime.charAt(0).toUpperCase() + dayTime.slice(1)}} testy? Dziś jest {{date}}r.</p>
 <p *ngIf="testCount != undefined; else loading" class="text-center">Masz <span class="text-info font-weight-bold">{{testCount}} </span>
   <ng-container *ngIf="testCount == 1">test</ng-container>

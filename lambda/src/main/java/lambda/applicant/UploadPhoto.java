@@ -9,9 +9,9 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.Base64;
 import lambda.Handler;
-import model.applicant.Applicant;
+import lambda.Response;
+import lambda.applicant.applicant.Applicant;
 import model.request.AuthenticatedRequest;
-import util.Response;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

@@ -40,8 +40,26 @@ export class SolveTestComponent implements OnInit {
     }
     this.test.receivedScore = 0;
 
+    this.test.openQuestions.forEach( q => {
+      if (!q.answer) {
+        q.answer = '';
+      }
+    });
+
+    this.test.closeQuestions.forEach( q => {
+      if (!q.chosenAnswers) {
+        q.chosenAnswers = [];
+      }
+    });
+
+    this.test.valueQuestions.forEach( q => {
+      if (!q.answer) {
+        q.answer = 0;
+      }
+    });
+
     this.testService.sendSolvedTest(this.test).subscribe( result => {
-      console.log(result);
+      console.log('solve-test', result);
       if (result) {
         this.router.navigateByUrl('applicant/tests');
       }

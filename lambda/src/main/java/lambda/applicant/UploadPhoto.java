@@ -1,6 +1,5 @@
 package lambda.applicant;
 
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.s3.AmazonS3;

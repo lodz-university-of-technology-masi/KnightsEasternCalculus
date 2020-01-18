@@ -215,7 +215,7 @@ export class TestService {
       this.httpClient.patch<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantId + '/tests', test, httpOptions)
         .subscribe({
           error: err => {
-            console.log(err);
+            console.log('error', err);
             observer.error(err);
           },
           next: value => {

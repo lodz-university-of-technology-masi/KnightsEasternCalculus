@@ -4,7 +4,6 @@
     <tr>
       <th scope="col" width="5%">#</th>
       <th scope="col">Name</th>
-      <th scope="col">Author</th>
       <th scope="col">Language</th>
       <th scope="col"></th>
     </tr>
@@ -14,16 +13,20 @@
       <tr *ngFor="let test of tests; let i = index" style="cursor: pointer;">
         <th>{{i+1}}</th>
         <th>{{test.title}}</th>
-        <th>{{test.recruiterId}}</th>
         <th>{{test.language}}</th>
         <th class="text-right">
-          <button class="btn btn-outline-secondary mr-2" (click)="translateTest(test)">Tłumacz</button>
-          <button class="btn btn-primary mr-2" [ngbPopover]="assignPopover" triggers="manual"
-            popoverTitle="Przypisz kandydata" #p="ngbPopover" autoClose="outside"
-            (click)="toggleAssign(p, test.testId, test.title)" popoverClass="assign-popover">Przypisz</button>
-          <button class="btn btn-outline-secondary mr-2" (click)="downloadTest(test.testId)">Pobierz</button>
-          <button class="btn btn-success mr-2" [routerLink]="['update-test', test.testId]" *ngIf="getUser() == test.recruiterId">Zmień</button>
-          <button class="btn btn-danger" (click)="deleteTest(test)">Usuń</button>
+          <button class="btn btn-outline-primary mr-2" [ngbPopover]="assignPopover" triggers="manual"
+                  popoverTitle="Przypisz kandydata" #p="ngbPopover" autoClose="outside"
+                  (click)="toggleAssign(p, test.testId, test.title)" popoverClass="assign-popover">Przypisz</button>
+          <div ngbDropdown placement="top-right" class="d-inline-block">
+            <button class="btn" ngbDropdownToggle></button>
+            <div ngbDropdownMenu>
+              <button ngbDropdownItem class="text-dark" (click)="translateTest(test)">Tłumacz</button>
+              <button ngbDropdownItem class="text-dark" (click)="downloadTest(test.testId)">Pobierz</button>
+              <button ngbDropdownItem class="text-warning" [routerLink]="['update-test', test.testId]" *ngIf="getUser() == test.recruiterId">Edytuj</button>
+              <button ngbDropdownItem class="text-danger" (click)="deleteTest(test)">Usuń</button>
+            </div>
+          </div>
         </th>
       </tr>
     </tbody>
@@ -36,11 +39,6 @@
   <input type="file" (change)="loadTest($event.target.files)">
   <button class="btn btn-success" (click)="importTest()">Importuj</button>
 </div>
-
-<!-- <div class="mt-3">
-  <h5>Podgląd pliku</h5>
-  <pre> {{fileContent}} </pre>
-</div> -->
 
 <ng-template #assignPopover let-id="id" , let-title="title">
   <form class="form-inline">

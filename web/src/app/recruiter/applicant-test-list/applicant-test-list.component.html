@@ -14,7 +14,7 @@
           <span class="badge badge-success" *ngIf="test.status == 2">OCENIONY</span>
           <span class="badge badge-danger" *ngIf="test.status == 0">NIE ROZWIĄZANY</span>
           <div ngbDropdown placement="top-right" class="d-inline-block">
-            <button class="btn " ngbDropdownToggle></button>
+            <button class="btn" ngbDropdownToggle></button>
             <div ngbDropdownMenu>
               <button ngbDropdownItem class="text-danger" (click)="open(deleteModal, test.timestamp)">Usuń</button>
             </div>

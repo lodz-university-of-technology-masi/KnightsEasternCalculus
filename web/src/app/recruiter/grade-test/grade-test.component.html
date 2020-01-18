@@ -1,103 +1,82 @@
 <ng-container *ngIf="test; else loading">
-  <h2 class="mt-2">{{test.title}}</h2>
-  <div class="card my-3" *ngIf="test.openQuestions.length != 0">
-    <div class="card my-3" *ngFor="let openQuestion of test.openQuestions; let k = index">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-10">Pytanie {{k+test.closeQuestions.length+1}}</div>
-          <div class="col">
-            <input type="number" id="scoreOpen" name="score" class="form-control form-control-sm"
-                   [(ngModel)]="openQuestion.receivedScore" required min="0" max="{{openQuestion.maxScore}}" #scoreOpen="ngModel">
+  <div class="container my-4">
+    <div class="row justify-content-md-center border rounded p-3">
+      <div class="col col-lg-3 text-left">{{test.title}}</div>
+      <div class="col col-lg-3 text-center">{{test.receivedScore}} / {{test.maxScore}} pkt</div>
+      <div class="col col-lg-3 text-right">{{applicant.firstName}} {{applicant.lastName}}</div>
+    </div>
+  </div>
+  <div class="card my-3" *ngFor="let closedQuestion of test.closeQuestions; let i = index">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-11">Pytanie {{i+1}}</div>
+        <div class="col">{{closedQuestion.receivedScore}}/{{closedQuestion.answerScore}}</div>
+      </div>
+    </div>
+    <div class="row no-gutters">
+      <div class="col-md-10">
+        <div class="card-body">
+          <label class="card-title h6">{{closedQuestion.question}}</label>
+          <div class="form-check" *ngFor="let answer of closedQuestion.answers; let j = index">
+            <input type="checkbox" id="{{j}},{{i}}" name="{{closedQuestion.question}}" value="{{answer}}"
+                   [checked]="closedQuestion.chosenAnswers.includes(j)" disabled>
+            <label class="form-check-label" for="{{j}},{{i}}">{{answer}}</label>
           </div>
-          <div class="col">/{{openQuestion.maxScore}}</div>
         </div>
       </div>
-      <div class="row no-gutters">
-        <div class="col-md-auto">
-          <div class="card-body text-center">{{openQuestion.maxScore}}pkt.</div>
+    </div>
+  </div>
+  <div class="card my-3" *ngFor="let question of test.openQuestions; let j = index">
+    <div class="card-header">Pytanie {{j+test.closeQuestions.length+1}}</div>
+    <div class="row no-gutters">
+      <div class="col-md-auto">
+        <div class="card-body text-center">
+          <input type="number" name="score" class="form-control form-control-sm"
+                 [(ngModel)]="question.receivedScore" required min="0" max="{{question.maxScore}}" #scoreOpen="ngModel">
+           / {{question.maxScore}} pkt
         </div>
       </div>
-      <div class="container col-md-10">
-        <div class="card-body form-group">
-          <label class="card-title h6 mb-4">{{openQuestion.question}}</label>
-          <div class="row">
-            <div class="col-10">
-              <textarea class="form-control" disabled [ngModel]="openQuestion.answer"></textarea>
-            </div>
+      <div class="col-md-10">
+        <div class="card-body">
+          <label class="card-title h6">{{question.question}}</label>
+          <textarea class="form-control" disabled style="background: #FFF !important; color: #000 !important;" [value]="question.answer"></textarea>
+          <div *ngIf="question.correctAnswer" class="mt-5">
+            <label class="text-muted">Przykładowa poprawna odpowiedź:</label>
+            <p class="card-text text-muted">{{question.correctAnswer}}</p>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card my-3" *ngFor="let question of test.valueQuestions; let j = index">
+    <div class="card-header">Pytanie {{j+test.closeQuestions.length+test.openQuestions.length+1}}</div>
+    <div class="row no-gutters">
+      <div class="col-md-auto">
+        <div class="card-body text-center">
+          <input type="number" name="score" class="form-control form-control-sm"
+                 [(ngModel)]="question.receivedScore" required min="0" max="{{question.maxScore}}" #scoreOpen="ngModel">
+          / {{question.maxScore}} pkt
+        </div>
+      </div>
+      <div class="col-md-10">
+        <div class="card-body">
+          <label class="card-title h6">{{question.question}}</label>
           <div class="row">
-            <div class="col">
-              <p></p>
+            <div class="col-6">
+              <label>Udzielona odpowiedź:</label>
+              <input type="number" class="form-control" disabled style="background: #FFF !important; color: #000 !important;" [value]="question.answer"/>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-2">
-              Correct answer:
-            </div>
-            <div class="col">
-              <textarea class="form-control" disabled [ngModel]="openQuestion.correctAnswer"></textarea>
+            <div class="col-6">
+              <label>Poprawna odpowiedź:</label>
+              <input type="number" class="form-control" disabled style="background: #FFF !important; color: #000 !important;" [value]="question.correctAnswer"/>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf="test.closeQuestions.length != 0">
-    <div class="card my-3" *ngFor="let closedQuestion of test.closeQuestions; let i = index">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-11">Pytanie {{i+1}}</div>
-          <div class="col">{{closedQuestion.receivedScore}}/{{closedQuestion.answerScore}}</div>
-        </div>
-      </div>
-      <div class="row no-gutters">
-        <div class="col-md-10">
-          <div class="card-body">
-            <label class="card-title h6">{{closedQuestion.question}}</label>
-            <div class="form-check" *ngFor="let answer of closedQuestion.answers; let j = index">
-              <input type="checkbox" id="{{j}},{{i}}" name="{{closedQuestion.question}}" value="{{answer}}"
-                     [checked]="closedQuestion.chosenAnswers.includes(j)" disabled>
-              <label class="form-check-label" for="{{j}},{{i}}">{{answer}}</label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card my-3" *ngIf="test.valueQuestions.length != 0">
-    <div class="card my-3" *ngFor="let valueQuestion of test.valueQuestions; let k = index">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-11">Pytanie {{k+test.openQuestions.length+test.closeQuestions.length+1}}</div>
-          <div class="col">{{valueQuestion.receivedScore}}/{{valueQuestion.maxScore}}</div>
-        </div>
-      </div>
-      <div class="container col-md-10">
-        <div class="card-body form-group">
-          <label class="card-title h6 mb-4">{{valueQuestion.question}}</label>
-          <div class="row">
-            <div class="col-10">
-              <textarea class="form-control" disabled [ngModel]="valueQuestion.answer"></textarea>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p></p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-2">
-              Correct answer:
-            </div>
-            <div class="col">
-              <textarea class="form-control" disabled [ngModel]="valueQuestion.correctAnswer"></textarea>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <button type="button" class="btn btn-primary" (click)="grade()">Oceń</button>
+  <button type="button" class="float-right btn btn-primary" [disabled]="sending" (click)="grade()">Oceń</button><div *ngIf="sending" class="float-right spinner-grow mr-3 mt-2"></div>
+  <div class="clearfix"></div>
   <div class="alert alert-danger my-3" *ngIf="!valid">Błędne oceny</div>
 </ng-container>
-<ng-template #loading><div class="float-right spinner-grow mr-3 mt-2"></div></ng-template>
+<ng-template #loading><div class="text-center"><div class="spinner-grow mr-3 mt-2"></div></div></ng-template>

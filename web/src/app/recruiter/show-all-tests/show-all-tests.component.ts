@@ -139,7 +139,7 @@ export class ShowAllTestsComponent implements OnInit {
             });
     }
 
-    toggleAssign(popover, id: string, title: string) {
+    toggleAssign(popover, id: number, title: string) {
         if (popover.isOpen()) {
             popover.close();
         } else {

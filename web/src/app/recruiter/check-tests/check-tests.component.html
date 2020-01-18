@@ -1,12 +1,18 @@
+<div class="mb-2">
+<h5 class="d-inline">Sprawdź testy</h5>
+</div>
 <ng-container *ngIf="tests; else loading">
-  <ul class="list-group">
-    <ng-container *ngFor="let test of tests; let i = index">
-      <a class="list-group-item d-flex justify-content-between align-items-center list-group-item-action text-dark"
-         routerLink="../applicant/{{test.applicantId}}/test/{{test.timestamp}}">
-        {{test.title}}
-        <span class="d-flex">{{test.applicantId}}</span>
-      </a>
-    </ng-container>
-  </ul>
+  <ng-container *ngIf="tests.length > 0; else noContent">
+    <ul class="list-group">
+      <ng-container *ngFor="let test of tests; let i = index">
+        <a class="list-group-item d-flex justify-content-between align-items-center list-group-item-action text-dark"
+           routerLink="../applicant/{{test.applicantId}}/test/{{test.timestamp}}">
+          {{test.title}}
+          <span class="d-flex">{{test.applicantId}}</span>
+        </a>
+      </ng-container>
+    </ul>
+  </ng-container>
 </ng-container>
-<ng-template #loading><div class="float spinner-grow mr-3 mt-2"></div></ng-template>
+<ng-template #loading><div class="text-center"><div class="spinner-grow mr-3 mt-2"></div></div></ng-template>
+<ng-template #noContent><span>(brak)</span></ng-template>

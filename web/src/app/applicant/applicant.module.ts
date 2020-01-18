@@ -10,6 +10,7 @@ import {CommonComponentsModule} from '../common-components/common-components.mod
 import { TestListComponent } from './test-list/test-list.component';
 import { SolvedTestComponent } from './solved-test/solved-test.component';
 import {SolveTestComponent} from './solve-test/solve-test.component';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -27,7 +28,8 @@ import {SolveTestComponent} from './solve-test/solve-test.component';
     CommonModule,
     FormsModule,
     ApplicantRoutingModule,
-    CommonComponentsModule
+    CommonComponentsModule,
+    NgbDropdownModule
   ]
 })
 export class ApplicantModule { }

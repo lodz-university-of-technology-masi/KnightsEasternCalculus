@@ -47,6 +47,31 @@
       </div>
     </div>
   </div>
+  <div class="card my-3" *ngFor="let question of test.valueQuestions; let j = index">
+    <div class="card-header">Pytanie {{j+test.closeQuestions.length+test.openQuestions.length+1}}</div>
+    <div class="row no-gutters">
+      <div class="col-md-auto">
+        <div class="card-body text-center" [ngClass]="{'text-success': question.receivedScore === question.maxScore, 'text-danger': question.receivedScore === 0}">
+          {{question.receivedScore}} / {{question.maxScore}} pkt
+        </div>
+      </div>
+      <div class="col-md-10">
+        <div class="card-body">
+          <label class="card-title h6">{{question.question}}</label>
+          <div class="row">
+            <div class="col-6">
+              <label>Udzielona odpowiedź:</label>
+              <input type="number" class="form-control" disabled style="background: #FFF !important; color: #000 !important;" [value]="question.answer"/>
+            </div>
+            <div class="col-6">
+              <label>Poprawna odpowiedź:</label>
+              <input type="number" class="form-control" disabled style="background: #FFF !important; color: #000 !important;" [value]="question.correctAnswer"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </ng-container>
 <ng-template #loading>
   <div class="text-center">

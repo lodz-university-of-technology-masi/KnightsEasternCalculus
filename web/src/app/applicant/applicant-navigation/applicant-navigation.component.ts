@@ -13,4 +13,7 @@ export class ApplicantNavigationComponent implements OnInit {
   ngOnInit() {
   }
 
+  logout(): void {
+    this.authService.logOut();
+  }
 }

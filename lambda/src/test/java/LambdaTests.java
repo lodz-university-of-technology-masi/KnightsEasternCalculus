@@ -11,7 +11,7 @@ import util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Woooork {
+public class LambdaTests {
 
     @Test
     public void capitalize() {

@@ -1,8 +1,12 @@
-import { Component, OnInit, Injectable } from '@angular/core';
-import { FillInfoService } from '../services/fill-info.service';
+import {Component, OnInit, Injectable, ViewChild, ElementRef} from '@angular/core';
+import {FillInfoService} from '../services/fill-info.service';
 import {Experience} from '../model/experience';
 import {University} from '../model/university';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
+import {AuthenticationRecruiterService} from '../services/authentication-recruiter.service';
+import {TestInstance} from '../model/test-instance';
+import {HttpErrorResponse} from '@angular/common/http';
+import * as Globals from '../app-consts';
 
 @Component({
   selector: 'app-fill-info',
@@ -13,12 +17,18 @@ import { Router } from '@angular/router';
 @Injectable()
 export class FillInfoComponent implements OnInit {
 
-  private loading = false;
+  private loadingPhoto = false;
+  private loadingProfile = false;
+  @ViewChild('fileLabel', {static: false})
+  labelImport: ElementRef;
 
   constructor(
     private nfSer: FillInfoService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private authService: AuthenticationRecruiterService
+  ) {
+  }
+
   id: string;                     // id
   fi: string;                     // firstName
   la: string;                     // lastName
@@ -54,9 +64,24 @@ export class FillInfoComponent implements OnInit {
   inUname: string;
   inUmajor: string;
   inUyears: string;
-  inUdegree: string;
+  inUdegree = 'lic.';
 
-  ngOnInit() {}
+  photo: File;
+  photoUploaded = false;
+  profileUploaded = false;
+
+  buttonEnabled = false;
+
+  ngOnInit() {
+    this.checkIfImageExists();
+  }
+
+  checkIfImageExists() {
+    const img = new Image();
+    img.onload = () => this.photoUploaded = true;
+    img.src = Globals.apiBaseUrl + '/applicants/' + this.authService.getUserId() + '/photos';
+  }
+
   addExperience(): void {
     this.inputExperience = new Experience(this.inEname, this.inEposition, this.inEyears);
     this.ex.push(this.inputExperience);
@@ -92,15 +117,48 @@ export class FillInfoComponent implements OnInit {
     this.selectedUniversity = university;
   }
 
-  //#region "Fill info"
-  public fillInfo(): void {
-    this.loading = true;
-    this.nfSer.addPer(this.inFirstName, this.inLastName.toLowerCase(), this.inDateOfBirth, this.inAddress, this.inCity, this.inPostalCode, this.inEmail, this.inPhoneNumber, this.ex, this.un, this.inAboutMe, this.inPhotoUrl).subscribe({
-      error: error => ({}),
-      complete: () => {
-        this.router.navigate(['/']);
-      }
-    });
+  onChooseFile(files: FileList): void {
+    this.labelImport.nativeElement.innerText = files.item(0).name;
+    this.photo = files.item(0);
   }
-  //#endregion
+
+  public fillInfo(): void {
+    this.loadingPhoto = true;
+    this.loadingProfile = true;
+
+    if (!this.photoUploaded) {
+      const reader = new FileReader();
+      reader.readAsDataURL(this.photo);
+      reader.onload = () => {
+        this.nfSer.uploadPhoto(this.authService.getUserId(), reader.result as undefined as string).subscribe(res => {
+            this.photoUploaded = true;
+            this.loadingPhoto = false;
+            if (this.profileUploaded) {
+              this.router.navigate(['/']);
+            }
+          },
+          (error: HttpErrorResponse) => {
+            this.loadingPhoto = false;
+            if (error.status === 409) {
+              this.photoUploaded = true;
+            }
+            console.log(error);
+          });
+      }
+      this.nfSer.addPer(this.inFirstName, this.inLastName, this.inDateOfBirth, this.inAddress, this.inCity, this.inPostalCode, this.inEmail, this.inPhoneNumber, this.ex, this.un, this.inAboutMe).subscribe(res => {
+          this.profileUploaded = true;
+          this.loadingProfile = false;
+          if (this.photoUploaded) {
+            this.router.navigate(['/']);
+          }
+        },
+        (error: HttpErrorResponse) => {
+          this.loadingProfile = false;
+          if (error.status === 409) {
+            this.profileUploaded = true;
+          }
+          console.log(error);
+        });
+    };
+  }
 }

@@ -19,7 +19,6 @@ public class Applicant {
     private List<Univerity> universities;
     private List<Experience> experiences;
     private String aboutMe;
-    private String photoUrl;
 
     public Applicant() {
 
@@ -122,11 +121,4 @@ public class Applicant {
         this.aboutMe = aboutMe;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
 }

@@ -57,6 +57,9 @@ for lam in lambda_data:
     subprocess.call("aws lambda create-function --function-name {} --code {} --handler {}::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(
         lam[0], bucket_spec, lam[1], role), shell=True)
 
+subprocess.call("aws lambda create-function --function-name upload-photo --code {} --handler lambda.applicant.UploadPhoto::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(bucket_spec, role_tmp.format(accountID, "lambda-s3")), shell=True)
+subprocess.call("aws lambda create-function --function-name get-photo --code {} --handler lambda.applicant.GetPhoto::handleRequest --runtime java8 --role {} --memory-size 512 --timeout 10".format(bucket_spec, role_tmp.format(accountID, "lambda-s3")), shell=True)
+
 print("Creating Cognito User Pool...")
 
 pool_id = json.loads(subprocess.check_output(
@@ -112,7 +115,7 @@ with open('API-documentation.json', 'r') as infile:
             line = re.sub('arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:.*?:function:',
                                  'arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:{}:function:'.format(accountID), line, flags=re.DOTALL)
             outfile.write(re.sub('"arn:aws:cognito-idp:us-east-1:.*?"',
-                                 '"arn:aws:cognito-idp:us-east-1:{}:userpool/{}"'.format(accountID, pool_id), line, flags=re.DOTALL))            
+                                 '"arn:aws:cognito-idp:us-east-1:{}:userpool/{}"'.format(accountID, pool_id), line, flags=re.DOTALL))
 
 print("Creating gateways...")
 gatewayID = json.loads(subprocess.check_output(

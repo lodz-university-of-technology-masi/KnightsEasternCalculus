@@ -1,7 +1,7 @@
 export class SolvableValueQuestion {
     question: string;
     correctAnswer: number;
-    answer: number;
+    answer = 0;
     maxScore: number;
     receivedScore: number;
 

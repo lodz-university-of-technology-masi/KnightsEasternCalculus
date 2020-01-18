@@ -16,6 +16,7 @@ import {AuthGuardService} from './services/auth-guard.service';
 import { DenyComponent } from './deny/deny.component';
 import {RequestAuthInterceptor} from './interceptors/RequestAuthInterceptor';
 import {ChangePasswordGuard} from './change-password/change-password-guard';
+import {SecurePipe} from './pipes/SecurePipe';
 
 @NgModule({
   declarations: [

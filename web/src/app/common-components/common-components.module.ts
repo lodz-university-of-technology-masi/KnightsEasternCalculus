@@ -4,14 +4,16 @@ import {ApplicantProfileComponent} from './applicant-profile/applicant-profile.c
 import {RouterModule} from '@angular/router';
 import { TestResultsComponent } from './test-results/test-results.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {SecurePipe} from '../pipes/SecurePipe';
 
 
 
 @NgModule({
-  declarations: [ApplicantProfileComponent, TestResultsComponent],
+  declarations: [ApplicantProfileComponent, TestResultsComponent, SecurePipe],
   exports: [
     ApplicantProfileComponent,
-    TestResultsComponent
+    TestResultsComponent,
+    SecurePipe
   ],
   imports: [
     NgbModule,

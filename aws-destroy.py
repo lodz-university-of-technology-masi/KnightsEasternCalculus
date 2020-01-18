@@ -34,6 +34,9 @@ lambda_data = [("get-applicant", "lambda.applicant.GetApplicant"), ("get-applica
                ("get-test-instances-for-user", "lambda.test.GetTestInstancesForUser"), ("get-test-instance", "lambda.test.GetTestInstance"), ("grade-test", "lambda.test.GradeTest"),
                ("delete-test-instance", "lambda.test.DeleteTestInstance"), ("get-unchecked-test-instances", "lambda.test.GetUncheckedTestInstances"), ("translate-test", "lambda.test.TranslateTest")]
 
+lambda_data.append(("upload-photo", ""))
+lambda_data.append(("get-photo", ""))
+
 print("Deleting lambdas...")
 
 for lam in lambda_data:

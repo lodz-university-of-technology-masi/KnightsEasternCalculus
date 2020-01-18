@@ -1,3 +1,13 @@
 component_depth: 1
 languages:
-- java
+        - name: java
+          production:
+                  include:
+                          - /lambda/src/main/*
+          test:
+                  include:
+                          - /lambda/src/test/java/Woooork.java
+
+exclude:
+        - /web/*
+        - /node_modules/*

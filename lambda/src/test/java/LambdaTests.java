@@ -1,8 +1,10 @@
+import lambda.applicant.AssignApplicant;
 import lambda.test.AddTestInstance;
 import lambda.test.GetUncheckedTestInstances;
-import lambda.applicant.applicant.Applicant;
 import lambda.applicant.applicant.Experience;
 import lambda.applicant.applicant.Univerity;
+import lambda.applicant.applicant.Applicant;
+import lambda.applicant.UploadPhoto;
 import model.test.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -62,6 +64,8 @@ public class LambdaTests {
 
         AddTestInstance adt = new AddTestInstance();
         GetUncheckedTestInstances guti = new GetUncheckedTestInstances();
+        AssignApplicant aa = new AssignApplicant();
+        UploadPhoto up = new UploadPhoto();
 
         Assert.assertNotEquals(a.getUniversities(), null);
     }

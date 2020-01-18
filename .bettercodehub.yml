@@ -8,3 +8,5 @@ exclude:
 test:
     include:
       - /lambda/src/test/.*\.java
+    exclude:
+      - /lambda/src/main/.*\.java

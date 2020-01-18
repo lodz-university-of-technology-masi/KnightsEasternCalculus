@@ -2,8 +2,8 @@ package lambda.applicant;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
-import model.applicant.Applicant;
-import util.Response;
+import lambda.Response;
+import lambda.applicant.applicant.Applicant;
 
 public class AddApplicant extends Handler<Applicant> {
 

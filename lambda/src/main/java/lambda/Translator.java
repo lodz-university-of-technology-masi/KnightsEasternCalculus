@@ -1,9 +1,8 @@
 package lambda;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.tools.SynonymResponse;
-import model.tools.TranslateResponse;
-import model.tools.Word;
+import lambda.tools.SynonymResponse;
+import lambda.tools.Word;
 import model.test.CloseQuestion;
 import model.test.OpenQuestion;
 import model.test.Test;

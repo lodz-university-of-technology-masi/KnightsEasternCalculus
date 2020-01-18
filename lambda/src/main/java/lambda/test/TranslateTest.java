@@ -5,7 +5,7 @@ import lambda.Handler;
 import lambda.Translator;
 import model.request.AuthenticatedRequest;
 import model.test.Test;
-import util.Response;
+import lambda.Response;
 
 public class TranslateTest extends Handler<AuthenticatedRequest<Test>> {
 

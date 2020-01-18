@@ -1,14 +1,9 @@
-import lambda.applicant.AddApplicant;
 import lambda.test.AddTestInstance;
-import lambda.test.ExportTest;
 import lambda.test.GetUncheckedTestInstances;
-import model.applicant.Applicant;
-import model.applicant.Experience;
-import model.applicant.Univerity;
+import lambda.applicant.applicant.Applicant;
+import lambda.applicant.applicant.Experience;
+import lambda.applicant.applicant.Univerity;
 import model.test.*;
-import model.tools.Definition;
-import model.tools.Example;
-import model.tools.Word;
 import org.junit.Assert;
 import org.junit.Test;
 import util.Utils;

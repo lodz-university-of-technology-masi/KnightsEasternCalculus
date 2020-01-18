@@ -1,14 +1,15 @@
-package model.applicant;
+package lambda.applicant.applicant;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 
 @DynamoDBDocument
-public class Experience {
+public class Univerity {
     private String name;
-    private String position;
+    private String major;
     private String years;
+    private String degree;
 
-    public Experience() {
+    public Univerity() {
 
     }
 
@@ -20,12 +21,12 @@ public class Experience {
         this.name = name;
     }
 
-    public String getPosition() {
-        return position;
+    public String getMajor() {
+        return major;
     }
 
-    public void setPosition(String position) {
-        this.position = position;
+    public void setMajor(String major) {
+        this.major = major;
     }
 
     public String getYears() {
@@ -34,5 +35,13 @@ public class Experience {
 
     public void setYears(String years) {
         this.years = years;
+    }
+
+    public String getDegree() {
+        return degree;
+    }
+
+    public void setDegree(String degree) {
+        this.degree = degree;
     }
 }

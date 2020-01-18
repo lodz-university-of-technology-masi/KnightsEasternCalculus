@@ -2,8 +2,7 @@ package lambda.test;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
-import model.test.Test;
-import util.Response;
+import lambda.Response;
 
 public class ImportTest extends Handler<String> {
 

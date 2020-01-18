@@ -1,4 +1,4 @@
-package model.tools;
+package lambda.tools;
 
 public class Word {
     private String gen;

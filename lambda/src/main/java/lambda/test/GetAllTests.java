@@ -1,20 +1,14 @@
 package lambda.test;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
-import model.applicant.ApplicantListItem;
 import model.request.AuthenticatedRequest;
-import model.request.TestRequest;
 import model.test.Test;
-import model.test.TestInstance;
-import util.Response;
-import util.Utils;
+import lambda.Response;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class GetAllTests extends Handler<AuthenticatedRequest<GetAllTests.TestQuery>> {
 

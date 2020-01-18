@@ -2,9 +2,9 @@ package lambda.applicant;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import lambda.Handler;
-import model.applicant.Applicant;
+import lambda.applicant.applicant.Applicant;
 import model.request.AuthenticatedRequest;
-import util.Response;
+import lambda.Response;
 import util.Utils;
 
 public class GetApplicant extends Handler<AuthenticatedRequest<String>> {

@@ -1,1 +1,12 @@
-<p>home-page works!</p>
+<h2 class="mt-4">Strona główna</h2>
+<p class="mt-5 mb-3 lead text-center">Witaj! {{dayTime.charAt(0).toUpperCase() + dayTime.slice(1)}} testy? Dziś jest {{date}}r.</p>
+<p *ngIf="testCount != undefined; else loading" class="text-center">Masz <span class="text-info font-weight-bold">{{testCount}} </span>
+  <ng-container *ngIf="testCount == 1">test</ng-container>
+  <ng-container *ngIf="testCount == 2">testy</ng-container>
+  <ng-container *ngIf="testCount != 1 && testCount != 2">testów</ng-container>
+  do zrobienia.
+  <ng-container *ngIf="testCount == 0">Możesz spać spokojnie, replikancie.</ng-container>
+  <ng-container *ngIf="testCount != 0">Należy to niezwłocznie zrobić, replikancie.</ng-container>
+</p>
+<div class="text-center"><img src="assets/cat2.gif" alt="kotec"/></div>
+<ng-template #loading><div class="text-center"><div class="spinner-grow mt-2"></div></div></ng-template>

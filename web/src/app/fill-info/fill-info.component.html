@@ -23,8 +23,8 @@
                  [(ngModel)]="inFirstName" #firstName="ngModel"
                  (input)="inFirstName=$event.target.value">
           <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="alert alert-danger mt-2">
-            <div *ngIf="firstName.errors.required">
-              Imię jest wymagane.
+            <div *ngIf="firstName.invalid">
+              Podaj swoje imię.
             </div>
           </div>
         </div>
@@ -35,8 +35,8 @@
                  [(ngModel)]="inLastName" #lastName="ngModel"
                  (input)="inLastName=$event.target.value">
           <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="alert alert-danger mt-2">
-            <div *ngIf="lastName.errors.required">
-              Nazwisko jest wymagane.
+            <div *ngIf="lastName.invalid">
+              Podaj swoje nazwisko.
             </div>
           </div>
         </div>
@@ -61,8 +61,8 @@
                  [(ngModel)]="inPhoneNumber" #phoneNumber="ngModel"
                  (input)="inPhoneNumber=$event.target.value">
           <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" class="alert alert-danger mt-2">
-            <div *ngIf="phoneNumber.errors.required">
-              Numer telefonu jest wymagany.
+            <div *ngIf="phoneNumber.invalid">
+              Podaj prawidłowy numer telefonu.
             </div>
           </div>
         </div>
@@ -87,8 +87,8 @@
                  [(ngModel)]="inCity" #city="ngModel"
                  (input)="inCity=$event.target.value">
           <div *ngIf="city.invalid && (city.dirty || city.touched)" class="alert alert-danger mt-2">
-            <div *ngIf="city.errors.required">
-              Miasto jest wymagane.
+            <div *ngIf="city.invalid">
+              Podaj swoje miasto.
             </div>
           </div>
         </div>
@@ -99,8 +99,8 @@
                  [(ngModel)]="inPostalCode" #postalCode="ngModel"
                  (input)="inPostalCode=$event.target.value">
           <div *ngIf="postalCode.invalid && (postalCode.dirty || postalCode.touched)" class="alert alert-danger mt-2">
-            <div *ngIf="postalCode.errors.required">
-              Kod pocztowy jest wymagany.
+            <div *ngIf="postalCode.invalid">
+              Podaj prawidłowy kod pocztowy.
             </div>
           </div>
         </div>

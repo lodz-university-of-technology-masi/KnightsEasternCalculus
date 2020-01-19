@@ -23,7 +23,7 @@ export class RecruiterGuardService implements CanActivate{
     if (flag) {
       return true;
     } else {
-      this.router.navigateByUrl('/404');
+      this.router.navigateByUrl('/access-denied');
       return false;
     }
   }

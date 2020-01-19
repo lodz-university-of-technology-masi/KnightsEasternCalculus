@@ -38,7 +38,7 @@
 </ng-template>
 <div class="mt-5">
   <h5 class="mb-3">Importuj z pliku .csv</h5>
-  <input type="file" (change)="loadTest($event.target.files)">
+  <input type="file" accept=".csv" (change)="loadTest($event.target.files)">
   <button class="btn btn-primary" (click)="importTest()">Importuj</button>
 </div>
 

@@ -19,6 +19,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 })
 export class EditTestComponent implements OnInit {
   @Input() testId;
+  @Input() testImport;
   public test: Test;
   public saveInProgress = false;
   public questionErrors = [];
@@ -46,6 +47,8 @@ export class EditTestComponent implements OnInit {
         error => {
           this.errors.loadingError = true;
         });
+    } else if (this.testImport != null) {
+      this.test = this.testImport;
     } else {
       this.test = new Test(this.authServie.getUserId(), null, '', 'pl', [] as OpenQuestion[], [] as CloseQuestion[], [] as ValueQuestion[]);
     }

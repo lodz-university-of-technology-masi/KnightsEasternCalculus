@@ -47,7 +47,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
-    path: '404',
+    path: 'access-denied',
     component: DenyComponent
   }
 ];

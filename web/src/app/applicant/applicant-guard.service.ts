@@ -38,7 +38,7 @@ export class ApplicantGuardService implements CanActivate{
         });
       } else {
         observer.next(false);
-        this.router.navigateByUrl('/404');
+        this.router.navigateByUrl('/access-denied');
         observer.complete();
       }
     });

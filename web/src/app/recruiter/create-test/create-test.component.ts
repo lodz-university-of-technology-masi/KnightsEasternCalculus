@@ -6,6 +6,7 @@ import { TestService } from '../../services/test.service';
 import { Router } from '@angular/router';
 import { AuthenticationRecruiterService } from '../../services/authentication-recruiter.service';
 import { runInThisContext } from 'vm';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-create-test',
@@ -116,7 +117,7 @@ export class CreateTestComponent implements OnInit {
   selectedOpenQuestion: OpenQuestion;
 
   addOpenQuestion(): void {
-    this.openQuestions.push(new OpenQuestion(this.inputOpenQuestion, this.inputCorrectOpenAnswer,this.inputMaxScore));
+    this.openQuestions.push(new OpenQuestion(this.inputOpenQuestion, this.inputCorrectOpenAnswer, this.inputMaxScore));
     this.inputOpenQuestion = null;
     this.inputCorrectOpenAnswer = null;
     this.inputMaxScore = 1;
@@ -164,4 +165,21 @@ export class CreateTestComponent implements OnInit {
     });
   }
   //#endregion
+
+
+  synonym: string = '';
+  synonyms: string[] = [];
+
+  public getSynonyms() {
+    this.testService.synonymOfWord(this.synonym)
+      .subscribe(
+        res => {
+          console.log(res);
+          var syn = JSON.parse(JSON.stringify(res));
+          this.synonyms = syn;
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+        });
+  }
 }

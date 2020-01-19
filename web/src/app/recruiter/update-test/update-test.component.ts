@@ -179,4 +179,20 @@ export class UpdateTestComponent implements OnInit {
       });
   }
   //#endregion
+
+  synonym: string = '';
+  synonyms: string[] = [];
+
+  public getSynonyms() {
+    this.testService.synonymOfWord(this.synonym)
+    .subscribe(
+      res => {
+          console.log(res);
+          var syn = JSON.parse(JSON.stringify(res));
+          this.synonyms = syn;
+      },
+      (error: HttpErrorResponse) => {
+          console.log(error);
+      });
+  }
 }

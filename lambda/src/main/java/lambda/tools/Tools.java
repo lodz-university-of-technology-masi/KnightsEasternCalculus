@@ -1,8 +1,7 @@
-package lambda;
+package lambda.tools;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lambda.tools.SynonymResponse;
-import lambda.tools.Word;
+import lambda.tools.translator.TranslateResponse;
 import model.test.CloseQuestion;
 import model.test.OpenQuestion;
 import model.test.Test;
@@ -16,19 +15,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Translator {
+public class Tools {
     private String yandexKey = "trnsl.1.1.20200108T191910Z.fe657624420b3a8c.9b1c3b15e8688d96a425d4596dfc2c6321f04ee2";
-    private String yandexDicKey = "https://dictionary.yandex.net/api/v1/dicservice/lookup?key=dict.1.1.20200116T213001Z.6be5317691bae1ff.7faedf456380aa760d1a473b3a50be12d04d622d&lang=en-en&text=";
+    private String yandexDicKey = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=dict.1.1.20200116T213001Z.6be5317691bae1ff.7faedf456380aa760d1a473b3a50be12d04d622d&lang=en-en&text=";
     private String translateUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=";
     private String url = translateUrl + yandexKey + "&text=";
     private Test test;
     private String lang = "";
 
-    public Translator() {
+    public Tools() {
 
     }
 
-    public Translator(Test test) {
+    public Tools(Test test) {
         this.test = test;
         if (this.test.getLanguage().equals("pl") || this.test.getLanguage().equals("PL")) {
             this.lang = "&lang=pl-en";
@@ -39,6 +38,7 @@ public class Translator {
         }
     }
 
+    //region [Translator]
     public Test translateTest() {
         this.test.setTitle(translateText(this.test.getTitle()));
         this.test.setCloseQuestions(translateCloseQuestions(this.test.getCloseQuestions()));
@@ -58,48 +58,23 @@ public class Translator {
         }
         return null;
     }
+    //endregion
 
+    //region [Synonym searcher]
     public String getSynonyms(String input) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            SynonymResponse translateResponse = objectMapper.readValue(postRequest(input), SynonymResponse.class);
-            List<Word> words = translateResponse.getDefinitions().get(0).getTranslations().get(0).getSynonyms();
-            return words.get(0).getText();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return getRequest(input);
     }
+    //endregion
 
-    public String getRequest(String input) {
-        String result = null;
-        try {
-            InputStream inputStream = createConnection((this.yandexDicKey + input).replace(" ", "%20")).getInputStream();
-            result = streamToString(inputStream);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return result;
-    }
-
-
-    public String postRequest(String input) {
-        String result = null;
-        try {
-            InputStream inputStream = createConnection((this.url + input + this.lang).replace(" ", "%20")).getInputStream();
-            result = streamToString(inputStream);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return result;
-    }
-
+    //region [Tools]
     private static String streamToString(InputStream inputStream) {
         String text = new Scanner(inputStream, "UTF-8").useDelimiter("\\Z").next();
         return text;
     }
+    //endregion
 
-    public HttpURLConnection createConnection(String input) throws IOException {
+    //region [Connection and request]
+    public HttpURLConnection createPostConnection(String input) throws IOException {
         URL obj = new URL(input);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("POST");
@@ -111,6 +86,38 @@ public class Translator {
         return con;
     }
 
+    public HttpURLConnection createGetConnection(String input) throws IOException {
+        URL url = new URL(input);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.connect();
+        return con;
+    }
+
+    public String getRequest(String input) {
+        String result = null;
+        try {
+            InputStream inputStream = createGetConnection((this.yandexDicKey + input).replace(" ", "%20")).getInputStream();
+            result = streamToString(inputStream);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public String postRequest(String input) {
+        String result = null;
+        try {
+            InputStream inputStream = createPostConnection((this.url + input + this.lang).replace(" ", "%20")).getInputStream();
+            result = streamToString(inputStream);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+    //endregion
+
+    //region [Questions Translator]
     private List<CloseQuestion> translateCloseQuestions(List<CloseQuestion> closeQuestions) {
         for (CloseQuestion closeQuestion : closeQuestions) {
             closeQuestion.setQuestion(translateText(closeQuestion.getQuestion()));
@@ -144,4 +151,5 @@ public class Translator {
         }
         return valueQuestions;
     }
+    //endregion
 }

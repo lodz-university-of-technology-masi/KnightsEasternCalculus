@@ -1,4 +1,4 @@
-package lambda;
+package lambda.tools.translator;
 
 import java.util.List;
 

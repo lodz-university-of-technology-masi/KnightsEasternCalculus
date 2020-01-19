@@ -151,12 +151,12 @@ export class TestService {
         if (flag == true) {
           if (splitValue.length > 6) {
             alert("Niewłaściwy format pliku csv (pytania liczbowe)")
-          throw new Error("Invalid number of field in open qestion.");
+            throw new Error("Invalid number of field in open qestion.");
           }
         } else {
           if (splitValue.length > 6 + 6) {
             alert("Niewłaściwy format pliku csv (pytania liczbowe)")
-          throw new Error("Invalid number of field in open qestion.");
+            throw new Error("Invalid number of field in open qestion.");
           }
         }
         valueQuestions.push(new ValueQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), 0, 1))
@@ -167,6 +167,17 @@ export class TestService {
     var test = new Test('', null, '', language, openQuestions, closeQuestions, valueQuestions);
     this.importedTest = test;
     return test;
+  }
+
+  public synonymOfWord(input: String) {
+    var httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    let synonymUrl = Globals.apiBaseUrl + '/tools/synonym';
+
+    return this.httpClient.post<String>(synonymUrl, JSON.stringify(input), httpOptions);
   }
 
   public getImportedTest() {

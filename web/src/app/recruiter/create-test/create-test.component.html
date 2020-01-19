@@ -325,9 +325,27 @@
 </div>
 
 <!-- BOTTOM -->
+<div class="input-group mb-1">
+    <div class="input-group-prepend">
+        <button type="button" class="btn btn-success" (click)="getSynonyms()">Znajdź</button>
+    </div>
+    <input type="text" class="form-control" (input)="synonym=$event.target.value">
+</div>
+
+<div class="card-body" *ngIf="synonyms.length != 0">
+    <table class="table table-hover">
+        <tbody>
+            <tr *ngFor="let syn of synonyms">
+                <td>{{syn}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
 <div>
     <!-- button to end create test -->
-    <button class="btn btn-success full-button" (click)="createTest()" [disabled]="!title.valid">
+    <button class="btn btn-success full-button mt-2" (click)="createTest()" [disabled]="!title.valid">
         Utwórz test
     </button>
 </div>

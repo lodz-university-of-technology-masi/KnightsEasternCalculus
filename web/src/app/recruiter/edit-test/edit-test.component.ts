@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Test} from '../../model/test';
 import {AuthenticationRecruiterService} from '../../services/authentication-recruiter.service';
 import {OpenQuestion} from '../../model/open-question';
@@ -18,7 +18,7 @@ import {HttpErrorResponse} from '@angular/common/http';
   encapsulation: ViewEncapsulation.None
 })
 export class EditTestComponent implements OnInit {
-
+  @Input() testId;
   private test: Test;
   private saveInProgress = false;
   private questionErrors = [];
@@ -27,21 +27,43 @@ export class EditTestComponent implements OnInit {
     negativeScores: false,
     generalErrors: false,
     noTitle: false,
-    noQuestions: false
+    noQuestions: false,
+    loadingError: false
   };
   private lookupWord: string;
-  private synonyms: string[] = [];
+  private synonyms: string[];
   private synonymSearching = false;
 
-  constructor(@Inject(DOCUMENT) private document: Document, private authServie: AuthenticationRecruiterService, private modalService: NgbModal,
+  constructor(private authServie: AuthenticationRecruiterService, private modalService: NgbModal,
               private testService: TestService, private router: Router) { }
 
   ngOnInit() {
-    this.test = new Test(this.authServie.getUserId(), null, '', 'pl', [] as OpenQuestion[], [] as CloseQuestion[], [] as ValueQuestion[]);
+    if (this.testId != null ) {
+      this.testService.getTest(this.testId).subscribe(
+        res => {
+          this.test = res.body as undefined as Test;
+        },
+        error => {
+          this.errors.loadingError = true;
+        });
+    } else {
+      this.test = new Test(this.authServie.getUserId(), null, '', 'pl', [] as OpenQuestion[], [] as CloseQuestion[], [] as ValueQuestion[]);
+    }
   }
 
   searchSynonyms() {
     this.synonymSearching = true;
+    this.testService.synonymOfWord(this.lookupWord)
+      .subscribe(
+        res => {
+          console.log(res.body);
+          this.synonyms = res.body;
+          this.synonymSearching = false;
+        },
+        (error: HttpErrorResponse) => {
+          this.synonymSearching = false;
+          console.log(error);
+        });
   }
 
   saveTest() {
@@ -101,7 +123,7 @@ export class EditTestComponent implements OnInit {
         this.questionErrors.push(question);
         this.errors.generalErrors = true;
       }
-    }
+    };
 
     this.test.closeQuestions.forEach(question => {
       commonValidation(question);

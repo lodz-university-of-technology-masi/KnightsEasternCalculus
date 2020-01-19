@@ -4,7 +4,7 @@
     "version": "2019-12-13T22:52:12Z",
     "title": "kotec"
   },
-  "host": "k433cw4fmh.execute-api.us-east-1.amazonaws.com",
+  "host": "o819qwir90.execute-api.us-east-1.amazonaws.com",
   "basePath": "/test",
   "schemes": [
     "https"
@@ -363,9 +363,6 @@
         "consumes": [
           "application/json"
         ],
-        "produces": [
-          "image/*"
-        ],
         "parameters": [
           {
             "name": "Accept",
@@ -419,6 +416,7 @@
       },
       "post": {
         "consumes": [
+          "application/json",
           "text/plain"
         ],
         "produces": [
@@ -464,7 +462,8 @@
             }
           },
           "requestTemplates": {
-            "text/plain": "{\n\"userId\": \"$context.authorizer.claims.sub\",\n\"group\": \"$context.authorizer.claims['cognito:groups']\",\n\"body\": \"$input.body\"\n}"
+            "application/json": "{\n\"userId\": \"$context.authorizer.claims.sub\",\n\"group\": \"$context.authorizer.claims['cognito:groups']\",\n\"body\": \"$input.path('$')\"\n}",
+            "text/plain": "{\n\"userId\": \"$context.authorizer.claims.sub\",\n\"group\": \"$context.authorizer.claims['cognito:groups']\",\n\"body\": \"$input.path('$')\"\n}"
           },
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
@@ -1424,6 +1423,107 @@
         }
       }
     },
+    "/tools/synonym": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "word",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AnyAuthenticated": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:716447952913:function:synonym-search/invocations",
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              },
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')\n\n#set($status_code = $input.json('$.code'))\n#if($status_code == 403)\n#set($context.responseOverride.status = 403)\n#end"
+              }
+            }
+          },
+          "requestTemplates": {
+            "application/json": "\"$input.params('word')\""
+          },
+          "passthroughBehavior": "when_no_templates",
+          "httpMethod": "POST",
+          "contentHandling": "CONVERT_TO_TEXT",
+          "type": "aws"
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "passthroughBehavior": "when_no_match",
+          "type": "mock"
+        }
+      }
+    },
     "/tools/translate": {
       "post": {
         "consumes": [
@@ -1526,7 +1626,7 @@
       "x-amazon-apigateway-authtype": "cognito_user_pools",
       "x-amazon-apigateway-authorizer": {
         "providerARNs": [
-          "arn:aws:cognito-idp:us-east-1:716447952913:userpool/us-east-1_O3wbINjvQ"
+          "arn:aws:cognito-idp:us-east-1:716447952913:userpool/us-east-1_fgBOGZ4Lo"
         ],
         "type": "cognito_user_pools"
       }
@@ -2033,14 +2133,14 @@
   "x-amazon-apigateway-gateway-responses": {
     "DEFAULT_4XX": {
       "responseParameters": {
-        "gatewayresponse.header.Access-Control-Allow-Methods": "'GET,OPTIONS,POST'",
+        "gatewayresponse.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS'",
         "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
         "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
       }
     },
     "DEFAULT_5XX": {
       "responseParameters": {
-        "gatewayresponse.header.Access-Control-Allow-Methods": "'GET,OPTIONS,POST'",
+        "gatewayresponse.header.Access-Control-Allow-Methods": "'DELETE,GET,OPTIONS'",
         "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
         "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
       }

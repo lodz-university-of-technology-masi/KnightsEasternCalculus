@@ -3,179 +3,182 @@
 <ngb-alert *ngIf="errors.noCorrectAnswers" [dismissible]="false" type="danger">Wszystkie pytania zamknięte muszą mieć co najmniej jedną prawidłową odpowiedź.</ngb-alert>
 <ngb-alert *ngIf="errors.generalErrors" [dismissible]="false" type="danger">Wprowadzone dane zawierają błędy</ngb-alert>
 <ngb-alert *ngIf="errors.noQuestions" [dismissible]="false" type="danger">Nie wprowadzono żadnych pytań</ngb-alert>
-<ng-container *ngIf="test; else loading">
-  <div class="row mt-4">
-    <div class="form-group col-2">
-      <label>Język testu</label>
-      <div class="btn-group btn-group-toggle btn-block"ngbRadioGroup [(ngModel)]="test.language">
-        <label ngbButtonLabel class="btn-primary" style="cursor: pointer !important;">
-          <input ngbButton type="radio" value="pl"> Polski
-        </label>
-        <label ngbButtonLabel class="btn-primary" style="cursor: pointer !important;">
-          <input ngbButton type="radio" value="en"> English
-        </label>
-      </div>
-    </div>
-    <div class="form-group col-10">
-      <label>Tytuł testu</label>
-      <input type="text" class="form-control" [(ngModel)]="test.title" placeholder="Wpisz tytuł testu" required
-             #title="ngModel" [ngClass]="{'is-invalid': (title.invalid && (title.dirty || title.touched)) || errors.noTitle}"/>
-      <div *ngIf="(title.invalid && (title.dirty || title.touched)) || errors.noTitle" class="invalid-feedback">
-        Tytuł testu nie może być pusty
-      </div>
-    </div>
-  </div>
-  <h5 class="mt-4">Pytania zamknięte</h5>
-  <ng-container *ngIf="test.closeQuestions.length > 0; else noEntries">
-    <div class="card my-3" *ngFor="let question of test.closeQuestions; let j = index" [ngClass]="{'border-danger': questionErrors.includes(question)}">
-      <div class="card-header">Pytanie {{j+1}}
-        <button class="close text-danger float-right" type="button" (click)="removeCloseQuestion(j)"
-                ngbTooltip="Usuń"><span>&times;</span></button>
-        <div class="clearfix"></div>
-      </div>
-      <div class="row no-gutters">
-        <div class="col-md-2">
-          <div class="card-body text-center">
-            <label>Punktów za odpowiedź</label>
-            <input type="number" class="form-control" [(ngModel)]="question.answerScore" placement="top" min=1
-                   ngbTooltip="Tyle punktów zostanie przydzielone za każdą prawidłową odpowiedź" required
-                   #cqScore="ngModel" [ngClass]="{'is-invalid': cqScore.invalid && (cqScore.dirty || cqScore.touched)}"/>
-            <div *ngIf="cqScore.invalid && (cqScore.dirty || cqScore.touched)" class="invalid-feedback">
-              Ilość punktów musi być wartością dodatnią
-            </div>
-          </div>
+<ngb-alert *ngIf="errors.loadingError" [dismissible]="false" type="danger">Nie można załadować testu</ngb-alert>
+<ng-container *ngIf="!errors.loadingError">
+  <ng-container *ngIf="test; else loading">
+    <div class="row mt-4">
+      <div class="form-group col-2">
+        <label>Język testu</label>
+        <div class="btn-group btn-group-toggle btn-block"ngbRadioGroup [(ngModel)]="test.language">
+          <label ngbButtonLabel class="btn-primary" style="cursor: pointer !important;">
+            <input ngbButton type="radio" value="pl"> Polski
+          </label>
+          <label ngbButtonLabel class="btn-primary" style="cursor: pointer !important;">
+            <input ngbButton type="radio" value="en"> English
+          </label>
         </div>
-        <div class="col-md-10">
-          <div class="card-body form-group">
-            <input type="text" class="card-title form-control" [(ngModel)]="question.question"
-                   #cqQuestion="ngModel" placeholder="Treść pytania" required [ngClass]="{'is-invalid': cqQuestion.invalid && (cqQuestion.dirty || cqQuestion.touched)}"/>
-            <div *ngIf="cqQuestion.invalid && (cqQuestion.dirty || cqQuestion.touched)" class="invalid-feedback">
-              Pytanie nie może być puste.
-            </div>
-            <label>Prawidłowe odpowiedzi:</label>
-            <ng-container *ngIf="question.correctAnswers.length > 0; else noEntries">
-              <div class="input-group mt-1" *ngFor="let answer of question.correctAnswers; let i = index; trackBy:trackByFn">
-                <input class="form-control" type="text" [(ngModel)]="question.correctAnswers[i]" required #cqCorrect="ngModel"
-                       [ngClass]="{'is-invalid': cqCorrect.invalid && (cqCorrect.dirty || cqCorrect.touched)}">
-                <div class="input-group-append">
-                  <button class="btn btn-outline-danger" type="button" (click)="removeGoodAnswer(question, i)"
-                          ngbTooltip="Usuń"><span>&times;</span></button>
-                </div>
-                <div *ngIf="cqCorrect.invalid && (cqCorrect.dirty || cqCorrect.touched)" class="invalid-feedback">
-                  Odpowiedź nie może być pusta.
-                </div>
+      </div>
+      <div class="form-group col-10">
+        <label>Tytuł testu</label>
+        <input type="text" class="form-control" [(ngModel)]="test.title" placeholder="Wpisz tytuł testu" required
+               #title="ngModel" [ngClass]="{'is-invalid': (title.invalid && (title.dirty || title.touched)) || errors.noTitle}"/>
+        <div *ngIf="(title.invalid && (title.dirty || title.touched)) || errors.noTitle" class="invalid-feedback">
+          Tytuł testu nie może być pusty
+        </div>
+      </div>
+    </div>
+    <h5 class="mt-4">Pytania zamknięte</h5>
+    <ng-container *ngIf="test.closeQuestions.length > 0; else noEntries">
+      <div class="card my-3" *ngFor="let question of test.closeQuestions; let j = index" [ngClass]="{'border-danger': questionErrors.includes(question)}">
+        <div class="card-header">Pytanie {{j+1}}
+          <button class="close text-danger float-right" type="button" (click)="removeCloseQuestion(j)"
+                  ngbTooltip="Usuń"><span>&times;</span></button>
+          <div class="clearfix"></div>
+        </div>
+        <div class="row no-gutters">
+          <div class="col-md-2">
+            <div class="card-body text-center">
+              <label>Punktów za odpowiedź</label>
+              <input type="number" class="form-control" [(ngModel)]="question.answerScore" placement="top" min=1
+                     ngbTooltip="Tyle punktów zostanie przydzielone za każdą prawidłową odpowiedź" required
+                     #cqScore="ngModel" [ngClass]="{'is-invalid': cqScore.invalid && (cqScore.dirty || cqScore.touched)}"/>
+              <div *ngIf="cqScore.invalid && (cqScore.dirty || cqScore.touched)" class="invalid-feedback">
+                Ilość punktów musi być wartością dodatnią
               </div>
-            </ng-container>
-            <button type="button" class="btn btn-outline-secondary btn-sm float-right mt-2" (click)="addGoodAnswer(question)"><span>Dodaj</span></button>
-            <div class="clearfix"></div>
-            <label>Nieprawidłowe odpowiedzi:</label>
-            <ng-container *ngIf="question.incorrectAnswers.length > 0; else noEntries">
-              <div class="input-group mt-1" *ngFor="let answer of question.incorrectAnswers; let i = index; trackBy:trackByFn">
-                <input class="form-control" type="text" [(ngModel)]="question.incorrectAnswers[i]" required #cqIncorrect="ngModel"
-                       [ngClass]="{'is-invalid': cqIncorrect.invalid && (cqIncorrect.dirty || cqIncorrect.touched)}">
-                <div class="input-group-append">
-                  <button class="btn btn-outline-danger" type="button" (click)="removeWrongAnswer(question, i)"
-                          ngbTooltip="Usuń"><span>&times;</span></button>
-                </div>
-                <div *ngIf="cqIncorrect.invalid && (cqIncorrect.dirty || cqIncorrect.touched)" class="invalid-feedback">
-                  Odpowiedź nie może być pusta.
-                </div>
+            </div>
+          </div>
+          <div class="col-md-10">
+            <div class="card-body form-group">
+              <input type="text" class="card-title form-control" [(ngModel)]="question.question"
+                     #cqQuestion="ngModel" placeholder="Treść pytania" required [ngClass]="{'is-invalid': cqQuestion.invalid && (cqQuestion.dirty || cqQuestion.touched)}"/>
+              <div *ngIf="cqQuestion.invalid && (cqQuestion.dirty || cqQuestion.touched)" class="invalid-feedback">
+                Pytanie nie może być puste.
               </div>
-            </ng-container>
-            <button type="button" class="btn btn-outline-secondary btn-sm float-right mt-2" (click)="addWrongAnswer(question)">Dodaj</button>
-            <div class="clearfix"></div>
+              <label>Prawidłowe odpowiedzi:</label>
+              <ng-container *ngIf="question.correctAnswers.length > 0; else noEntries">
+                <div class="input-group mt-1" *ngFor="let answer of question.correctAnswers; let i = index; trackBy:trackByFn">
+                  <input class="form-control" type="text" [(ngModel)]="question.correctAnswers[i]" required #cqCorrect="ngModel"
+                         [ngClass]="{'is-invalid': cqCorrect.invalid && (cqCorrect.dirty || cqCorrect.touched)}">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-danger" type="button" (click)="removeGoodAnswer(question, i)"
+                            ngbTooltip="Usuń"><span>&times;</span></button>
+                  </div>
+                  <div *ngIf="cqCorrect.invalid && (cqCorrect.dirty || cqCorrect.touched)" class="invalid-feedback">
+                    Odpowiedź nie może być pusta.
+                  </div>
+                </div>
+              </ng-container>
+              <button type="button" class="btn btn-outline-secondary btn-sm float-right mt-2" (click)="addGoodAnswer(question)"><span>Dodaj</span></button>
+              <div class="clearfix"></div>
+              <label>Nieprawidłowe odpowiedzi:</label>
+              <ng-container *ngIf="question.incorrectAnswers.length > 0; else noEntries">
+                <div class="input-group mt-1" *ngFor="let answer of question.incorrectAnswers; let i = index; trackBy:trackByFn">
+                  <input class="form-control" type="text" [(ngModel)]="question.incorrectAnswers[i]" required #cqIncorrect="ngModel"
+                         [ngClass]="{'is-invalid': cqIncorrect.invalid && (cqIncorrect.dirty || cqIncorrect.touched)}">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-danger" type="button" (click)="removeWrongAnswer(question, i)"
+                            ngbTooltip="Usuń"><span>&times;</span></button>
+                  </div>
+                  <div *ngIf="cqIncorrect.invalid && (cqIncorrect.dirty || cqIncorrect.touched)" class="invalid-feedback">
+                    Odpowiedź nie może być pusta.
+                  </div>
+                </div>
+              </ng-container>
+              <button type="button" class="btn btn-outline-secondary btn-sm float-right mt-2" (click)="addWrongAnswer(question)">Dodaj</button>
+              <div class="clearfix"></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </ng-container>
+    <button type="button" class="btn btn-secondary btn-sm float-right" (click)="addCloseQuestion()">Dodaj</button>
+    <div class="clearfix"></div>
+    <hr class="mt-3"/>
+    <h5 class="mt-5">Pytania otwarte</h5>
+    <ng-container *ngIf="test.openQuestions.length > 0; else noEntries">
+      <div class="card my-3" *ngFor="let question of test.openQuestions; let j = index" [ngClass]="{'border-danger': questionErrors.includes(question)}">
+        <div class="card-header">Pytanie {{j+test.closeQuestions.length+1}}
+          <button class="close text-danger float-right" type="button" (click)="removeOpenQuestion(j)"
+                  ngbTooltip="Usuń"><span>&times;</span></button>
+          <div class="clearfix"></div>
+        </div>
+        <div class="row no-gutters">
+          <div class="col-md-2">
+            <div class="card-body text-center">
+              <label>Punktów za odpowiedź</label>
+              <input type="number" class="form-control" [(ngModel)]="question.maxScore" size=1 placement="top" min=1
+                     ngbTooltip="Maksymalna ilość punktów jaką można uzyskać za odpowiedź" required
+                     #oqScore="ngModel" [ngClass]="{'is-invalid': oqScore.invalid && (oqScore.dirty || oqScore.touched)}"/>
+              <div *ngIf="oqScore.invalid && (oqScore.dirty || oqScore.touched)" class="invalid-feedback">
+                Ilość punktów musi być wartością dodatnią
+              </div>
+            </div>
+          </div>
+          <div class="col-md-10">
+            <div class="card-body form-group">
+              <input type="text" class="card-title form-control" [(ngModel)]="question.question"
+                     #cqQuestion="ngModel" placeholder="Treść pytania" required [ngClass]="{'is-invalid': cqQuestion.invalid && (cqQuestion.dirty || cqQuestion.touched)}"/>
+              <div *ngIf="cqQuestion.invalid && (cqQuestion.dirty || cqQuestion.touched)" class="invalid-feedback">
+                Pytanie nie może być puste.
+              </div>
+              <label>Przykładowa odpowiedź</label>
+              <textarea class="form-control" [(ngModel)]="question.correctAnswer" required #oqAnswer="ngModel"
+                        [ngClass]="{'is-invalid': oqAnswer.invalid && (oqAnswer.dirty || oqAnswer.touched)}"></textarea>
+              <div *ngIf="oqAnswer.invalid && (oqAnswer.dirty || oqAnswer.touched)" class="invalid-feedback">
+                Odpowiedź nie może być pusta.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <button type="button" class="btn btn-secondary btn-sm float-right" (click)="addOpenQuestion()">Dodaj</button>
+    <div class="clearfix"></div>
+    <hr class="mt-3"/>
+    <h5 class="mt-5">Pytania liczbowe</h5>
+    <ng-container *ngIf="test.valueQuestions.length > 0; else noEntries">
+      <div class="card my-3" *ngFor="let question of test.valueQuestions; let j = index" [ngClass]="{'border-danger': questionErrors.includes(question)}">
+        <div class="card-header">Pytanie {{j+test.closeQuestions.length+test.openQuestions.length+1}}
+          <button class="close text-danger float-right" type="button" (click)="removeValueQuestion(j)"
+                  ngbTooltip="Usuń"><span>&times;</span></button>
+          <div class="clearfix"></div>
+        </div>
+        <div class="row no-gutters">
+          <div class="col-md-2">
+            <div class="card-body text-center">
+              <label>Punktów za odpowiedź</label>
+              <input type="number" class="form-control" [(ngModel)]="question.maxScore" size=1 placement="top" min=1
+                     ngbTooltip="Maksymalna ilość punktów jaką można uzyskać za odpowiedź" required
+                     #vqScore="ngModel" [ngClass]="{'is-invalid': vqScore.invalid && (vqScore.dirty || vqScore.touched)}"/>
+              <div *ngIf="vqScore.invalid && (vqScore.dirty || vqScore.touched)" class="invalid-feedback">
+                Ilość punktów musi być wartością dodatnią
+              </div>
+            </div>
+          </div>
+          <div class="col-md-10">
+            <div class="card-body form-group">
+              <input type="text" class="card-title form-control" [(ngModel)]="question.question"
+                     #cqQuestion="ngModel" placeholder="Treść pytania" required [ngClass]="{'is-invalid': cqQuestion.invalid && (cqQuestion.dirty || cqQuestion.touched)}"/>
+              <div *ngIf="cqQuestion.invalid && (cqQuestion.dirty || cqQuestion.touched)" class="invalid-feedback">
+                Pytanie nie może być puste.
+              </div>
+              <label>Przykładowa odpowiedź</label>
+              <input type="number" class="form-control" [(ngModel)]="question.correctAnswer" required #vqAnswer="ngModel"
+                     [ngClass]="{'is-invalid': vqAnswer.invalid && (vqAnswer.dirty || vqAnswer.touched)}"/>
+              <div *ngIf="vqAnswer.invalid && (vqAnswer.dirty || vqAnswer.touched)" class="invalid-feedback">
+                Odpowiedź nie może być pusta.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <button type="button" class="btn btn-secondary btn-sm float-right" (click)="addValueQuestion()">Dodaj</button>
+    <div class="clearfix"></div>
+    <hr class="mt-3"/>
+    <button type="button" class="btn btn-primary float-right mt-5" (click)="modalService.open(saveModal)">Zapisz test</button>
+    <div class="clearfix"></div>
   </ng-container>
-  <button type="button" class="btn btn-primary btn-sm float-right" (click)="addCloseQuestion()">Dodaj</button>
-  <div class="clearfix"></div>
-  <hr class="mt-3"/>
-  <h5 class="mt-5">Pytania otwarte</h5>
-  <ng-container *ngIf="test.openQuestions.length > 0; else noEntries">
-    <div class="card my-3" *ngFor="let question of test.openQuestions; let j = index" [ngClass]="{'border-danger': questionErrors.includes(question)}">
-      <div class="card-header">Pytanie {{j+test.closeQuestions.length+1}}
-        <button class="close text-danger float-right" type="button" (click)="removeOpenQuestion(j)"
-                ngbTooltip="Usuń"><span>&times;</span></button>
-        <div class="clearfix"></div>
-      </div>
-      <div class="row no-gutters">
-        <div class="col-md-2">
-          <div class="card-body text-center">
-            <label>Punktów za odpowiedź</label>
-            <input type="number" class="form-control" [(ngModel)]="question.maxScore" size=1 placement="top" min=1
-                   ngbTooltip="Maksymalna ilość punktów jaką można uzyskać za odpowiedź" required
-                   #oqScore="ngModel" [ngClass]="{'is-invalid': oqScore.invalid && (oqScore.dirty || oqScore.touched)}"/>
-            <div *ngIf="oqScore.invalid && (oqScore.dirty || oqScore.touched)" class="invalid-feedback">
-              Ilość punktów musi być wartością dodatnią
-            </div>
-          </div>
-        </div>
-        <div class="col-md-10">
-          <div class="card-body form-group">
-            <input type="text" class="card-title form-control" [(ngModel)]="question.question"
-                   #cqQuestion="ngModel" placeholder="Treść pytania" required [ngClass]="{'is-invalid': cqQuestion.invalid && (cqQuestion.dirty || cqQuestion.touched)}"/>
-            <div *ngIf="cqQuestion.invalid && (cqQuestion.dirty || cqQuestion.touched)" class="invalid-feedback">
-              Pytanie nie może być puste.
-            </div>
-            <label>Przykładowa odpowiedź</label>
-            <textarea class="form-control" [(ngModel)]="question.correctAnswer" required #oqAnswer="ngModel"
-                      [ngClass]="{'is-invalid': oqAnswer.invalid && (oqAnswer.dirty || oqAnswer.touched)}"></textarea>
-            <div *ngIf="oqAnswer.invalid && (oqAnswer.dirty || oqAnswer.touched)" class="invalid-feedback">
-              Odpowiedź nie może być pusta.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </ng-container>
-  <button type="button" class="btn btn-primary btn-sm float-right" (click)="addOpenQuestion()">Dodaj</button>
-  <div class="clearfix"></div>
-  <hr class="mt-3"/>
-  <h5 class="mt-5">Pytania liczbowe</h5>
-  <ng-container *ngIf="test.valueQuestions.length > 0; else noEntries">
-    <div class="card my-3" *ngFor="let question of test.valueQuestions; let j = index" [ngClass]="{'border-danger': questionErrors.includes(question)}">
-      <div class="card-header">Pytanie {{j+test.closeQuestions.length+test.openQuestions.length+1}}
-        <button class="close text-danger float-right" type="button" (click)="removeValueQuestion(j)"
-                ngbTooltip="Usuń"><span>&times;</span></button>
-        <div class="clearfix"></div>
-      </div>
-      <div class="row no-gutters">
-        <div class="col-md-2">
-          <div class="card-body text-center">
-            <label>Punktów za odpowiedź</label>
-            <input type="number" class="form-control" [(ngModel)]="question.maxScore" size=1 placement="top" min=1
-                   ngbTooltip="Maksymalna ilość punktów jaką można uzyskać za odpowiedź" required
-                   #vqScore="ngModel" [ngClass]="{'is-invalid': vqScore.invalid && (vqScore.dirty || vqScore.touched)}"/>
-            <div *ngIf="vqScore.invalid && (vqScore.dirty || vqScore.touched)" class="invalid-feedback">
-              Ilość punktów musi być wartością dodatnią
-            </div>
-          </div>
-        </div>
-        <div class="col-md-10">
-          <div class="card-body form-group">
-            <input type="text" class="card-title form-control" [(ngModel)]="question.question"
-                   #cqQuestion="ngModel" placeholder="Treść pytania" required [ngClass]="{'is-invalid': cqQuestion.invalid && (cqQuestion.dirty || cqQuestion.touched)}"/>
-            <div *ngIf="cqQuestion.invalid && (cqQuestion.dirty || cqQuestion.touched)" class="invalid-feedback">
-              Pytanie nie może być puste.
-            </div>
-            <label>Przykładowa odpowiedź</label>
-            <input type="number" class="form-control" [(ngModel)]="question.correctAnswer" required #vqAnswer="ngModel"
-                   [ngClass]="{'is-invalid': vqAnswer.invalid && (vqAnswer.dirty || vqAnswer.touched)}"/>
-            <div *ngIf="vqAnswer.invalid && (vqAnswer.dirty || vqAnswer.touched)" class="invalid-feedback">
-              Odpowiedź nie może być pusta.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </ng-container>
-  <button type="button" class="btn btn-primary btn-sm float-right" (click)="addValueQuestion()">Dodaj</button>
-  <div class="clearfix"></div>
-  <hr class="mt-3"/>
-  <button type="button" class="btn btn-success float-right mt-5" (click)="modalService.open(saveModal)">Zapisz test</button>
-  <div class="clearfix"></div>
 </ng-container>
 <ng-template #loading>
   <div class="text-center">
@@ -201,7 +204,7 @@
     <button type="button" class="btn btn-secondary"(click)="modal.close('Close click')" [disabled]="saveInProgress">Anuluj</button>
   </div>
 </ng-template>
-<button type="button" class="fab btn btn-info" popoverTitle="Wyszukiwarka synonimów" [ngbPopover]="synonymPopover"
+<button type="button" class="fab btn btn-outline-dark" popoverTitle="Wyszukiwarka synonimów" [ngbPopover]="synonymPopover"
         placement="top-left" container="body" popoverClass="popover-fixed" [autoClose]="'outside'">
   +
 </button>
@@ -209,13 +212,13 @@
   <form class="form-inline">
     <input type="text" class="form-control" placeholder="Słowo" [(ngModel)]="lookupWord"
            [ngModelOptions]="{standalone: true}">
-    <button type="submit" class="btn btn-primary mt-2" (click)="searchSynonyms()">Szukaj</button>
+    <button type="submit" class="btn btn-primary ml-2" (click)="searchSynonyms()" [disabled]="synonymSearching">Szukaj</button>
   </form>
-  <ng-container *ngIf="synonymSearching || synonyms">
-    <div class="mt-2" *ngIf="synonyms; else loading">
+  <div class="mt-2" *ngIf="!synonymSearching; else loading">
+    <ng-container *ngIf="synonyms">
       <ul class="list-group">
         <li class="list-group-item" *ngFor="let word of synonyms">{{word}}</li>
       </ul>
-    </div>
-  </ng-container>
+    </ng-container>
+  </div>
 </ng-template>

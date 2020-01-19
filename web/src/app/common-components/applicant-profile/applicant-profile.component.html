@@ -4,7 +4,12 @@
   <div class="container">
     <div class="row justify-content-md-center my-auto">
       <div class="col col-5">
-        <img [attr.src]="'https://k433cw4fmh.execute-api.us-east-1.amazonaws.com/test/applicants/'+ applicant.id +'/photos' | secure | async" class="mx-auto d-block applicant-picture img-thumbnail" alt="Zdjęcie kandydata"
+        <div *ngIf="imageLoading" [ngClass]="{'mx-auto d-block applicant-picture img-thumbnail': imageLoading}" #applicantLoadingPicture [style.height.px]="applicantLoadingPicture.clientWidth">
+          <div class="text-center d-flex justify-content-center align-items-center" style="height: 100%;">
+            <div class="spinner-grow" role="status"></div>
+          </div>
+        </div>
+        <img [hidden]="imageLoading" (load)="onImageLoad()" [attr.src]="baseUrl+'/applicants/'+ applicant.id +'/photos' | secure | async" [ngClass]="{'mx-auto d-block applicant-picture img-thumbnail': !imageLoading}" alt="Zdjęcie kandydata"
              #applicantPicture [style.height.px]="applicantPicture.width"/>
       </div>
       <div class="col col-7">

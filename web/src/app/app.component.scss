@@ -1,0 +1,16 @@
+@import "../bootstrap/scss/functions";
+@import "../bootstrap/scss/custom";
+@import "../bootstrap/scss/variables";
+@import "../bootstrap/scss/_variables.scss";
+
+$bg-color: #c40264;
+
+body {
+  background-color: $bg-color;
+  background-image: linear-gradient(#ffffff, $bg-color);
+  background-repeat: no-repeat;
+}
+
+.bg-dark {
+  background-color: $primary !important;
+}

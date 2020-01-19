@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {TestService} from '../../services/test.service';
 import {TestInstance, TestStatus} from '../../model/test-instance';
 import {ActivatedRoute} from '@angular/router';
@@ -11,7 +11,8 @@ import {HttpErrorResponse} from '@angular/common/http';
 @Component({
   selector: 'app-applicant-test-list',
   templateUrl: './applicant-test-list.component.html',
-  styleUrls: ['./applicant-test-list.component.scss']
+  styleUrls: ['./applicant-test-list.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ApplicantTestListComponent implements OnInit {
   @Input('replicant') replicant: Applicant;

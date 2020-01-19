@@ -50,7 +50,8 @@ lambda_data = [("get-applicant", "lambda.applicant.GetApplicant"), ("get-applica
                ("get-all-tests", "lambda.test.GetAllTests"), ("add-test", "lambda.test.AddTest"), ("delete-test", "lambda.test.DeleteTest"), ("update-test", "lambda.test.UpdateTest"), ("get-test", "lambda.test.GetTest"),
                ("solve-test", "lambda.test.SolveTest"), ("add-test-instance", "lambda.test.AddTestInstance"), ("assign-applicant", "lambda.applicant.AssignApplicant"),
                ("get-test-instances-for-user", "lambda.test.GetTestInstancesForUser"), ("get-test-instance", "lambda.test.GetTestInstance"), ("grade-test", "lambda.test.GradeTest"),
-               ("delete-test-instance", "lambda.test.DeleteTestInstance"), ("get-unchecked-test-instances", "lambda.test.GetUncheckedTestInstances"), ("translate-test", "lambda.test.TranslateTest")]
+               ("delete-test-instance", "lambda.test.DeleteTestInstance"), ("get-unchecked-test-instances", "lambda.test.GetUncheckedTestInstances"), ("translate-test", "lambda.tools.translator.TranslateTest"),
+               ("synonym-search", "lambda.tools.synonym.SynonymOfWord")]
 
 for lam in lambda_data:
     print("\t"+lam[0])
@@ -62,8 +63,9 @@ subprocess.call("aws lambda create-function --function-name get-photo --code {} 
 
 print("Creating Cognito User Pool...")
 
-pool_id = json.loads(subprocess.check_output(
-    "aws cognito-idp create-user-pool --cli-input-json fileb://cognito_config.json", shell=True))["UserPool"]["Id"]
+data_str = subprocess.check_output(
+    "aws cognito-idp create-user-pool --cli-input-json fileb://cognito_config.json", shell=True).decode("utf-8", errors='ignore')
+pool_id = json.loads(data_str)["UserPool"]["Id"]
 print("\tThe pool id is {}".format(pool_id))
 
 print("\tCreating Cognito App Client...")
@@ -129,6 +131,11 @@ for name in lambda_data:
     subprocess.call("aws lambda add-permission --function-name {0} --statement-id api-{0} --action lambda:InvokeFunction --principal apigateway.amazonaws.com --source-arn arn:aws:execute-api:us-east-1:{1}:{2}/*/**".format(
         name[0], accountID, gatewayID), shell=True)
 
+subprocess.call("aws lambda add-permission --function-name get-photo --statement-id api-get-photo --action lambda:InvokeFunction --principal apigateway.amazonaws.com --source-arn arn:aws:execute-api:us-east-1:{1}:{2}/*/**".format(
+    name[0], accountID, gatewayID), shell=True)
+subprocess.call("aws lambda add-permission --function-name upload-photo --statement-id api-upload-photo --action lambda:InvokeFunction --principal apigateway.amazonaws.com --source-arn arn:aws:execute-api:us-east-1:{1}:{2}/*/**".format(
+    name[0], accountID, gatewayID), shell=True)
+
 print("Filling test data...")
 files = ["marian.txt", "zosia.txt", "anna.txt"]
 
@@ -149,7 +156,7 @@ subprocess.call(
 
 print("Deploying API...")
 subprocess.call(
-    "aws apigateway create-deployment --rest-api-id {} --stage-name test".format(gatewayID), shell=True)
+    "aws apigateway create-deployment --rest-api-id {} --stage-name v1".format(gatewayID), shell=True)
 
 
 print("\tAdding test account...")
@@ -183,7 +190,7 @@ subprocess.call("aws lambda invoke --function-name add-test-instance --payload f
 
 print("Generating constants file...")
 with open(os.path.join("web", "src", "app", "app-consts.ts"), "w+") as file:
-    file.write("export const apiBaseUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/test';\n".format(gatewayID))
+    file.write("export const apiBaseUrl = 'https://{}.execute-api.us-east-1.amazonaws.com/v1';\n".format(gatewayID))
     file.write("export const userPoolId = '{}';\n".format(pool_id))
     file.write("export const clientId = '{}';\n".format(client["ClientId"]))
     file.write("export const recruiterIdentityPoolId = '{}';\n".format(

@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <ng-container *ngIf="tests; else loading">
-    <tbody>
+    <tbody *ngIf="tests.length > 0; else noEntries">
       <tr *ngFor="let test of tests; let i = index" style="cursor: pointer;">
         <th>{{i+1}}</th>
         <th>{{test.title}}</th>
@@ -21,10 +21,10 @@
           <div ngbDropdown placement="top-right" class="d-inline-block">
             <button class="btn" ngbDropdownToggle></button>
             <div ngbDropdownMenu>
-              <button ngbDropdownItem class="text-dark" (click)="translateTest(test)">Tłumacz</button>
-              <button ngbDropdownItem class="text-dark" (click)="downloadTest(test.testId)">Pobierz</button>
+              <button ngbDropdownItem class="text-dark" (click)="translateTest(translateModal, test)">Tłumacz</button>
+              <button ngbDropdownItem class="text-dark" (click)="downloadTest(downloadModal, test.testId)">Pobierz</button>
               <button ngbDropdownItem class="text-info" [routerLink]="['update-test', test.testId]" *ngIf="getUser() == test.recruiterId">Edytuj</button>
-              <button ngbDropdownItem class="text-danger" (click)="deleteTest(test)">Usuń</button>
+              <button ngbDropdownItem class="text-danger" (click)="open(deleteModal, test.testId)">Usuń</button>
             </div>
           </div>
         </th>
@@ -32,16 +32,17 @@
     </tbody>
   </ng-container>
 </table>
+<ng-template #noEntries><span>(brak)</span></ng-template>
 <ng-template #loading>
-  <div class="spinner-grow spinner-grow-sm" role="status"></div>
+  <div class="text-center"><div class="spinner-grow spinner-grow-sm" role="status"></div></div>
 </ng-template>
 <div class="mt-5">
   <h5 class="mb-3">Importuj z pliku .csv</h5>
   <input type="file" (change)="loadTest($event.target.files)">
-  <button class="btn btn-success" (click)="importTest()">Importuj</button>
+  <button class="btn btn-primary" (click)="importTest()">Importuj</button>
 </div>
 
-<ng-template #assignPopover let-id="id" , let-title="title">
+<ng-template #assignPopover let-id="id" let-title="title">
   <form class="form-inline">
     <input type="text" class="form-control" id="lastName" placeholder="Nazwisko" [(ngModel)]="searchLastName"
       [ngModelOptions]="{standalone: true}">
@@ -55,4 +56,42 @@
       </button>
     </div>
   </ng-container>
+</ng-template>
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Usuń test</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Czy na pewno chcesz usunąć ten test?</p>
+    <p>Tej akcji nie można cofnąć.</p>
+  </div>
+  <div class="modal-footer">
+    <div *ngIf="deleteInProgress"><ng-container *ngTemplateOutlet="loading"></ng-container></div>
+    <button type="button" class="btn btn-danger" (click)="deleteTest()" [disabled]="deleteInProgress">Usuń</button>
+    <button type="button" class="btn btn-primary"(click)="modal.close('Close click')" [disabled]="deleteInProgress">Anuluj</button>
+  </div>
+</ng-template>
+
+<ng-template #translateModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title2">Tłumaczenie</h4>
+  </div>
+  <div class="modal-body">
+    <p>Tłumaczenie w toku...</p>
+    <ng-container *ngTemplateOutlet="loading"></ng-container>
+  </div>
+</ng-template>
+
+<ng-template #downloadModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title3">Pobieranie</h4>
+  </div>
+  <div class="modal-body">
+    <p>Generowanie pliku w toku...</p>
+    <ng-container *ngTemplateOutlet="loading"></ng-container>
+  </div>
 </ng-template>

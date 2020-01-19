@@ -47,7 +47,7 @@ export class TestService {
     if (test.testId == null) {
       return this.httpClient.post<Test>(`${this.testUrl}/${this.authService.getUserId()}/tests`, test, {observe: 'response'});
     } else {
-      return this.httpClient.put<Test>(`${this.testUrl}/${this.authService.getUserId()}/tests`, test, {observe: 'response'});
+      return this.httpClient.put<Test>(`${this.testUrl}/${this.authService.getUserId()}/tests/${test.testId}`, test, {observe: 'response'});
     }
   }
 
@@ -159,12 +159,12 @@ export class TestService {
         if (flag == true) {
           if (splitValue.length > 6) {
             alert("Niewłaściwy format pliku csv (pytania liczbowe)")
-          throw new Error("Invalid number of field in open qestion.");
+            throw new Error("Invalid number of field in open qestion.");
           }
         } else {
           if (splitValue.length > 6 + 6) {
             alert("Niewłaściwy format pliku csv (pytania liczbowe)")
-          throw new Error("Invalid number of field in open qestion.");
+            throw new Error("Invalid number of field in open qestion.");
           }
         }
         valueQuestions.push(new ValueQuestion(splitValue[3].replace(String.fromCharCode(30), ';'), 0, 1))
@@ -177,17 +177,17 @@ export class TestService {
     return test;
   }
 
+  public synonymOfWord(input: string) {
+    const httpParams = new HttpParams().set('word', input);
+    return this.httpClient.get<string[]>(`${Globals.apiBaseUrl}/tools/synonym`, {observe: 'response', params: httpParams});
+  }
+
   public getImportedTest() {
     return this.importedTest;
   }
 
   public getTest(testID: number) {
-    var httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.httpClient.get(`${this.testUrl}/${this.authService.getUserId()}/tests/${testID}`, httpOptions);
+    return this.httpClient.get(`${this.testUrl}/${this.authService.getUserId()}/tests/${testID}`, { observe: 'response'});
   }
 
   public getAllTests(title: string = ''): Observable<Test[]> {

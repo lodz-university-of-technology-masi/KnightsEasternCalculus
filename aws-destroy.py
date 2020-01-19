@@ -32,7 +32,8 @@ lambda_data = [("get-applicant", "lambda.applicant.GetApplicant"), ("get-applica
                ("get-all-tests", "lambda.test.GetAllTests"), ("add-test", "lambda.test.AddTest"), ("delete-test", "lambda.test.DeleteTest"), ("update-test", "lambda.test.UpdateTest"), ("get-test", "lambda.test.GetTest"),
                ("solve-test", "lambda.test.SolveTest"), ("add-test-instance", "lambda.test.AddTestInstance"), ("assign-applicant", "lambda.applicant.AssignApplicant"),
                ("get-test-instances-for-user", "lambda.test.GetTestInstancesForUser"), ("get-test-instance", "lambda.test.GetTestInstance"), ("grade-test", "lambda.test.GradeTest"),
-               ("delete-test-instance", "lambda.test.DeleteTestInstance"), ("get-unchecked-test-instances", "lambda.test.GetUncheckedTestInstances"), ("translate-test", "lambda.test.TranslateTest")]
+               ("delete-test-instance", "lambda.test.DeleteTestInstance"), ("get-unchecked-test-instances", "lambda.test.GetUncheckedTestInstances"), ("translate-test", "lambda.tools.translator.TranslateTest"),
+               ("synonym-search", "lambda.tools.synonym.SynonymOfWord")]
 
 lambda_data.append(("upload-photo", ""))
 lambda_data.append(("get-photo", ""))

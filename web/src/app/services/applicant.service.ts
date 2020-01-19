@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Applicant } from '../model/applicant';
-import { Experience } from '../model/experience';
-import { University } from '../model/university';
-import { Observable, of } from 'rxjs';
-import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import * as Globals from '../app-consts';
 import 'rxjs-compat/add/operator/catch';
-import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

@@ -2,6 +2,7 @@
   position: fixed;
   bottom: 1em;
   left: 1em;
+  background-color: white;
 }
 
 .popover-fixed {
@@ -10,4 +11,5 @@
   bottom: 4.1em !important;
   transform: translateY(0) !important;
   left: 1em !important;
+  max-width: none !important;
 }

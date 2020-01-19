@@ -44,7 +44,7 @@
   <form class="form-inline">
     <input type="text" class="form-control" placeholder="Nazwa testu" [(ngModel)]="testTitle"
            [ngModelOptions]="{standalone: true}">
-    <button type="submit" class="btn btn-primary mt-2" (click)="searchTests()">Szukaj</button>
+    <button type="submit" class="btn btn-primary ml-2" (click)="searchTests()">Szukaj</button>
   </form>
   <ng-container *ngIf="testLoading || assignableTests">
     <div class="mt-2" *ngIf="assignableTests; else loading">

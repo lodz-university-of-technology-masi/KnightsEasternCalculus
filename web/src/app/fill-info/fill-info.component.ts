@@ -17,15 +17,15 @@ import * as Globals from '../app-consts';
 @Injectable()
 export class FillInfoComponent implements OnInit {
 
-  private loadingPhoto = false;
-  private loadingProfile = false;
+  loadingPhoto = false;
+  loadingProfile = false;
   @ViewChild('fileLabel', {static: false})
   labelImport: ElementRef;
 
   constructor(
-    private nfSer: FillInfoService,
-    private router: Router,
-    private authService: AuthenticationRecruiterService
+    public nfSer: FillInfoService,
+    public router: Router,
+    public authService: AuthenticationRecruiterService
   ) {
   }
 
@@ -144,7 +144,7 @@ export class FillInfoComponent implements OnInit {
             }
             console.log(error);
           });
-      }
+      };
       this.nfSer.addPer(this.inFirstName, this.inLastName, this.inDateOfBirth, this.inAddress, this.inCity, this.inPostalCode, this.inEmail, this.inPhoneNumber, this.ex, this.un, this.inAboutMe).subscribe(res => {
           this.profileUploaded = true;
           this.loadingProfile = false;
@@ -159,6 +159,6 @@ export class FillInfoComponent implements OnInit {
           }
           console.log(error);
         });
-    };
+    }
   }
 }

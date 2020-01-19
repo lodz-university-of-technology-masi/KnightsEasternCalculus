@@ -14,7 +14,7 @@ export class SolveTestComponent implements OnInit {
 
   test: TestInstance;
 
-  constructor(private route: ActivatedRoute, private testService: TestService, private router: Router) { }
+  constructor(public route: ActivatedRoute, public testService: TestService, public router: Router) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe( value => {

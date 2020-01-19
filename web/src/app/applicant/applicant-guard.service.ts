@@ -9,7 +9,7 @@ import {ApplicantService} from '../services/applicant.service';
 })
 export class ApplicantGuardService implements CanActivate{
 
-  constructor(private authService: AuthenticationRecruiterService, private router: Router, private applicants: ApplicantService) { }
+  constructor(public authService: AuthenticationRecruiterService, public router: Router, public applicants: ApplicantService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const groups = this.authService.getIdToken()['cognito:groups'];

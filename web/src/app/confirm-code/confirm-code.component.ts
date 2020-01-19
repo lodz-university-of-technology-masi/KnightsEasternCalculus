@@ -9,16 +9,16 @@ import {AuthenticationRecruiterService} from '../services/authentication-recruit
 })
 export class ConfirmCodeComponent implements OnInit {
 
-  private code: string;
-  private password: string;
-  private confirmPass: string;
-  private email: string;
-  private invalidPass = false;
-  private passwordMatch = false;
-  private generalError = false;
+  code: string;
+  password: string;
+  confirmPass: string;
+  email: string;
+  invalidPass = false;
+  passwordMatch = false;
+  generalError = false;
   loading = false;
 
-  constructor(private router: Router, private authService: AuthenticationRecruiterService, private route: ActivatedRoute) {
+  constructor(public router: Router, public authService: AuthenticationRecruiterService, public route: ActivatedRoute) {
   }
 
   ngOnInit() {

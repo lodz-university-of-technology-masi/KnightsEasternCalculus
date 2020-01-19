@@ -8,13 +8,13 @@ import {AuthenticationRecruiterService} from '../services/authentication-recruit
   styleUrls: ['./change-password.component.scss']
 })
 export class ChangePasswordComponent implements OnInit {
-  private password: string;
-  private passwordRepeat: string;
-  private passwordMatch = false;
-  private loading = false;
-  private invalidPassword = false;
+  password: string;
+  passwordRepeat: string;
+  passwordMatch = false;
+  loading = false;
+  invalidPassword = false;
 
-  constructor(private router: Router, private authService: AuthenticationRecruiterService) { }
+  constructor(public router: Router, public authService: AuthenticationRecruiterService) { }
 
   ngOnInit() {
   }

@@ -13,14 +13,14 @@ import {ApplicantService} from '../../services/applicant.service';
 })
 export class GradeTestComponent implements OnInit {
 
-  private test: TestInstance;
-  private applicantID;
-  private timestamp;
-  private valid = true;
-  private applicant;
-  private sending = false;
+  test: TestInstance;
+  applicantID;
+  timestamp;
+  valid = true;
+  applicant;
+  public sending = false;
 
-  constructor(private route: ActivatedRoute, private testService: TestService, private router: Router, private applicantService: ApplicantService) { }
+  constructor(public route: ActivatedRoute, public testService: TestService, public router: Router, public applicantService: ApplicantService) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe( value => {

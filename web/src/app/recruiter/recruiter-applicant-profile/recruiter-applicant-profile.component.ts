@@ -11,7 +11,7 @@ import {ApplicantService} from '../../services/applicant.service';
 export class RecruiterApplicantProfileComponent implements OnInit {
   replicant: Applicant;
 
-  constructor(private route: ActivatedRoute, private replicantService: ApplicantService) {
+  constructor(public route: ActivatedRoute, public replicantService: ApplicantService) {
 
   }
 

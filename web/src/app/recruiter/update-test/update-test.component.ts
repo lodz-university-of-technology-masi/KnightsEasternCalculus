@@ -12,7 +12,7 @@ export class UpdateTestComponent implements OnInit {
   testId: number;
 
   constructor(
-    private route: ActivatedRoute,
+    public route: ActivatedRoute,
   ) { }
 
   ngOnInit() {

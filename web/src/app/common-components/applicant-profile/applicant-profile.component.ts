@@ -15,7 +15,7 @@ export class ApplicantProfileComponent implements OnInit {
   imageLoading = true;
   @Input() applicantId: string;
 
-  constructor(private applicantService: ApplicantService) { }
+  constructor(public applicantService: ApplicantService) { }
 
   ngOnInit() {
     this.fillProperties(this.applicantId);

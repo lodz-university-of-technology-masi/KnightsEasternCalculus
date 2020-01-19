@@ -34,11 +34,11 @@ export class ShowAllTestsComponent implements OnInit {
   deleteInProgress = false;
 
   constructor(
-    private testService: TestService,
-    private applicantService: ApplicantService,
-    private modalService: NgbModal,
-    private authService: AuthenticationRecruiterService,
-    private router: Router,
+    public testService: TestService,
+    public applicantService: ApplicantService,
+    public modalService: NgbModal,
+    public authService: AuthenticationRecruiterService,
+    public router: Router,
   ) {
   }
 

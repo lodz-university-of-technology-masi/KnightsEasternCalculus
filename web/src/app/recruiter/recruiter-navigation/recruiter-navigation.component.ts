@@ -11,7 +11,7 @@ export class RecruiterNavigationComponent implements OnInit {
   openFirstDropDown = false;
   openSecondDropDown = false;
 
-  constructor(private authService: AuthenticationRecruiterService) { }
+  constructor(public authService: AuthenticationRecruiterService) { }
 
   ngOnInit() {
   }

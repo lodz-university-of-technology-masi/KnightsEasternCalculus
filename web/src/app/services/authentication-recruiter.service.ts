@@ -18,10 +18,10 @@ const userPool = new CognitoUserPool(poolData);
 
 export class AuthenticationRecruiterService {
   cognitoUser: CognitoUser;
-  private username = new BehaviorSubject('');
+  username = new BehaviorSubject('');
   public currUsername = this.username.asObservable();
-  private sessionUserAttributes;
-  private hasExpired = false;
+  sessionUserAttributes;
+  hasExpired = false;
 
   constructor() {}
 
@@ -107,7 +107,7 @@ export class AuthenticationRecruiterService {
 
                       localStorage.setItem('idToken', newSession.getIdToken().getJwtToken());
                       localStorage.setItem('accessToken', newSession.getAccessToken().getJwtToken());
-                    })
+                    });
                   }
                 });
 

@@ -1,4 +1,5 @@
 import {Component, ViewEncapsulation} from '@angular/core';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,8 @@ import {Component, ViewEncapsulation} from '@angular/core';
 
 })
 export class AppComponent {
-  title = 'web';
 
+  constructor(private titleService: Title) {
+    titleService.setTitle('KOTEC testy');
+  }
 }

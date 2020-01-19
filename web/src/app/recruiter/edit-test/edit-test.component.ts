@@ -19,10 +19,10 @@ import {HttpErrorResponse} from '@angular/common/http';
 })
 export class EditTestComponent implements OnInit {
   @Input() testId;
-  private test: Test;
-  private saveInProgress = false;
-  private questionErrors = [];
-  private errors = {
+  public test: Test;
+  public saveInProgress = false;
+  public questionErrors = [];
+  public errors = {
     noCorrectAnswers: false,
     negativeScores: false,
     generalErrors: false,
@@ -30,12 +30,12 @@ export class EditTestComponent implements OnInit {
     noQuestions: false,
     loadingError: false
   };
-  private lookupWord: string;
-  private synonyms: string[];
-  private synonymSearching = false;
+  public lookupWord: string;
+  public synonyms: string[];
+  public synonymSearching = false;
 
-  constructor(private authServie: AuthenticationRecruiterService, private modalService: NgbModal,
-              private testService: TestService, private router: Router) { }
+  constructor(public authServie: AuthenticationRecruiterService, public modalService: NgbModal,
+              public testService: TestService, public router: Router) { }
 
   ngOnInit() {
     if (this.testId != null ) {

@@ -9,7 +9,7 @@ import 'rxjs-compat/add/operator/map';
 })
 export class SecurePipe implements PipeTransform {
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) { }
+  constructor(public http: HttpClient, public sanitizer: DomSanitizer) { }
 
   transform(url): Observable<SafeUrl> {
     let header = new HttpHeaders();

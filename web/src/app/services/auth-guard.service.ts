@@ -8,7 +8,7 @@ import {AuthenticationRecruiterService} from './authentication-recruiter.service
 })
 export class AuthGuardService implements CanActivate{
 
-  constructor(private authService: AuthenticationRecruiterService, private router: Router) { }
+  constructor(public authService: AuthenticationRecruiterService, public router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.authService.isLogged()) {

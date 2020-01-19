@@ -8,7 +8,7 @@ import { AuthenticationRecruiterService } from '../services/authentication-recru
 })
 export class IdGuardService implements CanActivate{
 
-  constructor(private authService: AuthenticationRecruiterService, private router: Router) { }
+  constructor(public authService: AuthenticationRecruiterService, public router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const token = this.authService.getIdToken();
@@ -17,6 +17,6 @@ export class IdGuardService implements CanActivate{
     }
 
     this.router.navigateByUrl('/applicant');
-    return false;    
+    return false;
   }
 }

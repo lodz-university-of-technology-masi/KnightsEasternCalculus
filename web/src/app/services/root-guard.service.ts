@@ -7,7 +7,7 @@ import {AuthenticationRecruiterService} from './authentication-recruiter.service
   providedIn: 'root'
 })
 export class RootGuard implements CanActivate {
-  constructor(private authService: AuthenticationRecruiterService, private router: Router) {
+  constructor(public authService: AuthenticationRecruiterService, public router: Router) {
 
   }
 

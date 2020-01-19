@@ -16,7 +16,7 @@ export class TestResultsComponent implements OnInit {
   test: TestInstance;
   applicant: Applicant;
 
-  constructor(private testService: TestService, private applicantService: ApplicantService) { }
+  constructor(public testService: TestService, public applicantService: ApplicantService) { }
 
   ngOnInit() {
     this.testService.getTestInstance(this.applicantId, this.testTimestamp).subscribe(test => this.test = test.body as TestInstance);

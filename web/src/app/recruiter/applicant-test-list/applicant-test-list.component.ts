@@ -16,15 +16,15 @@ import {HttpErrorResponse} from '@angular/common/http';
 })
 export class ApplicantTestListComponent implements OnInit {
   @Input('replicant') replicant: Applicant;
-  private tests: TestInstance[];
-  private assignableTests: Test[];
-  private testTitle: string;
-  private testLoading = false;
-  private deleteInProgress = false;
-  private deleteTestTimestamp: string;
+  tests: TestInstance[];
+  assignableTests: Test[];
+  testTitle: string;
+  testLoading = false;
+  deleteInProgress = false;
+  deleteTestTimestamp: string;
   popover: NgbPopover;
 
-  constructor(private testService: TestService, private route: ActivatedRoute, private modalService: NgbModal) { }
+  constructor(public testService: TestService, public route: ActivatedRoute, public modalService: NgbModal) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe( value => this.testService.getTestInstances(value.get('id')).subscribe( (result: Response) => {

@@ -18,9 +18,9 @@ export class ImportTestComponent implements OnInit {
     message: string = '';
 
     constructor(
-        private testService: TestService,
-        private authService: AuthenticationRecruiterService,
-        private router: Router,
+        public testService: TestService,
+        public authService: AuthenticationRecruiterService,
+        public router: Router,
     ) { }
 
     ngOnInit(): void {
@@ -81,7 +81,7 @@ export class ImportTestComponent implements OnInit {
         }
     }
 
-    private revertChanges(){
+    public revertChanges(){
         for (let i = 0; i < this.importedTest.closeQuestions.length; i++) {
             for (let j = 0; j < this.importedTest.closeQuestions[i].correctAnswers.length; j++) {
                 this.importedTest.closeQuestions[i].incorrectAnswers.push(this.importedTest.closeQuestions[i].correctAnswers[j]);
@@ -90,7 +90,7 @@ export class ImportTestComponent implements OnInit {
         }
     }
 
-    private rewriteCloseAnswers() {
+    public rewriteCloseAnswers() {
         let element: HTMLInputElement;
         for (let i = 0; i < this.importedTest.closeQuestions.length; i++) {
             for (let j = 0; j < this.importedTest.closeQuestions[i].incorrectAnswers.length; j++) {

@@ -10,9 +10,9 @@ import 'rxjs-compat/add/operator/catch';
 })
 export class ApplicantService {
 
-  private apiUrl = Globals.apiBaseUrl + '/applicants';
+  public apiUrl = Globals.apiBaseUrl + '/applicants';
 
-  constructor(private http: HttpClient) {}
+  constructor(public http: HttpClient) {}
 
   // supposed to return 10 of the latest added applicants
   getAllApplicants(): Observable<Applicant[]> {

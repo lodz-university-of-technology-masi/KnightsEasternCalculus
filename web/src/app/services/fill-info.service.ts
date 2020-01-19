@@ -10,8 +10,8 @@ import {AuthenticationRecruiterService} from './authentication-recruiter.service
 
 export class FillInfoService {
   constructor(
-    private httpClient: HttpClient,
-    private authService: AuthenticationRecruiterService
+    public httpClient: HttpClient,
+    public authService: AuthenticationRecruiterService
   ) { }
 
   addApplicantUrl: string = Globals.apiBaseUrl + '/applicants';

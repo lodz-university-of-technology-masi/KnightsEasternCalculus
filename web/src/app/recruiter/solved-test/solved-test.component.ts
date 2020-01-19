@@ -10,10 +10,10 @@ import {AuthenticationRecruiterService} from '../../services/authentication-recr
 })
 export class SolvedTestComponent implements OnInit {
 
-  private applicantId: string;
-  private timestamp: string;
+  public applicantId: string;
+  public timestamp: string;
 
-  constructor(private route: ActivatedRoute, private testService: TestService) { }
+  constructor(public route: ActivatedRoute, public testService: TestService) { }
 
   ngOnInit() {
     this.applicantId = this.route.snapshot.params.id;

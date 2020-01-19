@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 @Injectable()
 export class RequestAuthInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthenticationRecruiterService, private router: Router) { }
+  constructor(public authService: AuthenticationRecruiterService, public router: Router) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const authToken = this.authService.getRawIdToken();

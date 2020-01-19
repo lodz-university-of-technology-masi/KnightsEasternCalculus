@@ -11,11 +11,11 @@ import {TestInstance} from '../../model/test-instance';
 })
 export class HomePageComponent implements OnInit {
 
-  private date: string;
-  private dayTime: string;
-  private testCount: number;
+  date: string;
+  dayTime: string;
+  testCount: number;
 
-  constructor(private testService: TestService) {
+  constructor(public testService: TestService) {
   }
 
   ngOnInit() {

@@ -9,7 +9,7 @@ import {AuthenticationRecruiterService} from '../../services/authentication-recr
 export class MyProfileComponent implements OnInit {
   applicantId: string;
 
-  constructor(private authService: AuthenticationRecruiterService) {
+  constructor(public authService: AuthenticationRecruiterService) {
 
   }
 

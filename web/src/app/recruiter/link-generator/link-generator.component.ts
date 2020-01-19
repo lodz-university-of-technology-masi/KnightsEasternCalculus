@@ -8,12 +8,12 @@ import {AuthenticationRecruiterService} from '../../services/authentication-recr
   styleUrls: ['./link-generator.component.scss']
 })
 export class LinkGeneratorComponent implements OnInit {
-  private mail: string;
-  private loading = false;
-  private userExists = false;
-  private success = false;
+  mail: string;
+  loading = false;
+  userExists = false;
+  success = false;
 
-  constructor(private router: Router, private authService: AuthenticationRecruiterService) { }
+  constructor(public router: Router, public authService: AuthenticationRecruiterService) { }
 
   ngOnInit() {
   }

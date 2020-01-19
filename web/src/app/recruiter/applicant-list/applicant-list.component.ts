@@ -12,7 +12,7 @@ export class ApplicantListComponent implements OnInit {
   applicants: Applicant[];
   searchLastName: string;
 
-  constructor(private applicantService: ApplicantService) { }
+  constructor(public applicantService: ApplicantService) { }
 
   ngOnInit() {
     this.getInitialApplicants();

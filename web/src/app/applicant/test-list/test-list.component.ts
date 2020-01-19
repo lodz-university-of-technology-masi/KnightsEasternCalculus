@@ -14,7 +14,7 @@ export class TestListComponent implements OnInit {
   testStatus = TestStatus;
   tests: TestInstance[];
 
-  constructor(private testService: TestService, private router: Router, private auth: AuthenticationRecruiterService) {}
+  constructor(public testService: TestService, public router: Router, public auth: AuthenticationRecruiterService) {}
 
   ngOnInit() {
     this.getTests();

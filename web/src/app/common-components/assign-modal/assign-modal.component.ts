@@ -21,7 +21,7 @@ export class AssignModalComponent implements OnInit {
   needsConfirmation = false;
   existingTests: string[];
 
-  constructor(public activeModal: NgbActiveModal, private testService: TestService) {
+  constructor(public activeModal: NgbActiveModal, public testService: TestService) {
   }
 
   ngOnInit() {

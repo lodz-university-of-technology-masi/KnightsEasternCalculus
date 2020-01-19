@@ -11,11 +11,11 @@ import {HttpResponse} from '@angular/common/http';
 })
 export class HomePageComponent implements OnInit {
 
-  private date: string;
-  private dayTime: string;
-  private testCount: number;
+  date: string;
+  dayTime: string;
+  testCount: number;
 
-  constructor(private testService: TestService, private authServive: AuthenticationRecruiterService) { }
+  constructor(public testService: TestService, public authServive: AuthenticationRecruiterService) { }
 
   ngOnInit() {
     this.testService.getTestInstances(this.authServive.getUserId()).subscribe(res => this.testCount = ((res as HttpResponse<TestInstance>).body as undefined as Array<TestInstance>)

@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   userUnknown = false;
   expired = false;
 
-  constructor(private router: Router, private authService: AuthenticationRecruiterService) { }
+  constructor(public router: Router, public authService: AuthenticationRecruiterService) { }
 
   ngOnInit() {
     this.expired = this.authService.wasExpired();

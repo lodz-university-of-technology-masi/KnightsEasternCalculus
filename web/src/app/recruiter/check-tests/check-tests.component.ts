@@ -10,9 +10,9 @@ import {TestInstance} from '../../model/test-instance';
 })
 export class CheckTestsComponent implements OnInit {
 
-  private tests: TestInstance[];
+  tests: TestInstance[];
 
-  constructor(private testService: TestService, private route: ActivatedRoute) { }
+  constructor(public testService: TestService, public route: ActivatedRoute) { }
 
   ngOnInit() {
     this.testService.getUncheckedTests().subscribe( result => {

@@ -8,7 +8,7 @@ import {AuthenticationRecruiterService} from '../../services/authentication-recr
 })
 export class ApplicantNavigationComponent implements OnInit {
 
-  constructor(private authService: AuthenticationRecruiterService) { }
+  constructor(public authService: AuthenticationRecruiterService) { }
 
   ngOnInit() {
   }

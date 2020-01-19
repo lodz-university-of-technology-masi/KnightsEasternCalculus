@@ -28,15 +28,15 @@ const httpOptions = {
 
 export class TestService {
   constructor(
-    private httpClient: HttpClient,
-    private authService: AuthenticationRecruiterService
+    public httpClient: HttpClient,
+    public authService: AuthenticationRecruiterService
   ) {
   }
 
-  private testUrl: string = Globals.apiBaseUrl + '/recruiters';
-  private translateUrl: string = Globals.apiBaseUrl + "/tools/translate";
-  private importedTest: Test;
-  private createdTest: Test;
+  public testUrl: string = Globals.apiBaseUrl + '/recruiters';
+  public translateUrl: string = Globals.apiBaseUrl + "/tools/translate";
+  importedTest: Test;
+  createdTest: Test;
 
   public createTest(inputTestTitle, language, openQuestions, closeQuestions, valueQuestions) {
     this.createdTest = new Test(this.authService.getUserId(), null, inputTestTitle, language, openQuestions, closeQuestions, valueQuestions);

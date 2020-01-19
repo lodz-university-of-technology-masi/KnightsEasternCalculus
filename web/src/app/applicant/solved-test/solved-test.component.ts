@@ -13,7 +13,7 @@ export class SolvedTestComponent implements OnInit {
   testId: string;
   applicantId: string;
 
-  constructor(private route: ActivatedRoute, private testService: TestService, private authService: AuthenticationRecruiterService) {
+  constructor(public route: ActivatedRoute, public testService: TestService, public authService: AuthenticationRecruiterService) {
   }
 
   ngOnInit() {

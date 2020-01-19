@@ -13,12 +13,20 @@ import { ShowAllTestsComponent } from './show-all-tests/show-all-tests.component
 import { CommonComponentsModule } from '../common-components/common-components.module';
 import { ApplicantTestListComponent } from './applicant-test-list/applicant-test-list.component';
 import { UpdateTestComponent } from './update-test/update-test.component';
-import {NgbDropdownModule, NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbAlertModule,
+  NgbButtonsModule,
+  NgbDropdownModule,
+  NgbPopoverModule,
+  NgbToastModule,
+  NgbTooltipModule
+} from '@ng-bootstrap/ng-bootstrap';
 import { AssignModalComponent } from '../common-components/assign-modal/assign-modal.component';
 import { GradeTestComponent } from './grade-test/grade-test.component';
 import { ImportTestComponent } from './import-test/import-test.component';
 import { CheckTestsComponent } from './check-tests/check-tests.component';
 import { SolvedTestComponent } from './solved-test/solved-test.component';
+import { EditTestComponent } from './edit-test/edit-test.component';
 
 
 @NgModule({
@@ -37,7 +45,8 @@ import { SolvedTestComponent } from './solved-test/solved-test.component';
     GradeTestComponent,
     ImportTestComponent,
     CheckTestsComponent,
-    SolvedTestComponent
+    SolvedTestComponent,
+    EditTestComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +54,11 @@ import { SolvedTestComponent } from './solved-test/solved-test.component';
     RecruiterRoutingModule,
     CommonComponentsModule,
     NgbPopoverModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    NgbButtonsModule,
+    NgbTooltipModule,
+    NgbAlertModule,
+    NgbToastModule
   ],
   bootstrap: [AssignModalComponent],
 })

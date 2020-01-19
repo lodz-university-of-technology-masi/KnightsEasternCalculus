@@ -43,6 +43,14 @@ export class TestService {
     return this.httpClient.post<Test>(`${this.testUrl}/${this.authService.getUserId()}/tests`, this.createdTest, httpOptions);
   }
 
+  public saveTest(test: Test) {
+    if (test.testId == null) {
+      return this.httpClient.post<Test>(`${this.testUrl}/${this.authService.getUserId()}/tests`, test, {observe: 'response'});
+    } else {
+      return this.httpClient.put<Test>(`${this.testUrl}/${this.authService.getUserId()}/tests`, test, {observe: 'response'});
+    }
+  }
+
   public updateTest(testId, inputTestTitle, language, openQuestions, closeQuestions, valueQuestions) {
     var test = new Test(this.authService.getUserId(), testId, inputTestTitle, language, openQuestions, closeQuestions, valueQuestions);
     return this.httpClient.put(`${this.testUrl}/${this.authService.getUserId()}/tests/${testId}`, test, httpOptions);

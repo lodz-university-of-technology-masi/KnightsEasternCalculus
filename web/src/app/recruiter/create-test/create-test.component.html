@@ -1,333 +1,334 @@
-<!-- TOP -->
-<h2 class="mt-2">Tworzenie testu</h2>
-<div>
-    <h5 class="mt-2">Tytuł testu:</h5>
+<app-edit-test></app-edit-test>
+<!--&lt;!&ndash; TOP &ndash;&gt;-->
+<!--<h2 class="mt-2">Tworzenie testu</h2>-->
+<!--<div>-->
+<!--    <h5 class="mt-2">Tytuł testu:</h5>-->
 
-    <div class="input-group">
-        <input id="title" name="title" class="form-control" type="text" required [(ngModel)]="inputTestTitle"
-            #title="ngModel" (input)="inputTestTitle=$event.target.value">
-    </div>
-    <div *ngIf="title.invalid && (title.dirty || title.touched)" class="alert alert-danger mt-2">
-        <div *ngIf="title.errors.required">
-            Title is required.
-        </div>
-    </div>
-</div>
+<!--    <div class="input-group">-->
+<!--        <input id="title" name="title" class="form-control" type="text" required [(ngModel)]="inputTestTitle"-->
+<!--            #title="ngModel" (input)="inputTestTitle=$event.target.value">-->
+<!--    </div>-->
+<!--    <div *ngIf="title.invalid && (title.dirty || title.touched)" class="alert alert-danger mt-2">-->
+<!--        <div *ngIf="title.errors.required">-->
+<!--            Title is required.-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
-<div class="btn-group mt-3" role="group" aria-label="Button group with nested dropdown">
-    <button type="button" class="btn btn-secondary">Wybierz język</button>
-    <div class="btn-group dropdown" (mouseover)="openFirstDropDown=true" (mouseout)="openFirstDropDown=false"
-        (click)="openFirstDropDown=false">
-        <a class="btn btn-secondary dropdown-toggle" href="#" id="navbarDropdownLink1" role="button"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{currentLanguage}}
-        </a>
-        <div class="dropdown-menu" [ngClass]="{'show': openFirstDropDown}" aria-labelledby="navbarDropdown1">
-            <a class="dropdown-item" (click)="currentLanguage='en';">EN</a>
-            <a class="dropdown-item" (click)="currentLanguage='pl';">PL</a>
-        </div>
-    </div>
-</div>
+<!--<div class="btn-group mt-3" role="group" aria-label="Button group with nested dropdown">-->
+<!--    <button type="button" class="btn btn-secondary">Wybierz język</button>-->
+<!--    <div class="btn-group dropdown" (mouseover)="openFirstDropDown=true" (mouseout)="openFirstDropDown=false"-->
+<!--        (click)="openFirstDropDown=false">-->
+<!--        <a class="btn btn-secondary dropdown-toggle" href="#" id="navbarDropdownLink1" role="button"-->
+<!--            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--            {{currentLanguage}}-->
+<!--        </a>-->
+<!--        <div class="dropdown-menu" [ngClass]="{'show': openFirstDropDown}" aria-labelledby="navbarDropdown1">-->
+<!--            <a class="dropdown-item" (click)="currentLanguage='en';">EN</a>-->
+<!--            <a class="dropdown-item" (click)="currentLanguage='pl';">PL</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
-<!-- buttons to choose between question TYPES -->
-<div class="btn-group btn-group-toggle mt-3 full-button" checked>
-    <div class="btn-group full-button" role="group">
-        <button type="button" class="btn btn-secondary" disabled>
-            Dodaj pytanie
-        </button>
-        <button type="button" class="btn btn-secondary btn-lg" (click)="setQuestionType(0)">
-            Otwarte
-        </button>
-        <button type="button" class="btn btn-secondary btn-lg" (click)="setQuestionType(1)">
-            Zamknięte
-        </button>
-        <button type="button" class="btn btn-secondary btn-lg" (click)="setQuestionType(2)">
-            Liczbowe
-        </button>
-    </div>
-</div>
+<!--&lt;!&ndash; buttons to choose between question TYPES &ndash;&gt;-->
+<!--<div class="btn-group btn-group-toggle mt-3 full-button" checked>-->
+<!--    <div class="btn-group full-button" role="group">-->
+<!--        <button type="button" class="btn btn-secondary" disabled>-->
+<!--            Dodaj pytanie-->
+<!--        </button>-->
+<!--        <button type="button" class="btn btn-secondary btn-lg" (click)="setQuestionType(0)">-->
+<!--            Otwarte-->
+<!--        </button>-->
+<!--        <button type="button" class="btn btn-secondary btn-lg" (click)="setQuestionType(1)">-->
+<!--            Zamknięte-->
+<!--        </button>-->
+<!--        <button type="button" class="btn btn-secondary btn-lg" (click)="setQuestionType(2)">-->
+<!--            Liczbowe-->
+<!--        </button>-->
+<!--    </div>-->
+<!--</div>-->
 
-<!-- card which is displayed when OPEN question is selected -->
-<div class="card-body" *ngIf="getIfOpen()">
-    <div>
-        <h5 class="mt-2">Treść pytania:</h5>
+<!--&lt;!&ndash; card which is displayed when OPEN question is selected &ndash;&gt;-->
+<!--<div class="card-body" *ngIf="getIfOpen()">-->
+<!--    <div>-->
+<!--        <h5 class="mt-2">Treść pytania:</h5>-->
 
-        <div class="input-group">
-            <input id="question" name="question" class="form-control" type="text" required
-                [(ngModel)]="inputOpenQuestion" #openQuestion="ngModel" (input)="inputOpenQuestion=$event.target.value">
-        </div>
-        <div *ngIf="openQuestion.invalid && (openQuestion.dirty || openQuestion.touched)"
-            class="alert alert-danger mt-2">
-            <div *ngIf="openQuestion.errors.required">
-                Question is required.
-            </div>
-        </div>
-    </div>
-    <div>
-        <h5 class="mt-2">Poprawna odpowiedź:</h5>
-        <div class="input-group">
-            <input id="openAnswer" name="openAnswer" class="form-control" type="text" required
-                [(ngModel)]="inputCorrectOpenAnswer" #correctOpenAnswer="ngModel"
-                (input)="inputCorrectOpenAnswer=$event.target.value">
-        </div>
-        <div *ngIf="correctOpenAnswer.invalid && (correctOpenAnswer.dirty || correctOpenAnswer.touched)"
-            class="alert alert-danger mt-2">
-            <div *ngIf="correctOpenAnswer.errors.required">
-                Answer is required.
-            </div>
-        </div>
-    </div>
-    <div>
-        <h5 class="mt-2">Maksymalna ilość punktów:</h5>
-        <div class="input-group">
-            <input id="maxScore" name="maxScore" class="form-control" type="number" min="1" required
-                [(ngModel)]="inputMaxScore" #maxScore="ngModel" (input)="inputMaxScore=$event.target.value"
-                pattern="^[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*$">
-        </div>
-        <div *ngIf="maxScore.invalid && (maxScore.dirty || maxScore.touched)" class="alert alert-danger mt-2">
-            <div *ngIf="maxScore.errors.required">
-                Max score is required.
-            </div>
-            <div *ngIf="maxScore.errors.pattern">
-                Invalid number (should be greather than 0).
-            </div>
-        </div>
-    </div>
-    <button type="button" class="btn btn-success mt-3 full-button" (click)="addOpenQuestion()"
-        [disabled]="!openQuestion.valid || !correctOpenAnswer.valid || !maxScore.valid">
-        Dodaj pytanie do testu
-    </button>
-</div>
+<!--        <div class="input-group">-->
+<!--            <input id="question" name="question" class="form-control" type="text" required-->
+<!--                [(ngModel)]="inputOpenQuestion" #openQuestion="ngModel" (input)="inputOpenQuestion=$event.target.value">-->
+<!--        </div>-->
+<!--        <div *ngIf="openQuestion.invalid && (openQuestion.dirty || openQuestion.touched)"-->
+<!--            class="alert alert-danger mt-2">-->
+<!--            <div *ngIf="openQuestion.errors.required">-->
+<!--                Question is required.-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <h5 class="mt-2">Poprawna odpowiedź:</h5>-->
+<!--        <div class="input-group">-->
+<!--            <input id="openAnswer" name="openAnswer" class="form-control" type="text" required-->
+<!--                [(ngModel)]="inputCorrectOpenAnswer" #correctOpenAnswer="ngModel"-->
+<!--                (input)="inputCorrectOpenAnswer=$event.target.value">-->
+<!--        </div>-->
+<!--        <div *ngIf="correctOpenAnswer.invalid && (correctOpenAnswer.dirty || correctOpenAnswer.touched)"-->
+<!--            class="alert alert-danger mt-2">-->
+<!--            <div *ngIf="correctOpenAnswer.errors.required">-->
+<!--                Answer is required.-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <h5 class="mt-2">Maksymalna ilość punktów:</h5>-->
+<!--        <div class="input-group">-->
+<!--            <input id="maxScore" name="maxScore" class="form-control" type="number" min="1" required-->
+<!--                [(ngModel)]="inputMaxScore" #maxScore="ngModel" (input)="inputMaxScore=$event.target.value"-->
+<!--                pattern="^[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*$">-->
+<!--        </div>-->
+<!--        <div *ngIf="maxScore.invalid && (maxScore.dirty || maxScore.touched)" class="alert alert-danger mt-2">-->
+<!--            <div *ngIf="maxScore.errors.required">-->
+<!--                Max score is required.-->
+<!--            </div>-->
+<!--            <div *ngIf="maxScore.errors.pattern">-->
+<!--                Invalid number (should be greather than 0).-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <button type="button" class="btn btn-success mt-3 full-button" (click)="addOpenQuestion()"-->
+<!--        [disabled]="!openQuestion.valid || !correctOpenAnswer.valid || !maxScore.valid">-->
+<!--        Dodaj pytanie do testu-->
+<!--    </button>-->
+<!--</div>-->
 
-<!-- card which is displayed when CLOSE question is selected -->
-<div class="card-body" *ngIf="getIfClose()">
-    <div>
-        <h5 class="mt-2">Treść pytania:</h5>
-        <div class="input-group">
-            <input id="question" name="question" class="form-control" type="text" required
-                [(ngModel)]="inputCloseQuestion" #closeQuestion="ngModel"
-                (input)="inputCloseQuestion=$event.target.value">
-        </div>
-        <div *ngIf="closeQuestion.invalid && (closeQuestion.dirty || closeQuestion.touched)"
-            class="alert alert-danger mt-2">
-            <div *ngIf="closeQuestion.errors.required">
-                Question is required.
-            </div>
-        </div>
-    </div>
-    <div>
-        <h5 class="mt-2">Poprawne odpowiedzi:</h5>
-        <div class="input-group">
-            <input id="closeAnswer" name="closeAnswer" class="form-control" type="text" required
-                [(ngModel)]="inputCorrectCloseAnswer" #correctCloseAnswer="ngModel"
-                (input)="inputCorrectCloseAnswer=$event.target.value">
-            <div class="input-group-append">
-                <button class="btn btn-success" type="button" (click)="addCorrectCloseAnswer()"
-                    [disabled]="!correctCloseAnswer.valid">
-                    Dodaj
-                </button>
-            </div>
-        </div>
-        <div *ngIf="correctCloseAnswer.invalid && (correctCloseAnswer.dirty || correctCloseAnswer.touched)"
-            class="alert alert-danger mt-2">
-            <div *ngIf="correctCloseAnswer.errors.required">
-                Answer is required.
-            </div>
-        </div>
-        <table class="table table-hover mt-2">
-            <tbody>
-                <tr *ngFor="let correctAnswer of correctCloseAnswers">
-                    <td>{{ correctAnswer }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div>
-        <h5 class="mt-2">Niepoprawne odpowiedzi:</h5>
-        <div class="input-group">
-            <input id="answer" name="answer" class="form-control" type="text" required
-                [(ngModel)]="inputIncorrectCloseAnswer" #closeIncorrectAnswer="ngModel"
-                (input)="inputIncorrectCloseAnswer=$event.target.value">
-            <div class="input-group-append">
-                <button class="btn btn-success" type="button" (click)="addIncorrectCloseAnswer()"
-                    [disabled]="!closeIncorrectAnswer.valid">
-                    Dodaj
-                </button>
-            </div>
-        </div>
-        <div *ngIf="closeIncorrectAnswer.invalid && (closeIncorrectAnswer.dirty || closeIncorrectAnswer.touched)"
-            class="alert alert-danger mt-2">
-            <div *ngIf="closeIncorrectAnswer.errors.required">
-                Answer is required.
-            </div>
-        </div>
-    </div>
-    <table class="table table-hover mt-2">
-        <tbody>
-            <tr *ngFor="let incorrectAnswer of incorrectCloseAnswers">
-                <td>{{ incorrectAnswer }}</td>
-            </tr>
-        </tbody>
-    </table>
-    <div>
-        <h5 class="mt-2">Ilość punktów za odpowiedź:</h5>
-        <div class="input-group">
-            <input id="maxScore" name="maxScore" class="form-control" type="number" min="1" required
-                [(ngModel)]="inputMaxScore" #maxScore="ngModel" (input)="inputMaxScore=$event.target.value"
-                pattern="^[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*$">
-        </div>
-        <div *ngIf="maxScore.invalid && (maxScore.dirty || maxScore.touched)" class="alert alert-danger mt-2">
-            <div *ngIf="maxScore.errors.required">
-                Max score is required.
-            </div>
-            <div *ngIf="maxScore.errors.pattern">
-                Invalid number (should be greather than 0).
-            </div>
-        </div>
-    </div>
-    <button type="button" class="btn btn-success mt-3 full-button" (click)="addCloseQuestion()"
-        [disabled]="!maxScore.valid || !closeQuestion.valid">
-        Dodaj pytanie do testu
-    </button>
-</div>
+<!--&lt;!&ndash; card which is displayed when CLOSE question is selected &ndash;&gt;-->
+<!--<div class="card-body" *ngIf="getIfClose()">-->
+<!--    <div>-->
+<!--        <h5 class="mt-2">Treść pytania:</h5>-->
+<!--        <div class="input-group">-->
+<!--            <input id="question" name="question" class="form-control" type="text" required-->
+<!--                [(ngModel)]="inputCloseQuestion" #closeQuestion="ngModel"-->
+<!--                (input)="inputCloseQuestion=$event.target.value">-->
+<!--        </div>-->
+<!--        <div *ngIf="closeQuestion.invalid && (closeQuestion.dirty || closeQuestion.touched)"-->
+<!--            class="alert alert-danger mt-2">-->
+<!--            <div *ngIf="closeQuestion.errors.required">-->
+<!--                Question is required.-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <h5 class="mt-2">Poprawne odpowiedzi:</h5>-->
+<!--        <div class="input-group">-->
+<!--            <input id="closeAnswer" name="closeAnswer" class="form-control" type="text" required-->
+<!--                [(ngModel)]="inputCorrectCloseAnswer" #correctCloseAnswer="ngModel"-->
+<!--                (input)="inputCorrectCloseAnswer=$event.target.value">-->
+<!--            <div class="input-group-append">-->
+<!--                <button class="btn btn-success" type="button" (click)="addCorrectCloseAnswer()"-->
+<!--                    [disabled]="!correctCloseAnswer.valid">-->
+<!--                    Dodaj-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div *ngIf="correctCloseAnswer.invalid && (correctCloseAnswer.dirty || correctCloseAnswer.touched)"-->
+<!--            class="alert alert-danger mt-2">-->
+<!--            <div *ngIf="correctCloseAnswer.errors.required">-->
+<!--                Answer is required.-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <table class="table table-hover mt-2">-->
+<!--            <tbody>-->
+<!--                <tr *ngFor="let correctAnswer of correctCloseAnswers">-->
+<!--                    <td>{{ correctAnswer }}</td>-->
+<!--                </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <h5 class="mt-2">Niepoprawne odpowiedzi:</h5>-->
+<!--        <div class="input-group">-->
+<!--            <input id="answer" name="answer" class="form-control" type="text" required-->
+<!--                [(ngModel)]="inputIncorrectCloseAnswer" #closeIncorrectAnswer="ngModel"-->
+<!--                (input)="inputIncorrectCloseAnswer=$event.target.value">-->
+<!--            <div class="input-group-append">-->
+<!--                <button class="btn btn-success" type="button" (click)="addIncorrectCloseAnswer()"-->
+<!--                    [disabled]="!closeIncorrectAnswer.valid">-->
+<!--                    Dodaj-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div *ngIf="closeIncorrectAnswer.invalid && (closeIncorrectAnswer.dirty || closeIncorrectAnswer.touched)"-->
+<!--            class="alert alert-danger mt-2">-->
+<!--            <div *ngIf="closeIncorrectAnswer.errors.required">-->
+<!--                Answer is required.-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <table class="table table-hover mt-2">-->
+<!--        <tbody>-->
+<!--            <tr *ngFor="let incorrectAnswer of incorrectCloseAnswers">-->
+<!--                <td>{{ incorrectAnswer }}</td>-->
+<!--            </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--    <div>-->
+<!--        <h5 class="mt-2">Ilość punktów za odpowiedź:</h5>-->
+<!--        <div class="input-group">-->
+<!--            <input id="maxScore" name="maxScore" class="form-control" type="number" min="1" required-->
+<!--                [(ngModel)]="inputMaxScore" #maxScore="ngModel" (input)="inputMaxScore=$event.target.value"-->
+<!--                pattern="^[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*$">-->
+<!--        </div>-->
+<!--        <div *ngIf="maxScore.invalid && (maxScore.dirty || maxScore.touched)" class="alert alert-danger mt-2">-->
+<!--            <div *ngIf="maxScore.errors.required">-->
+<!--                Max score is required.-->
+<!--            </div>-->
+<!--            <div *ngIf="maxScore.errors.pattern">-->
+<!--                Invalid number (should be greather than 0).-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <button type="button" class="btn btn-success mt-3 full-button" (click)="addCloseQuestion()"-->
+<!--        [disabled]="!maxScore.valid || !closeQuestion.valid">-->
+<!--        Dodaj pytanie do testu-->
+<!--    </button>-->
+<!--</div>-->
 
-<!-- card which is displayed when VALUE question is selected -->
-<div class="card-body" *ngIf="getIfValue()">
-    <div>
-        <h5 class="mt-2">Treść pytania:</h5>
+<!--&lt;!&ndash; card which is displayed when VALUE question is selected &ndash;&gt;-->
+<!--<div class="card-body" *ngIf="getIfValue()">-->
+<!--    <div>-->
+<!--        <h5 class="mt-2">Treść pytania:</h5>-->
 
-        <div class="input-group">
-            <input id="question" name="question" class="form-control" type="text" required
-                [(ngModel)]="inputValueQuestion" #valueQuestion="ngModel"
-                (input)="inputValueQuestion=$event.target.value">
-        </div>
-        <div *ngIf="valueQuestion.invalid && (valueQuestion.dirty || valueQuestion.touched)"
-            class="alert alert-danger mt-2">
-            <div *ngIf="valueQuestion.errors.required">
-                Question is required.
-            </div>
-        </div>
-    </div>
-    <div>
-        <h5 class="mt-2">Poprawna odpowiedź:</h5>
-        <div>
-            <div class="input-group">
-                <input id="answerValue" name="answerValue" class="form-control" type="number" required
-                    [(ngModel)]="inputCorrectValueAnswer" #answerValue="ngModel"
-                    (input)="inputCorrectValueAnswer=$event.target.value">
-            </div>
-            <div *ngIf="answerValue.invalid && (answerValue.dirty || answerValue.touched)"
-                class="alert alert-danger mt-2">
-                <div *ngIf="answerValue.errors.required">
-                    Answer is required.
-                </div>
-            </div>
-        </div>
-    </div>
-    <div>
-        <h5 class="mt-2">Maksymalna ilość punktów:</h5>
-        <div class="input-group">
-            <input id="maxScore" name="maxScore" class="form-control" type="number" min="1" required
-                [(ngModel)]="inputMaxScore" #maxScore="ngModel" (input)="inputMaxScore=$event.target.value"
-                pattern="^[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*$">
-        </div>
-        <div *ngIf="maxScore.invalid && (maxScore.dirty || maxScore.touched)" class="alert alert-danger mt-2">
-            <div *ngIf="maxScore.errors.required">
-                Max score is required.
-            </div>
-            <div *ngIf="maxScore.errors.pattern">
-                Invalid number (should be greather than 0).
-            </div>
-        </div>
-    </div>
-    <button type="button" class="btn btn-success mt-3 full-button" (click)="addValueQuestion()"
-        [disabled]="!valueQuestion.valid || !answerValue.valid || !maxScore.valid">
-        Dodaj pytanie do testu
-    </button>
-</div>
+<!--        <div class="input-group">-->
+<!--            <input id="question" name="question" class="form-control" type="text" required-->
+<!--                [(ngModel)]="inputValueQuestion" #valueQuestion="ngModel"-->
+<!--                (input)="inputValueQuestion=$event.target.value">-->
+<!--        </div>-->
+<!--        <div *ngIf="valueQuestion.invalid && (valueQuestion.dirty || valueQuestion.touched)"-->
+<!--            class="alert alert-danger mt-2">-->
+<!--            <div *ngIf="valueQuestion.errors.required">-->
+<!--                Question is required.-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <h5 class="mt-2">Poprawna odpowiedź:</h5>-->
+<!--        <div>-->
+<!--            <div class="input-group">-->
+<!--                <input id="answerValue" name="answerValue" class="form-control" type="number" required-->
+<!--                    [(ngModel)]="inputCorrectValueAnswer" #answerValue="ngModel"-->
+<!--                    (input)="inputCorrectValueAnswer=$event.target.value">-->
+<!--            </div>-->
+<!--            <div *ngIf="answerValue.invalid && (answerValue.dirty || answerValue.touched)"-->
+<!--                class="alert alert-danger mt-2">-->
+<!--                <div *ngIf="answerValue.errors.required">-->
+<!--                    Answer is required.-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <h5 class="mt-2">Maksymalna ilość punktów:</h5>-->
+<!--        <div class="input-group">-->
+<!--            <input id="maxScore" name="maxScore" class="form-control" type="number" min="1" required-->
+<!--                [(ngModel)]="inputMaxScore" #maxScore="ngModel" (input)="inputMaxScore=$event.target.value"-->
+<!--                pattern="^[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*$">-->
+<!--        </div>-->
+<!--        <div *ngIf="maxScore.invalid && (maxScore.dirty || maxScore.touched)" class="alert alert-danger mt-2">-->
+<!--            <div *ngIf="maxScore.errors.required">-->
+<!--                Max score is required.-->
+<!--            </div>-->
+<!--            <div *ngIf="maxScore.errors.pattern">-->
+<!--                Invalid number (should be greather than 0).-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <button type="button" class="btn btn-success mt-3 full-button" (click)="addValueQuestion()"-->
+<!--        [disabled]="!valueQuestion.valid || !answerValue.valid || !maxScore.valid">-->
+<!--        Dodaj pytanie do testu-->
+<!--    </button>-->
+<!--</div>-->
 
-<!-- MIDDLE -->
-<div>
-    <!-- created OPEN questions -->
-    <div class="card-body" *ngIf="openQuestions.length != 0">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th style="width: 40%;">Pytanie otwarte</th>
-                    <th style="width: 40%;">Odpowiedź</th>
-                    <th style="width: 10%;">Max pkt.</th>
-                    <th style="width: 10%;"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let openQuestion of openQuestions" (click)="onSelectOpenQuestion(openQuestion)"
-                    [class.selected]="openQuestion === selectedOpenQuestion">
-                    <td>{{ openQuestion.question }}</td>
-                    <td>{{ openQuestion.correctAnswer }}</td>
-                    <td>{{ openQuestion.maxScore }}</td>
-                    <td>
-                        <button class="btn btn-danger" (click)="removeOpenQuestion(openQuestion)">Usuń</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <!-- created VALUE questions -->
-    <div class="card-body" *ngIf="valueQuestions.length != 0">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th style="width: 40%;">Pytanie liczbowe</th>
-                    <th style="width: 40%;">Odpowiedź</th>
-                    <th style="width: 10%;">Max pkt.</th>
-                    <th style="width: 10%;"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let valueQuestion of valueQuestions" (click)="onSelectValueQuestion(valueQuestion)"
-                    [class.selected]="valueQuestion === selectedValueQuestion">
-                    <td>{{ valueQuestion.question }}</td>
-                    <td>{{ valueQuestion.correctAnswer }}</td>
-                    <td>{{ valueQuestion.maxScore }}</td>
-                    <td>
-                        <button class="btn btn-danger" (click)="removeValueQuestion(valueQuestion)">Usuń</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <!-- created CLOSE questions -->
-    <div class="card-body" *ngIf="closeQuestions.length != 0">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th style="width: 40%;">Pytanie zamknięte</th>
-                    <th style="width: 20%;">Poprawne odpowiedzi</th>
-                    <th style="width: 20%;">Niepoprawne odpowiedzi</th>
-                    <th style="width: 10%;">Pkt za odp</th>
-                    <th style="width: 10%;"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let closeQuestion of closeQuestions" (click)="onSelectCloseQuestion(closeQuestion)"
-                    [class.selected]="closeQuestion === selectedCloseQuestion">
-                    <td>{{ closeQuestion.question }}</td>
-                    <td>{{ closeQuestion.correctAnswers }}</td>
-                    <td>{{ closeQuestion.incorrectAnswers }}</td>
-                    <td>{{ closeQuestion.answerScore }}</td>
-                    <td>
-                        <button class="btn btn-danger" (click)="removeCloseQuestion(closeQuestion)">Usuń</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+<!--&lt;!&ndash; MIDDLE &ndash;&gt;-->
+<!--<div>-->
+<!--    &lt;!&ndash; created OPEN questions &ndash;&gt;-->
+<!--    <div class="card-body" *ngIf="openQuestions.length != 0">-->
+<!--        <table class="table table-hover">-->
+<!--            <thead>-->
+<!--                <tr>-->
+<!--                    <th style="width: 40%;">Pytanie otwarte</th>-->
+<!--                    <th style="width: 40%;">Odpowiedź</th>-->
+<!--                    <th style="width: 10%;">Max pkt.</th>-->
+<!--                    <th style="width: 10%;"></th>-->
+<!--                </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--                <tr *ngFor="let openQuestion of openQuestions" (click)="onSelectOpenQuestion(openQuestion)"-->
+<!--                    [class.selected]="openQuestion === selectedOpenQuestion">-->
+<!--                    <td>{{ openQuestion.question }}</td>-->
+<!--                    <td>{{ openQuestion.correctAnswer }}</td>-->
+<!--                    <td>{{ openQuestion.maxScore }}</td>-->
+<!--                    <td>-->
+<!--                        <button class="btn btn-danger" (click)="removeOpenQuestion(openQuestion)">Usuń</button>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; created VALUE questions &ndash;&gt;-->
+<!--    <div class="card-body" *ngIf="valueQuestions.length != 0">-->
+<!--        <table class="table table-hover">-->
+<!--            <thead>-->
+<!--                <tr>-->
+<!--                    <th style="width: 40%;">Pytanie liczbowe</th>-->
+<!--                    <th style="width: 40%;">Odpowiedź</th>-->
+<!--                    <th style="width: 10%;">Max pkt.</th>-->
+<!--                    <th style="width: 10%;"></th>-->
+<!--                </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--                <tr *ngFor="let valueQuestion of valueQuestions" (click)="onSelectValueQuestion(valueQuestion)"-->
+<!--                    [class.selected]="valueQuestion === selectedValueQuestion">-->
+<!--                    <td>{{ valueQuestion.question }}</td>-->
+<!--                    <td>{{ valueQuestion.correctAnswer }}</td>-->
+<!--                    <td>{{ valueQuestion.maxScore }}</td>-->
+<!--                    <td>-->
+<!--                        <button class="btn btn-danger" (click)="removeValueQuestion(valueQuestion)">Usuń</button>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; created CLOSE questions &ndash;&gt;-->
+<!--    <div class="card-body" *ngIf="closeQuestions.length != 0">-->
+<!--        <table class="table table-hover">-->
+<!--            <thead>-->
+<!--                <tr>-->
+<!--                    <th style="width: 40%;">Pytanie zamknięte</th>-->
+<!--                    <th style="width: 20%;">Poprawne odpowiedzi</th>-->
+<!--                    <th style="width: 20%;">Niepoprawne odpowiedzi</th>-->
+<!--                    <th style="width: 10%;">Pkt za odp</th>-->
+<!--                    <th style="width: 10%;"></th>-->
+<!--                </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--                <tr *ngFor="let closeQuestion of closeQuestions" (click)="onSelectCloseQuestion(closeQuestion)"-->
+<!--                    [class.selected]="closeQuestion === selectedCloseQuestion">-->
+<!--                    <td>{{ closeQuestion.question }}</td>-->
+<!--                    <td>{{ closeQuestion.correctAnswers }}</td>-->
+<!--                    <td>{{ closeQuestion.incorrectAnswers }}</td>-->
+<!--                    <td>{{ closeQuestion.answerScore }}</td>-->
+<!--                    <td>-->
+<!--                        <button class="btn btn-danger" (click)="removeCloseQuestion(closeQuestion)">Usuń</button>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
 
-<!-- BOTTOM -->
-<div>
-    <!-- button to end create test -->
-    <button class="btn btn-success full-button" (click)="createTest()" [disabled]="!title.valid">
-        Utwórz test
-    </button>
-</div>
+<!--&lt;!&ndash; BOTTOM &ndash;&gt;-->
+<!--<div>-->
+<!--    &lt;!&ndash; button to end create test &ndash;&gt;-->
+<!--    <button class="btn btn-success full-button" (click)="createTest()" [disabled]="!title.valid">-->
+<!--        Utwórz test-->
+<!--    </button>-->
+<!--</div>-->

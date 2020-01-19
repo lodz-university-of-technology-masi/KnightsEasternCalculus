@@ -31,10 +31,12 @@ export class HomePageComponent implements OnInit {
     this.date = date.toLocaleDateString('pl-PL', format);
     if (date.getHours() > 18) {
       this.dayTime = 'wieczorne';
-    } else if(date.getHours() < 5) {
+    } else if (date.getHours() < 5) {
       this.dayTime = 'nocne';
+    } else if (date.getHours() < 12) {
+      this.dayTime = 'poranne';
     } else {
-      this.dayTime = 'dzienne';
+      this.dayTime = 'popołudniowe';
     }
   }
 

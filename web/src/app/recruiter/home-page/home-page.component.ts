@@ -27,8 +27,10 @@ export class HomePageComponent implements OnInit {
       this.dayTime = 'wieczorna';
     } else if(date.getHours() < 5) {
       this.dayTime = 'nocna';
+    } else if (date.getHours() < 14) {
+      this.dayTime = 'poranna';
     } else {
-      this.dayTime = 'dzienna';
+      this.dayTime = 'popołudniowa';
     }
   }
 

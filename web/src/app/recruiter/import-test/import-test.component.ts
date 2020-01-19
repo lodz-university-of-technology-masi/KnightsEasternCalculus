@@ -63,7 +63,6 @@ export class ImportTestComponent implements OnInit {
     public createTest() {
         this.rewriteCloseAnswers();
         if (this.validate() == true) {
-            console.log(this.importedTest);
             // inputTestTitle, author, language, openQuestions, closeQuestions, valueQuestions
             this.testService.createTest(
                 this.importedTest.title,

@@ -104,8 +104,6 @@ export class TestService {
       i++;
     })
 
-    console.log('plik csv' + csv);
-
     let file = new Blob([csv], { type: 'text/csv;charset=utf-8' });
     saveAs(file, test.title + '-' + test.testId + '.csv');
   }
@@ -218,12 +216,11 @@ export class TestService {
   }
 
   public sendSolvedTest(test: TestInstance) {
-    console.log(test);
     return new Observable(observer => {
       this.httpClient.patch<TestInstance>(Globals.apiBaseUrl + '/applicants/' + test.applicantId + '/tests', test, httpOptions)
         .subscribe({
           error: err => {
-            console.log('error', err);
+            console.log(err);
             observer.error(err);
           },
           next: value => {

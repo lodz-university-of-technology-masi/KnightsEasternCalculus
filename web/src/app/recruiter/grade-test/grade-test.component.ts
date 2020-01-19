@@ -30,7 +30,6 @@ export class GradeTestComponent implements OnInit {
       this.applicantService.getApplicant(this.applicantID).subscribe(applicant => this.applicant = applicant);
       this.testService.getTestInstance(this.applicantID, this.timestamp).subscribe( result => {
         this.test = JSON.parse(JSON.stringify(result.body)) as TestInstance;
-        console.log(this.test);
       });
     });
   }

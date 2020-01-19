@@ -30,7 +30,7 @@ export class LinkGeneratorComponent implements OnInit {
       if (err.code === 'UsernameExistsException') {
         this.userExists = true;
       } else {
-        console.log('error', err);
+        console.log(err);
       }
       this.loading = false;
     });

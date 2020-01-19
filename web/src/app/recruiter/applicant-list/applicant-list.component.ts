@@ -19,7 +19,7 @@ export class ApplicantListComponent implements OnInit {
   }
 
   getInitialApplicants(): void {
-    this.applicantService.getAllApplicants().subscribe(applicants => { this.applicants = applicants; console.log(JSON.stringify(applicants)); });
+    this.applicantService.getAllApplicants().subscribe(applicants => this.applicants = applicants);
   }
 
   searchApplicants(): void {

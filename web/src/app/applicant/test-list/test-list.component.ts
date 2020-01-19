@@ -23,7 +23,6 @@ export class TestListComponent implements OnInit {
   getTests() {
     this.testService.getTestInstances(this.auth.getUser().getUsername()).subscribe( (result: Response) => {
       this.tests = JSON.parse(JSON.stringify(result.body));
-      console.log(this.tests);
     });
 
   }

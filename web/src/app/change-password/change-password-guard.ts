@@ -11,7 +11,6 @@ export class ChangePasswordGuard implements  CanActivate {
   constructor(private authService: AuthenticationRecruiterService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log(this.authService.cognitoUser || this.authService.isLogged());
     if (this.authService.cognitoUser != null) {
       return true;
     } else if (this.authService.isLogged()) {

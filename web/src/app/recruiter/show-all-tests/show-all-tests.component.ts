@@ -60,7 +60,6 @@ export class ShowAllTestsComponent implements OnInit {
     (await this.testService.translateTest(testToTranslate)
       .subscribe(
         res => {
-          console.log(res);
           const test = JSON.parse(JSON.stringify(res)) as Test;
           this.testService.createTest(test.title, test.language, test.openQuestions, test.closeQuestions, test.valueQuestions).subscribe(
             res2 => {
@@ -111,7 +110,6 @@ export class ShowAllTestsComponent implements OnInit {
         this.testService.importTest(this.fileContent);
         this.router.navigate(['/recruiter/import-test']);
       } catch (error) {
-        // console.log("ERROR: import failed");
         console.log(error);
       }
     }
@@ -121,7 +119,6 @@ export class ShowAllTestsComponent implements OnInit {
     this.testService.getTest(id)
       .subscribe(res => {
         this.test = res.body as Test;
-        console.log(res);
       });
   }
 

@@ -56,7 +56,6 @@ export class EditTestComponent implements OnInit {
     this.testService.synonymOfWord(this.lookupWord)
       .subscribe(
         res => {
-          console.log(res.body);
           this.synonyms = res.body;
           this.synonymSearching = false;
         },
@@ -99,7 +98,6 @@ export class EditTestComponent implements OnInit {
   }
 
   validate(): boolean { // i tak wyszlo spaghetti :/
-    console.log(this.test);
     this.errors.negativeScores = false;
     this.errors.noCorrectAnswers = false;
     this.errors.generalErrors = false;

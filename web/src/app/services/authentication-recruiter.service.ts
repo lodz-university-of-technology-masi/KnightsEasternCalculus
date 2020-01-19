@@ -70,7 +70,6 @@ export class AuthenticationRecruiterService {
       if (this.cognitoUser != null ) {
         this.cognitoUser.getSession( (err, session) => {
           const refresh = session.getRefreshToken();
-          console.log('session valid: ', session.isValid());
 
           const loginProvider = {};
           loginProvider[`cognito-idp.us-east-1.amazonaws.com/${Globals.userPoolId}`] = session.getIdToken().getJwtToken();
@@ -80,8 +79,6 @@ export class AuthenticationRecruiterService {
           });
 
           AWS.config.update({ credentials: creds, region: 'us-east-1'});
-          console.log(AWS.config.credentials);
-
 
           AWS.config.getCredentials( error => {
             if (error) {
@@ -171,11 +168,10 @@ export class AuthenticationRecruiterService {
     return new Observable(observer => {
       userPool.signUp(email, 'password', attributeList, null, (err, result) => {
         if (err) {
-          console.log('signup error: ', err);
+          console.log(err);
           observer.error(err);
           return;
         }
-        console.log('signup correct');
         this.cognitoUser = result.user;
         observer.next(result);
         observer.complete();
@@ -194,7 +190,7 @@ export class AuthenticationRecruiterService {
           observer.next(result);
           observer.complete();
         }, onFailure: err => {
-          console.log('setNewPassword: ', err);
+          console.log(err);
           observer.error(err);
         }
       });

@@ -59,7 +59,6 @@ export class SolveTestComponent implements OnInit {
     });
 
     this.testService.sendSolvedTest(this.test).subscribe( result => {
-      console.log('solve-test', result);
       if (result) {
         this.router.navigateByUrl('applicant/tests');
       }

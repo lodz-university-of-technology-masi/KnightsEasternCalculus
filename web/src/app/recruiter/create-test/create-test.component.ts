@@ -174,7 +174,6 @@ export class CreateTestComponent implements OnInit {
     this.testService.synonymOfWord(this.synonym)
       .subscribe(
         res => {
-          console.log(res);
           var syn = JSON.parse(JSON.stringify(res));
           this.synonyms = syn;
         },

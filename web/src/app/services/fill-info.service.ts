@@ -21,7 +21,6 @@ export class FillInfoService {
   }
 
   public uploadPhoto(applicantId: string, photo: string) {
-    console.log(applicantId);
       return this.httpClient.post(`${this.addApplicantUrl}/${applicantId}/photos`, photo, { observe: 'response' });
   }
 }
